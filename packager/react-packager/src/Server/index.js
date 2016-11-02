@@ -676,7 +676,11 @@ class Server {
     };
 
     debug('Getting bundle for request');
-    const building = this._useCachedOrUpdateOrCreateBundle(options);
+    let building;
+    if (global.__LAB__) {
+      building = __LAB__.onServerBeforeBundle(options);
+    }
+    building = building.then(() => this._useCachedOrUpdateOrCreateBundle(options));
     building.then(
       p => {
         if (requestType === 'bundle') {

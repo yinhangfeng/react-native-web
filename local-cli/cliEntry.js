@@ -154,8 +154,8 @@ function getCliConfig() {
 
   let config = Config.get(cwd, defaultConfig, configPath);
   // LAB modify 通过全局变量简单传递额外的配置
-  if (global.__LAB_CONFIG__) {
-    config.extraNodeModules = Object.assign({}, config.extraNodeModules, __LAB_CONFIG__.extraNodeModules);
+  if (global.__LAB__) {
+    config.extraNodeModules = Object.assign({}, config.extraNodeModules, __LAB__.config.extraNodeModules);
   }
   return config;
 }
