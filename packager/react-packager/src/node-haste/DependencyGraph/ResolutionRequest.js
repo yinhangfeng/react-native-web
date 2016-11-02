@@ -52,7 +52,7 @@ class ResolutionRequest {
       if (error.type !== 'UnableToResolveError') {
         throw error;
       }
-      return secondaryAction();
+      return secondaryAction(error);
     });
   }
 
@@ -95,19 +95,29 @@ class ResolutionRequest {
     if (!this._helpers.isNodeModulesDir(fromModule.path)
         && !(isRelativeImport(toModuleName) || isAbsolutePath(toModuleName))) {
       return this._tryResolve(
-        () => this._resolveHasteDependency(fromModule, toModuleName),
-        () => this._resolveNodeDependency(fromModule, toModuleName)
+        () => this._tryResolve(
+          () => this._resolveHasteDependency(fromModule, toModuleName),
+          () => this._resolveNodeDependency(fromModule, toModuleName)
+        ),
+        (error) => this._resolveExtDependency(fromModule, toModuleName, error)
       ).then(
         cacheResult,
         forgive,
       );
     }
 
-    return this._resolveNodeDependency(fromModule, toModuleName)
-      .then(
+    return this._tryResolve(
+        () => this._resolveNodeDependency(fromModule, toModuleName),
+        (error) => this._resolveExtDependency(fromModule, toModuleName, error)
+      ).then(
         cacheResult,
         forgive,
       );
+  }
+
+  // LAB modify: 增加额外的依赖查找hook
+  _resolveExtDependency(fromModule, toModuleName, error) {
+    return Promise.reject(error);
   }
 
   getOrderedDependencies({
