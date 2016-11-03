@@ -72,7 +72,7 @@ const validateOpts = declareOpts({
     required: false,
   },
   // LAB modify
-  runBeforeBundleModulePath: {
+  runBeforeBuildBundleModulePath: {
     type: 'string',
     required: false,
   },
@@ -301,7 +301,27 @@ class Server {
     }
   }
 
+  // LAB modify
+  _callRunBeforeBuildBundle(bundleOptions, isServer, url) {
+    if (this._opts.runBeforeBuildBundleModulePath) {
+      return require(this._opts.runBeforeBuildBundleModulePath)({
+        bundleOptions,
+        isServer,
+        url,
+      });
+    } else {
+      return Promise.resolve(options);
+    }
+  }
+
+  // LAB modify
   buildBundle(options) {
+    return this._callRunBeforeBuildBundle(bundleOptions, false)
+      .then((opts) => this._buildBundle(opts));
+  }
+
+  // LAB modify
+  _buildBundle(options) {
     return this._bundler.getResolver().getDependecyGraph().load().then(() => {
       if (!options.platform) {
         options.platform = getPlatformExtension(options.entryFile);
@@ -529,7 +549,8 @@ class Server {
   _useCachedOrUpdateOrCreateBundle(options) {
     const optionsJson = this.optionsHash(options);
     const bundleFromScratch = () => {
-      const building = this.buildBundle(options);
+      // LAB modify
+      const building = this._buildBundle(options);
       this._bundles[optionsJson] = building;
       return building;
     };
@@ -577,7 +598,8 @@ class Server {
                 );
               });
 
-              return this.buildBundle({
+              // LAB modify
+              return this._buildBundle({
                 ...options,
                 resolutionResponse: response.copy({
                   dependencies: changedModules,
@@ -682,17 +704,9 @@ class Server {
 
     debug('Getting bundle for request');
     // LAB modify
-    let building;
-    if (this._opts.runBeforeBundleModulePath) {
-      building = require(this._opts.runBeforeBundleModulePath)({
-        bundleOptions: options,
-        isServer: true,
-      });
-    } else {
-      building = Promise.resolve(options);
-    }
-    building = building.then((options) => this._useCachedOrUpdateOrCreateBundle(options));
-    building.then(
+    const building = this._callRunBeforeBuildBundle(options, true, req.url)
+      .then((opts) => this._useCachedOrUpdateOrCreateBundle(opts))
+      .then(
       p => {
         if (requestType === 'bundle') {
           debug('Generating source code');

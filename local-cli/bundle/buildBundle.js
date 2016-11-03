@@ -55,23 +55,15 @@ function buildBundle(args, config, output = outputBundle, packagerInstance) {
       extraNodeModules: config.extraNodeModules,
       nonPersistent: true,
       resetCache: args.resetCache,
+      // LAB modify
+      runBeforeBuildBundleModulePath: config.runBeforeBuildBundleModulePath,
     };
 
     packagerInstance = new Server(options);
     shouldClosePackager = true;
   }
 
-  // LAB modify
-  let bundlePromise;
-  if (config.runBeforeBundleModulePath) {
-    bundlePromise = require(config.runBeforeBundleModulePath)({
-      bundleOptions: requestOpts,
-      isServer: false,
-    });
-  } else {
-    bundlePromise = Promise.resolve(requestOpts);
-  }
-  bundlePromise.then((requestOpts) => output.build(packagerInstance, requestOpts))
+  const bundlePromise = output.build(packagerInstance, requestOpts)
     .then(bundle => {
       if (shouldClosePackager) {
         packagerInstance.end();
