@@ -71,6 +71,11 @@ const validateOpts = declareOpts({
     type: 'object',
     required: false,
   },
+  // LAB modify
+  runBeforeBundleModulePath: {
+    type: 'string',
+    required: false,
+  },
   nonPersistent: {
     type: 'boolean',
     default: false,
@@ -676,11 +681,17 @@ class Server {
     };
 
     debug('Getting bundle for request');
+    // LAB modify
     let building;
-    if (global.__LAB__) {
-      building = __LAB__.onServerBeforeBundle(options);
+    if (this._opts.runBeforeBundleModulePath) {
+      building = require(this._opts.runBeforeBundleModulePath)({
+        bundleOptions: options,
+        isServer: true,
+      });
+    } else {
+      building = Promise.resolve(options);
     }
-    building = building.then(() => this._useCachedOrUpdateOrCreateBundle(options));
+    building = building.then((options) => this._useCachedOrUpdateOrCreateBundle(options));
     building.then(
       p => {
         if (requestType === 'bundle') {

@@ -61,7 +61,17 @@ function buildBundle(args, config, output = outputBundle, packagerInstance) {
     shouldClosePackager = true;
   }
 
-  const bundlePromise = output.build(packagerInstance, requestOpts)
+  // LAB modify
+  let bundlePromise;
+  if (config.runBeforeBundleModulePath) {
+    bundlePromise = require(config.runBeforeBundleModulePath)({
+      bundleOptions: requestOpts,
+      isServer: false,
+    });
+  } else {
+    bundlePromise = Promise.resolve(requestOpts);
+  }
+  bundlePromise.then((requestOpts) => output.build(packagerInstance, requestOpts))
     .then(bundle => {
       if (shouldClosePackager) {
         packagerInstance.end();

@@ -138,7 +138,7 @@ class Resolver {
     return this._depGraph.getModuleForPath(entryFile);
   }
 
-  getDependencies(entryPath, options, transformOptions, onProgress, getModuleId) {
+  getDependencies(entryPath, options, transformOptions, onProgress, getModuleId, extraNodeModules) {
     const {platform, recursive} = getDependenciesValidateOpts(options);
     return this._depGraph.getDependencies({
       entryPath,
@@ -146,6 +146,8 @@ class Resolver {
       transformOptions,
       recursive,
       onProgress,
+      // LAB modify
+      extraNodeModules,
     }).then(resolutionResponse => {
       this._getPolyfillDependencies().reverse().forEach(
         polyfill => resolutionResponse.prependDependency(polyfill)

@@ -91,6 +91,8 @@ function getPackagerServer(args, config) {
     assetExts: defaultAssetExts.concat(args.assetExts),
     resetCache: args.resetCache,
     verbose: args.verbose,
+    // LAB modify
+    runBeforeBundleModulePath: config.runBeforeBundleModulePath,
   });
 }
 

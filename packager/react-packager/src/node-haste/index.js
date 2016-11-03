@@ -238,6 +238,8 @@ class DependencyGraph {
     transformOptions,
     onProgress,
     recursive = true,
+    // LAB modify
+    extraNodeModules,
   }) {
     return this.load().then(() => {
       platform = this._getRequestPlatform(entryPath, platform);
@@ -253,7 +255,8 @@ class DependencyGraph {
         moduleCache: this._moduleCache,
         fastfs: this._fastfs,
         shouldThrowOnUnresolvedErrors: this._opts.shouldThrowOnUnresolvedErrors,
-        extraNodeModules: this._opts.extraNodeModules,
+        // LAB modify 让extraNodeModules支持通过getDependencies参数传入
+        extraNodeModules: Object.assign({}, this._opts.extraNodeModules, extraNodeModules),
       });
 
       const response = new ResolutionResponse({transformOptions});

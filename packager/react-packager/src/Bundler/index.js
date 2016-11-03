@@ -257,6 +257,8 @@ class Bundler {
     generateSourceMaps,
     assetPlugins,
     onProgress,
+    // LAB modify
+    extraNodeModules,
   }) {
     const onResolutionResponse = response => {
       bundle.setMainModuleId(response.getModuleId(getMainModule(response)));
@@ -304,6 +306,8 @@ class Bundler {
       generateSourceMaps,
       assetPlugins,
       onProgress,
+      // LAB modify
+      extraNodeModules,
     });
   }
 
@@ -315,6 +319,8 @@ class Bundler {
     dev,
     platform,
     assetPlugins,
+    // LAB modify
+    extraNodeModules,
   }) {
     const onModuleTransformed = ({module, transformed, response, bundle}) => {
       const deps = Object.create(null);
@@ -344,6 +350,8 @@ class Bundler {
       minify: false,
       bundle: new PrepackBundle(sourceMapUrl),
       assetPlugins,
+      // LAB modify
+      extraNodeModules,
     });
   }
 
@@ -363,6 +371,8 @@ class Bundler {
     onModuleTransformed = noop,
     finalizeBundle = noop,
     onProgress = noop,
+    // LAB modify
+    extraNodeModules,
   }) {
     const findEventId = Activity.startEvent(
       'Transforming modules',
@@ -385,6 +395,8 @@ class Bundler {
         minify,
         isolateModuleIDs,
         generateSourceMaps: unbundle || generateSourceMaps,
+        // LAB modify
+        extraNodeModules,
       });
     }
 
@@ -487,6 +499,8 @@ class Bundler {
     generateSourceMaps = false,
     isolateModuleIDs = false,
     onProgress,
+    // LAB modify
+    extraNodeModules,
   }) {
     return this.getTransformOptions(
       entryFile,
@@ -511,6 +525,8 @@ class Bundler {
         transformOptions,
         onProgress,
         isolateModuleIDs ? createModuleIdFactory() : this._getModuleId,
+        // LAB modify
+        extraNodeModules,
       );
     });
   }
