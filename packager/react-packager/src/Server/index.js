@@ -72,7 +72,7 @@ const validateOpts = declareOpts({
     required: false,
   },
   // LAB modify
-  runBeforeBuildBundleModulePath: {
+  hookBeforeBuildBundleModulePath: {
     type: 'string',
     required: false,
   },
@@ -167,6 +167,11 @@ const bundleOpts = declareOpts({
   },
   onProgress: {
     type: 'function',
+  },
+  // LAB modify
+  extraNodeModules: {
+    type: 'object',
+    required: false,
   },
 });
 
@@ -302,21 +307,21 @@ class Server {
   }
 
   // LAB modify
-  _callRunBeforeBuildBundle(bundleOptions, isServer, url) {
-    if (this._opts.runBeforeBuildBundleModulePath) {
-      return require(this._opts.runBeforeBuildBundleModulePath)({
+  _callhookBeforeBuildBundle(bundleOptions, isServer, url) {
+    if (this._opts.hookBeforeBuildBundleModulePath) {
+      return require(this._opts.hookBeforeBuildBundleModulePath)({
         bundleOptions,
         isServer,
         url,
       });
     } else {
-      return Promise.resolve(options);
+      return Promise.resolve(bundleOptions);
     }
   }
 
   // LAB modify
   buildBundle(options) {
-    return this._callRunBeforeBuildBundle(bundleOptions, false)
+    return this._callhookBeforeBuildBundle(options, false)
       .then((opts) => this._buildBundle(opts));
   }
 
@@ -704,7 +709,7 @@ class Server {
 
     debug('Getting bundle for request');
     // LAB modify
-    const building = this._callRunBeforeBuildBundle(options, true, req.url)
+    const building = this._callhookBeforeBuildBundle(options, true, req.url)
       .then((opts) => this._useCachedOrUpdateOrCreateBundle(opts))
       .then(
       p => {

@@ -16,4 +16,6 @@ module.exports = {
   extraNodeModules: {
     'react-native': __dirname,
   },
+
+  hookBeforeBuildBundleModulePath: __dirname + '/hookBeforeBuildBundle.js',
 };

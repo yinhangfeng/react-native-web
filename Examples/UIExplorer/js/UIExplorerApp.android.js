@@ -42,6 +42,9 @@ const UIManager = require('UIManager');
 const URIActionMap = require('./URIActionMap');
 const View = require('View');
 
+// LAB modify xxxxx
+const xxxxx = require('xxxxx');
+
 import type {UIExplorerNavigationState} from './UIExplorerNavigationReducer';
 
 UIManager.setLayoutAnimationEnabledExperimental(true);

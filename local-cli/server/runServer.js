@@ -92,7 +92,7 @@ function getPackagerServer(args, config) {
     resetCache: args.resetCache,
     verbose: args.verbose,
     // LAB modify
-    runBeforeBuildBundleModulePath: config.runBeforeBuildBundleModulePath,
+    hookBeforeBuildBundleModulePath: config.hookBeforeBuildBundleModulePath,
   });
 }
 
