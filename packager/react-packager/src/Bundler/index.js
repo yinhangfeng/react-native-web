@@ -374,6 +374,10 @@ class Bundler {
     // LAB modify
     extraNodeModules,
   }) {
+    // LAB modify  xxxxxx
+    if (!extraNodeModules) {
+      console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx Bundler _buildBundle !extraNodeModules');
+    }
     const findEventId = Activity.startEvent(
       'Transforming modules',
       null,
@@ -502,6 +506,10 @@ class Bundler {
     // LAB modify
     extraNodeModules,
   }) {
+    // LAB modify  xxxxxx
+    if (!extraNodeModules) {
+      console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx Bundler getDependencies DependencyGraph !extraNodeModules');
+    }
     return this.getTransformOptions(
       entryFile,
       {
@@ -531,8 +539,9 @@ class Bundler {
     });
   }
 
-  getOrderedDependencyPaths({ entryFile, dev, platform }) {
-    return this.getDependencies({entryFile, dev, platform}).then(
+  // LAB modify
+  getOrderedDependencyPaths({ entryFile, dev, platform, extraNodeModules }) {
+    return this.getDependencies({entryFile, dev, platform, extraNodeModules}).then(
       ({ dependencies }) => {
         const ret = [];
         const promises = [];

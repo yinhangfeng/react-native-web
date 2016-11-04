@@ -139,6 +139,10 @@ class Resolver {
   }
 
   getDependencies(entryPath, options, transformOptions, onProgress, getModuleId, extraNodeModules) {
+    // LAB modify  xxxxxx
+    if (!extraNodeModules) {
+      console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx Resolver DependencyGraph !extraNodeModules');
+    }
     const {platform, recursive} = getDependenciesValidateOpts(options);
     return this._depGraph.getDependencies({
       entryPath,

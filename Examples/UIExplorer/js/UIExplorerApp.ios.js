@@ -34,6 +34,8 @@ const UIExplorerNavigationReducer = require('./UIExplorerNavigationReducer');
 const UIExplorerStateTitleMap = require('./UIExplorerStateTitleMap');
 const URIActionMap = require('./URIActionMap');
 
+const xxxxx = require('xxxxx');
+
 const {
   AppRegistry,
   NavigationExperimental,

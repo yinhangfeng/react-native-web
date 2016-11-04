@@ -173,6 +173,11 @@ const bundleOpts = declareOpts({
     type: 'object',
     required: false,
   },
+  // LAB modify
+  __lab__extra: {
+    type: 'string',
+    required: false,
+  },
 });
 
 const dependencyOpts = declareOpts({
@@ -199,6 +204,11 @@ const dependencyOpts = declareOpts({
   minify: {
     type: 'boolean',
     default: undefined,
+  },
+  // LAB modify
+  extraNodeModules: {
+    type: 'object',
+    required: false,
   },
 });
 
@@ -307,12 +317,11 @@ class Server {
   }
 
   // LAB modify
-  _callhookBeforeBuildBundle(bundleOptions, isServer, url) {
+  _callHookBeforeBuildBundle(bundleOptions, entryFuncName) {
+    console.log('_callHookBeforeBuildBundle', entryFuncName);
     if (this._opts.hookBeforeBuildBundleModulePath) {
       return require(this._opts.hookBeforeBuildBundleModulePath)({
         bundleOptions,
-        isServer,
-        url,
       });
     } else {
       return Promise.resolve(bundleOptions);
@@ -321,7 +330,7 @@ class Server {
 
   // LAB modify
   buildBundle(options) {
-    return this._callhookBeforeBuildBundle(options, false)
+    return this._callHookBeforeBuildBundle(options, 'buildBundle')
       .then((opts) => this._buildBundle(opts));
   }
 
@@ -362,8 +371,11 @@ class Server {
         options.platform = getPlatformExtension(options.entryFile);
       }
 
-      const opts = bundleOpts(options);
-      return this._bundler.prepackBundle(opts);
+      return this._callHookBeforeBuildBundle(options, 'buildPrepackBundle')
+        .then((opts) => {
+          opts = bundleOpts(options);
+          return this._bundler.prepackBundle(opts)}
+        );
     });
   }
 
@@ -373,7 +385,8 @@ class Server {
   }
 
   buildBundleForHMR(modules, host, port) {
-    return this._bundler.hmrBundle(modules, host, port);
+    return this._callHookBeforeBuildBundle(modules, 'buildBundleForHMR')
+      .then((opts) => this._bundler.hmrBundle(opts, host, port));
   }
 
   getShallowDependencies(options) {
@@ -391,7 +404,14 @@ class Server {
     return this._bundler.getModuleForPath(entryFile);
   }
 
+  // LAB modify
   getDependencies(options) {
+    return this._callHookBeforeBuildBundle(options, 'getDependencies')
+      .then((opts) => this._getDependencies(opts));
+  }
+
+  // LAB modify
+  _getDependencies(options) {
     return Promise.resolve().then(() => {
       if (!options.platform) {
         options.platform = getPlatformExtension(options.entryFile);
@@ -403,10 +423,12 @@ class Server {
   }
 
   getOrderedDependencyPaths(options) {
-    return Promise.resolve().then(() => {
-      const opts = dependencyOpts(options);
-      return this._bundler.getOrderedDependencyPaths(opts);
-    });
+    // LAB modify
+    return this._callHookBeforeBuildBundle(options, 'getOrderedDependencyPaths')
+      .then((opts) => {
+        opts = dependencyOpts(opts);
+        return this._bundler.getOrderedDependencyPaths(opts);
+      });
   }
 
   _onFileChange(type, filepath, root) {
@@ -552,6 +574,11 @@ class Server {
   }
 
   _useCachedOrUpdateOrCreateBundle(options) {
+    return this._callHookBeforeBuildBundle(options, '_useCachedOrUpdateOrCreateBundle')
+      .then((opts) => this.__useCachedOrUpdateOrCreateBundle(opts));
+  }
+
+  __useCachedOrUpdateOrCreateBundle(options) {
     const optionsJson = this.optionsHash(options);
     const bundleFromScratch = () => {
       // LAB modify
@@ -581,17 +608,19 @@ class Server {
           deps.outdated = new Set();
 
           const opts = bundleOpts(options);
-          const {platform, dev, minify, hot} = opts;
+          const {platform, dev, minify, hot, extraNodeModules} = opts;
 
           // Need to create a resolution response to pass to the bundler
           // to process requires after transform. By providing a
           // specific response we can compute a non recursive one which
           // is the least we need and improve performance.
           const bundlePromise = this._bundles[optionsJson] =
-            this.getDependencies({
+            this._getDependencies({
               platform, dev, hot, minify,
               entryFile: options.entryFile,
               recursive: false,
+              // LAB modify
+              extraNodeModules,
             }).then(response => {
               debug('Update bundle: rebuild shallow bundle');
 
@@ -708,9 +737,7 @@ class Server {
     };
 
     debug('Getting bundle for request');
-    // LAB modify
-    const building = this._callhookBeforeBuildBundle(options, true, req.url)
-      .then((opts) => this._useCachedOrUpdateOrCreateBundle(opts))
+    const building = this._useCachedOrUpdateOrCreateBundle(options)
       .then(
       p => {
         if (requestType === 'bundle') {
@@ -914,6 +941,8 @@ class Server {
       ),
       generateSourceMaps: this._getBoolOptionFromQuery(urlObj.query, 'babelSourcemap'),
       assetPlugins,
+      // LAB modify
+      __lab__extra: urlObj.query.__lab__extra,
     };
   }
 
