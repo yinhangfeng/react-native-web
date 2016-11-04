@@ -236,3 +236,34 @@ const styles = StyleSheet.create({
 AppRegistry.registerComponent('UIExplorerApp', () => UIExplorerApp);
 
 module.exports = UIExplorerApp;
+
+// 测试OPPO手机键盘弹出bug
+// const {
+//   Text,
+//   TextInput,
+// } = require('react-native');
+// class TextInputTest extends React.Component {
+//
+//   constructor(props) {
+//     super(props);
+//
+//     this.state = {
+//       show: true,
+//     };
+//   }
+//
+//   render() {
+//     return (
+//       <View style={{paddingTop: 40,}}>
+//         <Text onPress={() => {
+//           this.setState({
+//             show: !this.state.show,
+//           });
+//         }} style={{fontSize: 24,}}>toggle show</Text>
+//         <TextInput style={{height: 50, backgroundColor: '#E4FFD6', marginBottom: 10}}/>
+//         {this.state.show ? <TextInput style={{height: 50, backgroundColor: '#E4FFD6', marginBottom: 10}}/> : null}
+//       </View>
+//     );
+//   }
+// }
+// AppRegistry.registerComponent('UIExplorerApp', () => TextInputTest);

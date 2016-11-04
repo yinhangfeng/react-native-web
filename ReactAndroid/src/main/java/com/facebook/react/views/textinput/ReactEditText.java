@@ -19,6 +19,7 @@ import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
+import android.os.Build;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.SpannableStringBuilder;
@@ -29,6 +30,7 @@ import android.text.method.QwertyKeyListener;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.BackgroundColorSpan;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -80,6 +82,16 @@ public class ReactEditText extends EditText {
   private boolean mDetectScrollMovement = false;
 
   private ReactViewBackgroundDrawable mReactBackgroundDrawable;
+
+  // LAB modify
+  // OPPO 手机键盘无法弹出的BUG
+  private static boolean __LAB__enableJSSettingFocus = true;
+  static {
+    if (Build.MODEL.contains("OPPO") || Build.MANUFACTURER.contains("OPPO")) {
+      __LAB__enableJSSettingFocus = false;
+      Log.d("ReactEditText", "__LAB__enableJSSettingFocus=false");
+    }
+  }
 
   private static final KeyListener sKeyListener = QwertyKeyListener.getInstanceForFullKeyboard();
 
@@ -180,7 +192,7 @@ public class ReactEditText extends EditText {
     if (isFocused()) {
       return true;
     }
-    if (!mIsJSSettingFocus) {
+    if (__LAB__enableJSSettingFocus && !mIsJSSettingFocus) {
       return false;
     }
     setFocusableInTouchMode(true);
