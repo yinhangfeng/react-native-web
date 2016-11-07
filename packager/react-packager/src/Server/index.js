@@ -317,12 +317,14 @@ class Server {
   }
 
   // LAB modify
-  _callBuildBundleInterceptor(bundleOptions, entryFuncName, options = {}) {
+  _callBuildBundleInterceptor(bundleOptions, entryFuncName, options) {
     console.log('callBuildBundleInterceptor', entryFuncName);
     if (this._opts.serverBuildBundleInterceptorModulePath) {
       return Promise.resolve({
         bundleOptions,
-        options,
+        options: Object.assign({
+          nonPersistent: this._opts.nonPersistent,
+        }, options),
         entryFuncName,
       }).then(require(this._opts.serverBuildBundleInterceptorModulePath));
     } else {
@@ -576,9 +578,8 @@ class Server {
   }
 
   _useCachedOrUpdateOrCreateBundle(options) {
-    return this._callBuildBundleInterceptor(options, 'useCachedOrUpdateOrCreateBundle', {
-      enableCache: true,
-    }).then((opts) => this.__useCachedOrUpdateOrCreateBundle(opts));
+    return this._callBuildBundleInterceptor(options, 'useCachedOrUpdateOrCreateBundle')
+      .then((opts) => this.__useCachedOrUpdateOrCreateBundle(opts));
   }
 
   __useCachedOrUpdateOrCreateBundle(options) {

@@ -97,8 +97,7 @@ class ResolutionRequest {
       return this._tryResolve(
         () => this._resolveHasteDependency(fromModule, toModuleName),
         () => this._resolveNodeDependency(fromModule, toModuleName)
-      )
-      .then(
+      ).then(
         cacheResult,
         forgive,
       );
