@@ -323,6 +323,7 @@ class Server {
       return Promise.resolve({
         bundleOptions,
         options,
+        entryFuncName,
       }).then(require(this._opts.serverBuildBundleInterceptorModulePath));
     } else {
       return Promise.resolve(bundleOptions);
@@ -575,7 +576,7 @@ class Server {
   }
 
   _useCachedOrUpdateOrCreateBundle(options) {
-    return this._callBuildBundleInterceptor(options, '_useCachedOrUpdateOrCreateBundle', {
+    return this._callBuildBundleInterceptor(options, 'useCachedOrUpdateOrCreateBundle', {
       enableCache: true,
     }).then((opts) => this.__useCachedOrUpdateOrCreateBundle(opts));
   }
