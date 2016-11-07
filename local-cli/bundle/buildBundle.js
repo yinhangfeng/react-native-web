@@ -56,7 +56,7 @@ function buildBundle(args, config, output = outputBundle, packagerInstance) {
       nonPersistent: true,
       resetCache: args.resetCache,
       // LAB modify
-      hookBeforeBuildBundleModulePath: config.hookBeforeBuildBundleModulePath,
+      serverBuildBundleInterceptorModulePath: config.serverBuildBundleInterceptorModulePath,
     };
 
     packagerInstance = new Server(options);

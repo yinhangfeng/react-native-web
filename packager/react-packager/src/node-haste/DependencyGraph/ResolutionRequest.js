@@ -98,7 +98,6 @@ class ResolutionRequest {
         () => this._resolveHasteDependency(fromModule, toModuleName),
         () => this._resolveNodeDependency(fromModule, toModuleName)
       )
-      // .catch(error => this._resolveExtDependency(fromModule, toModuleName, error))
       .then(
         cacheResult,
         forgive,
@@ -106,17 +105,11 @@ class ResolutionRequest {
     }
 
     return this._resolveNodeDependency(fromModule, toModuleName)
-      // .catch(error => this._resolveExtDependency(fromModule, toModuleName, error))
       .then(
         cacheResult,
         forgive,
       );
   }
-
-  // LAB modify: 增加额外的依赖查找hook
-  // _resolveExtraDependency(fromModule, toModuleName, error) {
-  //   return Promise.reject(error);
-  // }
 
   getOrderedDependencies({
     response,

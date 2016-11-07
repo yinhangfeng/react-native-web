@@ -17,5 +17,5 @@ module.exports = {
     'react-native': __dirname,
   },
 
-  hookBeforeBuildBundleModulePath: __dirname + '/hookBeforeBuildBundle.js',
+  serverBuildBundleInterceptorModulePath: __dirname + '/serverBuildBundleInterceptor.js',
 };

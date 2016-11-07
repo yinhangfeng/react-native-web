@@ -72,7 +72,7 @@ const validateOpts = declareOpts({
     required: false,
   },
   // LAB modify
-  hookBeforeBuildBundleModulePath: {
+  serverBuildBundleInterceptorModulePath: {
     type: 'string',
     required: false,
   },
@@ -317,12 +317,13 @@ class Server {
   }
 
   // LAB modify
-  _callHookBeforeBuildBundle(bundleOptions, entryFuncName) {
-    console.log('_callHookBeforeBuildBundle', entryFuncName);
-    if (this._opts.hookBeforeBuildBundleModulePath) {
-      return require(this._opts.hookBeforeBuildBundleModulePath)({
+  _callBuildBundleInterceptor(bundleOptions, entryFuncName, options = {}) {
+    console.log('callBuildBundleInterceptor', entryFuncName);
+    if (this._opts.serverBuildBundleInterceptorModulePath) {
+      return Promise.resolve({
         bundleOptions,
-      });
+        options,
+      }).then(require(this._opts.serverBuildBundleInterceptorModulePath));
     } else {
       return Promise.resolve(bundleOptions);
     }
@@ -330,7 +331,7 @@ class Server {
 
   // LAB modify
   buildBundle(options) {
-    return this._callHookBeforeBuildBundle(options, 'buildBundle')
+    return this._callBuildBundleInterceptor(options, 'buildBundle')
       .then((opts) => this._buildBundle(opts));
   }
 
@@ -371,9 +372,9 @@ class Server {
         options.platform = getPlatformExtension(options.entryFile);
       }
 
-      return this._callHookBeforeBuildBundle(options, 'buildPrepackBundle')
+      return this._callBuildBundleInterceptor(options, 'buildPrepackBundle')
         .then((opts) => {
-          opts = bundleOpts(options);
+          opts = bundleOpts(opts);
           return this._bundler.prepackBundle(opts)}
         );
     });
@@ -385,7 +386,7 @@ class Server {
   }
 
   buildBundleForHMR(modules, host, port) {
-    return this._callHookBeforeBuildBundle(modules, 'buildBundleForHMR')
+    return this._callBuildBundleInterceptor(modules, 'buildBundleForHMR')
       .then((opts) => this._bundler.hmrBundle(opts, host, port));
   }
 
@@ -406,7 +407,7 @@ class Server {
 
   // LAB modify
   getDependencies(options) {
-    return this._callHookBeforeBuildBundle(options, 'getDependencies')
+    return this._callBuildBundleInterceptor(options, 'getDependencies')
       .then((opts) => this._getDependencies(opts));
   }
 
@@ -424,7 +425,7 @@ class Server {
 
   getOrderedDependencyPaths(options) {
     // LAB modify
-    return this._callHookBeforeBuildBundle(options, 'getOrderedDependencyPaths')
+    return this._callBuildBundleInterceptor(options, 'getOrderedDependencyPaths')
       .then((opts) => {
         opts = dependencyOpts(opts);
         return this._bundler.getOrderedDependencyPaths(opts);
@@ -574,8 +575,9 @@ class Server {
   }
 
   _useCachedOrUpdateOrCreateBundle(options) {
-    return this._callHookBeforeBuildBundle(options, '_useCachedOrUpdateOrCreateBundle')
-      .then((opts) => this.__useCachedOrUpdateOrCreateBundle(opts));
+    return this._callBuildBundleInterceptor(options, '_useCachedOrUpdateOrCreateBundle', {
+      enableCache: true,
+    }).then((opts) => this.__useCachedOrUpdateOrCreateBundle(opts));
   }
 
   __useCachedOrUpdateOrCreateBundle(options) {
