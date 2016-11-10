@@ -70,15 +70,7 @@ public class FrescoModule extends ReactContextBaseJavaModule implements
   public void initialize() {
     super.initialize();
     if (!hasBeenInitialized()) {
-      // Make sure the SoLoaderShim is configured to use our loader for native libraries.
-      // This code can be removed if using Fresco from Maven rather than from source
-      SoLoaderShim.setHandler(new FrescoHandler());
-      if (mConfig == null) {
-        mConfig = getDefaultConfig(getReactApplicationContext());
-      }
-      Context context = getReactApplicationContext().getApplicationContext();
-      Fresco.initialize(context, mConfig);
-      sHasBeenInitialized = true;
+      init(getReactApplicationContext().getApplicationContext(), mConfig);
     } else if (mConfig != null) {
       FLog.w(
           ReactConstants.TAG,
@@ -97,6 +89,17 @@ public class FrescoModule extends ReactContextBaseJavaModule implements
   public void clearSensitiveData() {
     // Clear image cache.
     Fresco.getImagePipeline().clearCaches();
+  }
+
+  public static void init(Context context, ImagePipelineConfig config) {
+    // Make sure the SoLoaderShim is configured to use our loader for native libraries.
+    // This code can be removed if using Fresco from Maven rather than from source
+    SoLoaderShim.setHandler(new FrescoHandler());
+    if (config == null) {
+      config = getDefaultConfig(context);
+    }
+    Fresco.initialize(context, config);
+    sHasBeenInitialized = true;
   }
 
   /**
