@@ -361,6 +361,7 @@ class ResolutionRequest {
             );
           }
 
+          // node_modules中的react 项目能够在react-native 中依赖到react-native/lib 全靠_extraNodeModules配置(来自rn-cli.config.js)
           if (this._extraNodeModules) {
             const bits = toModuleName.split('/');
             const packageName = bits[0];

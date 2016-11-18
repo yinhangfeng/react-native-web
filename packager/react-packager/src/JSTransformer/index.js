@@ -67,7 +67,7 @@ class Transformer {
         {
           autoStart: true,
           maxConcurrentCallsPerWorker: 1,
-          maxConcurrentWorkers: maxConcurrentWorkers,
+          maxConcurrentWorkers: maxConcurrentWorkers, //1, //XXX RW 方便调试
           maxCallsPerWorker: MAX_CALLS_PER_WORKER,
           maxCallTime: opts.transformTimeoutInterval,
           maxRetries: MAX_RETRIES,

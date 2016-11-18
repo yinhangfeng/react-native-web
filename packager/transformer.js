@@ -67,6 +67,7 @@ const getBabelRC = (function() {
 /**
  * Given a filename and options, build a Babel
  * config object with the appropriate plugins.
+ * XXX 感觉可以优化 可以将配置缓存
  */
 function buildBabelConfig(filename, options) {
   const babelRC = getBabelRC(options.projectRoots);
@@ -98,6 +99,7 @@ function buildBabelConfig(filename, options) {
 }
 
 function transform(src, filename, options) {
+  //console.log('transform src...', filename, options);
   options = options || {};
 
   const OLD_BABEL_ENV = process.env.BABEL_ENV;

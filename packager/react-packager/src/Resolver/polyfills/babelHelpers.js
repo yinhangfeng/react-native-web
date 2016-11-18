@@ -227,3 +227,15 @@ babelHelpers.toConsumableArray = function (arr) {
     return Array.from(arr);
   }
 };
+
+
+//
+// 扩展 有些库需要其它babelHelpers 功能(如inline-style-prefixer) 使用 react-web/scripts/_babel.js生成
+// 需要研究一下babel配置相关，react-native 使用babel编译但是相关polyfills 的添加没用通过babel(Resolver/index.js _getPolyfillDependencies),所以可能是不标准的
+//
+
+babelHelpers.typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
+    return typeof obj;
+  } : function (obj) {
+    return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
+  };

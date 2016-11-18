@@ -13,6 +13,8 @@ const path = require('path');
 const Promise = require('promise');
 const saveAssets = require('./saveAssets');
 const Server = require('../../packager/react-packager/src/Server');
+const fs = require('fs');
+const mkdirp = require('mkdirp');
 const defaultAssetExts = require('../../packager/defaultAssetExts');
 
 function saveBundle(output, bundle, args) {
@@ -71,10 +73,37 @@ function buildBundle(args, config, output = outputBundle, packagerInstance) {
       outputAssets,
       args.platform,
       args.assetsDest,
-    ));
+    ))
+    .then(() => copyCss(args.cssDest)); //RW 额外任务 拷贝css
 
   // When we're done saving bundle output and the assets, we're done.
   return assets;
+}
+
+//RW 拷贝css
+function copyCss(cssDest) {
+  if (!cssDest) {
+    console.warn('css destination folder is not set, skipping...');
+    return Promise.resolve();
+  }
+  return new Promise((resolve, reject) => {
+    mkdirp(cssDest, err => {
+      if (err) {
+        return reject(err);
+      }
+      fs.createReadStream(path.join(__dirname, '../../react-web/template/lrnw.css'))
+        .pipe(fs.createWriteStream(path.join(cssDest, 'lrnw.css')))
+        .on('finish', err => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve();
+          }
+        });
+    });
+  });
+
+
 }
 
 module.exports = buildBundle;

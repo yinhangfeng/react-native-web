@@ -24,10 +24,37 @@ var sharedBlacklist = [
 ];
 
 var platformBlacklists = {
+  //RW 黑名单
   web: [
     '.ios.js',
     '.android.js',
-    '.windows.js'
+    '.windows.js',
+    /node_modules\/react-native\/.*/, // 忽略react-native 用于与其共存
+
+    //忽略所有react中renders/native部分
+    /node_modules\/react\/lib\/NativeMethodsMixin\.js/,
+    // /node_modules\/react\/lib\/ReactNative\.js/,
+    // /node_modules\/react\/lib\/ReactNativeAttributePayload\.js/,
+    // /node_modules\/react\/lib\/ReactNativeBaseComponent\.js/,
+    // /node_modules\/react\/lib\/ReactNativeBridgeEventPlugin\.js/,
+    // /node_modules\/react\/lib\/ReactNativeComponentEnvironment\.js/,
+    // /node_modules\/react\/lib\/ReactNativeComponentTree\.js/,
+    // /node_modules\/react\/lib\/ReactNativeContainerInfo\.js/,
+    // /node_modules\/react\/lib\/ReactNativeDefaultInjection\.js/,
+    // /node_modules\/react\/lib\/ReactNativeDOMIDOperations\.js/,
+    // /node_modules\/react\/lib\/ReactNativeEventEmitter\.js/,
+    // /node_modules\/react\/lib\/ReactNativeEventPluginOrder\.js/,
+    // /node_modules\/react\/lib\/ReactNativeGlobalResponderHandler\.js/,
+    // /node_modules\/react\/lib\/ReactNativeMount\.js/,
+    // /node_modules\/react\/lib\/ReactNativePropRegistry\.js/,
+    // /node_modules\/react\/lib\/ReactNativeReconcileTransaction\.js/,
+    // /node_modules\/react\/lib\/ReactNativeTagHandles\.js/,
+    // /node_modules\/react\/lib\/ReactNativeTextComponent\.js/,
+    // /node_modules\/react\/lib\/ReactNativeTreeTraversal\.js/,
+    /node_modules\/react\/lib\/ReactNative.*?\.js/,
+
+    /node_modules\/react\/lib\/createReactNativeComponentClass\.js/,
+    /node_modules\/react\/lib\/findNodeHandle\.js/,
   ],
   ios: [
     '.web.js',

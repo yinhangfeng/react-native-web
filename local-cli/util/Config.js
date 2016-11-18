@@ -11,7 +11,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const RN_CLI_CONFIG = 'rn-cli.config.js';
+const RN_CLI_CONFIG = 'lrnw-cli.config.js'; //RW lab-react-native-web cli配置文件名
 let cachedConfig = null;
 
 /**
@@ -33,7 +33,7 @@ const Config = {
     const parentDir = findParentDirectory(cwd, RN_CLI_CONFIG);
     if (!parentDir && !defaultConfig) {
       throw new Error(
-        `Can't find "rn-cli.config.js" file in any parent folder of "${cwd}"`
+        `Can't find "${RN_CLI_CONFIG}" file in any parent folder of "${cwd}"`
       );
     }
 

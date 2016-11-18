@@ -29,7 +29,9 @@ function server(argv, config, args) {
     'Keep this packager running while developing on any JS projects. ' +
     'Feel free to close this tab and run your own packager instance if you ' +
     'prefer.\n\n' +
-    'https://github.com/facebook/react-native', {
+    //'https://github.com/facebook/react-native',
+    'LAB React Native WEB',
+    {
       marginLeft: 1,
       marginRight: 1,
       paddingBottom: 1,
@@ -110,6 +112,7 @@ module.exports = {
   }, {
     command: '--transformer [string]',
     default: require.resolve('../../packager/transformer'),
+    //default: require.resolve('../../react-web/scripts/transformer'), //RW 替换code transformer， 目前node-haste不够完善，需要使用transformer来达到依赖别名的目的 (已使用extraNodeModules)
     description: 'Specify a custom transformer to be used (absolute path)'
   }, {
     command: '--reset-cache, --resetCache',
@@ -117,5 +120,8 @@ module.exports = {
   }, {
     command: '--verbose',
     description: 'Enables logging',
+  }, {
+    command: '--lrnw-proxy [string]',
+    description: 'proxy',
   }],
 };

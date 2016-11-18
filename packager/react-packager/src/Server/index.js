@@ -42,7 +42,7 @@ const validateOpts = declareOpts({
     type: 'string',
     default: 'haste',
   },
-  polyfillModuleNames: {
+  polyfillModuleNames: { //额外的polyfillModule 最终会在Resolver.getDependencies 中使用
     type: 'array',
     default: [],
   },
@@ -117,7 +117,7 @@ const bundleOpts = declareOpts({
     type: 'string',
     required: true,
   },
-  runBeforeMainModule: {
+  runBeforeMainModule: { //Bundler finalizeBundle中会用到
     type: 'array',
     default: [
       // Ensures essential globals are available and are patched correctly.
@@ -428,6 +428,7 @@ class Server {
       ).done(() => Activity.endEvent(assetEvent));
   }
 
+  //cli start 时执行的请求回调
   processRequest(req, res, next) {
     const urlObj = url.parse(req.url, true);
     const pathname = urlObj.pathname;
@@ -465,17 +466,23 @@ class Server {
     building.then(
       p => {
         if (requestType === 'bundle') {
-          const bundleSource = p.getSource({
+          let bundleSource = p.getSource({
             inlineSourceMap: options.inlineSourceMap,
             minify: options.minify,
             dev: options.dev,
           });
           res.setHeader('Content-Type', 'application/javascript');
           res.setHeader('ETag', p.getEtag());
+          res.setHeader('Cache-Control', 'no-cache');
           if (req.headers['if-none-match'] === res.getHeader('ETag')){
             res.statusCode = 304;
             res.end();
           } else {
+            if(options.platform === 'web') {
+              //RW 添加资源服务器地址代码，使得图片资源从代码服务器加载
+              //console.log('http://' + req.headers.host);
+              bundleSource = `(function(global) {global.SOURCE_CODE_SERVER_URL='http://${req.headers.host}';})(typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : this);${bundleSource}`;
+            }
             res.end(bundleSource);
           }
           Activity.endEvent(startReqEventId);
@@ -490,6 +497,7 @@ class Server {
           }
 
           res.setHeader('Content-Type', 'application/json');
+          //res.setHeader('Cache-Control', 'no-cache');
           res.end(sourceMap);
           Activity.endEvent(startReqEventId);
         } else if (requestType === 'assets') {
@@ -632,7 +640,7 @@ class Server {
     return {
       sourceMapUrl: url.format(sourceMapUrlObj),
       entryFile: entryFile,
-      dev: this._getBoolOptionFromQuery(urlObj.query, 'dev', true),
+      dev: this._getBoolOptionFromQuery(urlObj.query, 'dev', true), //默认开启dev
       minify: this._getBoolOptionFromQuery(urlObj.query, 'minify'),
       hot: this._getBoolOptionFromQuery(urlObj.query, 'hot', false),
       runModule: this._getBoolOptionFromQuery(urlObj.query, 'runModule', true),
@@ -641,7 +649,7 @@ class Server {
         'inlineSourceMap',
         false
       ),
-      platform: platform,
+      platform: platform, //默认platform 根据path解析
       entryModuleOnly: this._getBoolOptionFromQuery(
         urlObj.query,
         'entryModuleOnly',

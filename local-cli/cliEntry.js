@@ -124,11 +124,16 @@ const addCommand = (command: Command, config: Config) => {
 };
 
 function run() {
-  const config = Config.get(__dirname, defaultConfig);
+  let config = Config.get(__dirname, defaultConfig);
+  // RW 增加lab-react-native-web 的extraNodeModules 配置  使得react-native 与 react renders native 中的依赖定位到lab-react-native-web
+  config.extraNodeModules = Object.assign({}, config.extraNodeModules, {
+    'react': path.join(path.dirname(__dirname), 'ReactNativeRenders'), //用于查找react中的renders部分
+    'react-native': path.dirname(__dirname), //react-native 引用到当前库
+  });
+
   const setupEnvScript = /^win/.test(process.platform)
     ? 'setup_env.bat'
     : 'setup_env.sh';
-
   childProcess.execFileSync(path.join(__dirname, setupEnvScript));
 
   commands.forEach(cmd => addCommand(cmd, config));

@@ -20,6 +20,7 @@ module.exports = [
     command: '--transformer [string]',
     description: 'Specify a custom transformer to be used (absolute path)',
     default: require.resolve('../../packager/transformer'),
+    //default: require.resolve('../../react-web/scripts/transformer'), //替换code transformer， 目前node-haste不够完善，需要使用transformer来达到依赖别名的目的 （已用extraNodeModules实现）
   }, {
     command: '--dev [boolean]',
     description: 'If false, warnings are disabled and the bundle is minified',
@@ -51,6 +52,9 @@ module.exports = [
   }, {
     command: '--reset-cache',
     description: 'Removes cached files',
-    default: false,
-  },
+    default: false
+  }, {
+    command: '--css-dest [string]',
+    description: 'Directory name where to store lrnw css',
+  }
 ];

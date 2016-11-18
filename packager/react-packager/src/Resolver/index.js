@@ -95,6 +95,8 @@ class Resolver {
       providesModuleNodeModules: [
         'react-native',
         'react-native-windows',
+        //RW 添加当前库为providesModule 使得当前库作为NodeModules时使用node-haste构建时能使用haste
+        'lab-react-native-web',
         // Parse requires AsyncStorage. They will
         // change that to require('react-native') which
         // should work after this release and we can
@@ -102,13 +104,14 @@ class Resolver {
         'parse',
       ],
       platforms: ['ios', 'android', 'windows', 'web'],
-      preferNativePlatform: true,
+      preferNativePlatform: false, //RW web环境 不优先native 也就是查找时如果 xxx.web.js没有找到则使用xxx.js 不使用xxx.native.js
       fileWatcher: opts.fileWatcher,
       cache: opts.cache,
       shouldThrowOnUnresolvedErrors: (_, platform) => platform === 'ios',
       transformCode: opts.transformCode,
       extraNodeModules: opts.extraNodeModules,
-      assetDependencies: ['react-native/Libraries/Image/AssetRegistry'],
+      //assetDependencies: ['react-native/Libraries/Image/AssetRegistry'],
+      assetDependencies: ['lab-react-native-web/Libraries/Image/AssetRegistry'], //RW web AssetRegistry 路径
     });
 
     this._minifyCode = opts.minifyCode;
@@ -141,7 +144,7 @@ class Resolver {
       recursive,
       onProgress,
     }).then(resolutionResponse => {
-      this._getPolyfillDependencies().reverse().forEach(
+      this._getPolyfillDependencies(platform).reverse().forEach(
         polyfill => resolutionResponse.prependDependency(polyfill)
       );
 
@@ -169,18 +172,35 @@ class Resolver {
     }));
   }
 
-  _getPolyfillDependencies() {
-    const polyfillModuleNames = [
-      path.join(__dirname, 'polyfills/polyfills.js'),
-      path.join(__dirname, 'polyfills/console.js'),
-      path.join(__dirname, 'polyfills/error-guard.js'),
-      path.join(__dirname, 'polyfills/Number.es6.js'),
-      path.join(__dirname, 'polyfills/String.prototype.es6.js'),
-      path.join(__dirname, 'polyfills/Array.prototype.es6.js'),
-      path.join(__dirname, 'polyfills/Array.es6.js'),
-      path.join(__dirname, 'polyfills/Object.es7.js'),
-      path.join(__dirname, 'polyfills/babelHelpers.js'),
-    ].concat(this._polyfillModuleNames);
+  _getPolyfillDependencies(platform) {
+    let polyfillModuleNames;
+    if(platform === 'web') {
+      //web平台polyfills
+      polyfillModuleNames = [
+        path.join(__dirname, 'polyfills/polyfills.js'),
+        //path.join(__dirname, 'polyfills/console.js'),
+        path.join(__dirname, 'polyfills/error-guard.js'),
+        path.join(__dirname, 'polyfills/Number.es6.js'),
+        path.join(__dirname, 'polyfills/String.prototype.es6.js'),
+        path.join(__dirname, 'polyfills/Array.prototype.es6.js'),
+        path.join(__dirname, 'polyfills/Array.es6.js'),
+        path.join(__dirname, 'polyfills/Object.es7.js'),
+        path.join(__dirname, 'polyfills/babelHelpers.js'),
+      ];
+    } else {
+      polyfillModuleNames = [
+        path.join(__dirname, 'polyfills/polyfills.js'),
+        path.join(__dirname, 'polyfills/console.js'),
+        path.join(__dirname, 'polyfills/error-guard.js'),
+        path.join(__dirname, 'polyfills/Number.es6.js'),
+        path.join(__dirname, 'polyfills/String.prototype.es6.js'),
+        path.join(__dirname, 'polyfills/Array.prototype.es6.js'),
+        path.join(__dirname, 'polyfills/Array.es6.js'),
+        path.join(__dirname, 'polyfills/Object.es7.js'),
+        path.join(__dirname, 'polyfills/babelHelpers.js'),
+      ];
+    }
+    polyfillModuleNames = polyfillModuleNames.concat(this._polyfillModuleNames);
 
     return polyfillModuleNames.map(
       (polyfillModuleName, idx) => this._depGraph.createPolyfill({
@@ -191,6 +211,7 @@ class Resolver {
     );
   }
 
+  //替换require key的字符串为module id
   resolveRequires(resolutionResponse, module, code, dependencyOffsets = []) {
     const resolvedDeps = Object.create(null);
 
@@ -228,6 +249,7 @@ class Resolver {
     return code.join('');
   }
 
+  //替换require key的字符串为module id
   wrapModule({
     resolutionResponse,
     module,

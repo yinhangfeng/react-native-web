@@ -114,7 +114,7 @@ class Bundler {
       mtime,
     ];
 
-    this._getModuleId = createModuleIdFactory();
+    this._getModuleId = createModuleIdFactory(); //参数 {path: String} 返回 id
 
     if (opts.transformModulePath) {
       const transformer = require(opts.transformModulePath);
@@ -128,6 +128,7 @@ class Bundler {
       cacheKey: cacheKeyParts.join('$'),
     });
 
+    //给node-haste的参数 transformCode
     this._transformer = new Transformer({
       transformModulePath: opts.transformModulePath,
     });
@@ -619,8 +620,8 @@ class Bundler {
       const assetData = res[1];
       const asset = {
         __packager_asset: true,
-        fileSystemLocation: path.dirname(module.path),
-        httpServerLocation: assetUrlPath,
+        //fileSystemLocation: path.dirname(module.path), //RW web不需要
+        httpServerLocation: assetUrlPath, //TODO RW 路径可能需要可配置
         width: dimensions ? dimensions.width / module.resolution : undefined,
         height: dimensions ? dimensions.height / module.resolution : undefined,
         scales: assetData.scales,
@@ -631,7 +632,9 @@ class Bundler {
       };
 
       const json = JSON.stringify(asset);
-      const assetRegistryPath = 'react-native/Libraries/Image/AssetRegistry';
+      //const assetRegistryPath = 'react-native/Libraries/Image/AssetRegistry';
+      //RW web AssetRegistry 路径
+      const assetRegistryPath = 'lab-react-native-web/Libraries/Image/AssetRegistry';
       const code =
         `module.exports = require(${JSON.stringify(assetRegistryPath)}).registerAsset(${json});`;
       const dependencies = [assetRegistryPath];
@@ -691,6 +694,7 @@ function verifyRootExists(root) {
   assert(fs.statSync(root).isDirectory(), 'Root has to be a valid directory');
 }
 
+//生成path对应的唯一 moduleId
 function createModuleIdFactory() {
   const fileToIdMap = Object.create(null);
   let nextId = 0;

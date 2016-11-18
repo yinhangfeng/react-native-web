@@ -27,7 +27,7 @@ function saveAssets(
 
   const getAssetDestPath = platform === 'android'
     ? getAssetDestPathAndroid
-    : getAssetDestPathIOS;
+    : getAssetDestPathIOS; //RW IOS的assets结构也可用于web
 
   const filesToCopy = Object.create(null); // Map src -> dest
   assets

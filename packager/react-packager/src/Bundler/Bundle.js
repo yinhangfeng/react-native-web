@@ -29,6 +29,7 @@ class Bundle extends BundleBase {
     this._ramBundle = null; // cached RAM Bundle
   }
 
+  //添加Module 并转换code中的require key
   addModule(resolver, resolutionResponse, module, moduleTransport) {
     const index = super.addModule(moduleTransport);
     return resolver.wrapModule({
