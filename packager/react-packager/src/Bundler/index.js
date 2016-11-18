@@ -380,11 +380,12 @@ class Bundler {
     }
     const findEventId = Activity.startEvent(
       'Transforming modules',
-      null,
+      {
+        entry_point: entryFile,
+        environment: dev ? 'dev' : 'prod',
+      },
       {
         telemetric: true,
-        entryPoint: entryFile,
-        details: dev ? 'dev' : 'prod',
       },
     );
     const modulesByName = Object.create(null);
