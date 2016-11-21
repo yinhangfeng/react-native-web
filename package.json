@@ -123,7 +123,8 @@
     "start": "/usr/bin/env bash -c './packager/packager.sh \"$@\" || true' --",
     "bundle-test": "node local-cli/cli.js bundle --platform web --dev true --entry-file Libraries/react-native/react-native.web.js --bundle-output react-web/test/bundletest/test.bundle --assets-dest react-web/test/bundletest --css-dest react-web/test/bundletest/css",
     "bundle-uiexplorer": "node local-cli/cli.js bundle --platform web --dev true --entry-file Examples/index.web.js --bundle-output react-web/test/bundletest/uiexplorer/uiexplorer.bundle --assets-dest react-web/test/bundletest/uiexplorer/",
-    "packager": "node local-cli/cli.js start --port 8089 --reset-cache"
+    "packager": "node local-cli/cli.js start --port 9080 --reset-cache",
+    "lrnw": "node local-cli/cli.js start --port 9080 --reset-cache"
   },
   "bin": {
     "lab-react-native-web": "local-cli/wrong-react-native.js"
