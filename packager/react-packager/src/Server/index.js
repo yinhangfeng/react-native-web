@@ -323,7 +323,20 @@ class Server {
           nonPersistent: this._opts.nonPersistent,
         }, options),
         entryFuncName,
-      }).then(require(this._opts.serverBuildBundleInterceptorModulePath));
+      }).then(require(this._opts.serverBuildBundleInterceptorModulePath))
+      .then((res) => {
+        if (!res.fileChanged) {
+          return res.bundleOptions;
+        } else {
+          // serverBuildBundleInterceptor 改变了文件，等待fileWatcher 回调清理缓存
+          console.log('callBuildBundleInterceptor fileChanged waiting fileWatcher');
+          return new Promise((resolve) => {
+            setTimeout(() => {
+              resolve(res.bundleOptions);
+            }, 300);
+          });
+        }
+      });
     } else {
       return Promise.resolve(bundleOptions);
     }
