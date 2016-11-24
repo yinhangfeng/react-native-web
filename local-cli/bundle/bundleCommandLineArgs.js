@@ -51,5 +51,8 @@ module.exports = [
     command: '--reset-cache',
     description: 'Removes cached files',
     default: false,
+  }, {
+    command: '--lab-extra [string]',
+    description: 'lab extra',
   },
 ];
