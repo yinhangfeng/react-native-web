@@ -1,9 +1,11 @@
 /**
  * @providesModule RWServerUrl
+ * 资源文件url管理
  */
 
-let PUBLIC_PATH = 'rwpublic';
-let serverUrl = global.SOURCE_CODE_SERVER_URL || '';
+const PUBLIC_PATH = global.LAB_RESOURCE_PUBLIC_PATH ? LAB_RESOURCE_PUBLIC_PATH : 'rwpublic';
+//如果全局定义了SOURCE_CODE_SERVER_URL 则使用SOURCE_CODE_SERVER_URL 否则使用当前页面地址
+const serverUrl = global.SOURCE_CODE_SERVER_URL || '';
 
 module.exports = {
   PUBLIC_PATH,

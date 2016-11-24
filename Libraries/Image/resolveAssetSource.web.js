@@ -61,7 +61,8 @@ let _customSourceTransformer, _serverURL, _devServerURL;//, _bundleSourcePath;
 //   return _bundleSourcePath;
 // }
 
-if (global.SOURCE_CODE_SERVER_URL) {
+if (global.SOURCE_CODE_SERVER_URL != null) {
+  // 通过SOURCE_CODE_SERVER_URL 判断是否为开发服务器 TODO
   _devServerURL = global.SOURCE_CODE_SERVER_URL + '/';
 } else {
   _serverURL = '/' + RWServerUrl.PUBLIC_PATH + '/';
