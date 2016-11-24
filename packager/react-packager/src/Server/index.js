@@ -314,7 +314,7 @@ class Server {
   }
 
   // LAB modify
-  _callBuildBundleInterceptor(bundleOptions, entryFuncName, options) {
+  _callBuildBundleInterceptor(bundleOptions, entryFuncName, options, returnFull) {
     console.log('callBuildBundleInterceptor', entryFuncName);
     if (this._opts.serverBuildBundleInterceptorModulePath) {
       return Promise.resolve({
@@ -325,19 +325,17 @@ class Server {
         entryFuncName,
       }).then(require(this._opts.serverBuildBundleInterceptorModulePath))
       .then((res) => {
-        if (!res.fileChanged) {
-          return res.bundleOptions;
-        } else {
-          // serverBuildBundleInterceptor 改变了文件，等待fileWatcher 回调清理缓存
-          console.log('callBuildBundleInterceptor fileChanged waiting fileWatcher');
-          return new Promise((resolve) => {
-            setTimeout(() => {
-              resolve(res.bundleOptions);
-            }, 300);
-          });
+        if (returnFull) {
+          return res;
         }
+        return res.bundleOptions;
       });
     } else {
+      if (returnFull) {
+        return Promise.resolve({
+          bundleOptions,
+        });
+      }
       return Promise.resolve(bundleOptions);
     }
   }
@@ -596,8 +594,17 @@ class Server {
   }
 
   _useCachedOrUpdateOrCreateBundle(options) {
-    return this._callBuildBundleInterceptor(options, 'useCachedOrUpdateOrCreateBundle')
-      .then((opts) => this.__useCachedOrUpdateOrCreateBundle(opts));
+    return this._callBuildBundleInterceptor(options, 'useCachedOrUpdateOrCreateBundle', null, true)
+      .then((res) => {
+        if (!res.fileChanged) {
+          this.__useCachedOrUpdateOrCreateBundle(res.bundleOptions);
+        } else {
+          // serverBuildBundleInterceptor 改变了文件，等待fileWatcher 回调清理缓存
+          console.log('_useCachedOrUpdateOrCreateBundle callBuildBundleInterceptor fileChanged waiting fileWatcher...');
+          setTimeout(() => {
+            this.__useCachedOrUpdateOrCreateBundle(res.bundleOptions);
+          }, 300);
+      });
   }
 
   __useCachedOrUpdateOrCreateBundle(options) {
