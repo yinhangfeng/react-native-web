@@ -597,13 +597,16 @@ class Server {
     return this._callBuildBundleInterceptor(options, 'useCachedOrUpdateOrCreateBundle', null, true)
       .then((res) => {
         if (!res.fileChanged) {
-          this.__useCachedOrUpdateOrCreateBundle(res.bundleOptions);
-        } else {
-          // serverBuildBundleInterceptor 改变了文件，等待fileWatcher 回调清理缓存
-          console.log('_useCachedOrUpdateOrCreateBundle callBuildBundleInterceptor fileChanged waiting fileWatcher...');
+          return this.__useCachedOrUpdateOrCreateBundle(res.bundleOptions);
+        }
+        // serverBuildBundleInterceptor 改变了文件，等待fileWatcher 回调清理缓存
+        console.log('_useCachedOrUpdateOrCreateBundle callBuildBundleInterceptor fileChanged waiting fileWatcher...');
+        return new Promise((resolve, reject) => {
           setTimeout(() => {
-            this.__useCachedOrUpdateOrCreateBundle(res.bundleOptions);
+            this.__useCachedOrUpdateOrCreateBundle(res.bundleOptions)
+              .then(resolve, reject);
           }, 300);
+        });
       });
   }
 
