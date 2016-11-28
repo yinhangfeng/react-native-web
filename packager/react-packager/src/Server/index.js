@@ -605,7 +605,7 @@ class Server {
           setTimeout(() => {
             this.__useCachedOrUpdateOrCreateBundle(res.bundleOptions)
               .then(resolve, reject);
-          }, 300);
+          }, 1000);
         });
       });
   }
