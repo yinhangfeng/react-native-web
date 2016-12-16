@@ -34,9 +34,10 @@ exports.getDependencyConfig = function getDependencyConfig(packageName) {
     path.join(process.cwd(), 'node_modules', packageName)
   );
 
+  // LAB modify 如果package.json 中rnpm android 和 ios 为false, 则跳过
   return Object.assign({}, rnpm, {
-    ios: ios.dependencyConfig(folder, rnpm.ios || {}),
-    android: android.dependencyConfig(folder, rnpm.android || {}),
+    ios: rnpm.ios === false ? null : ios.dependencyConfig(folder, rnpm.ios || {}),
+    android: rnpm.android === false ? null : android.dependencyConfig(folder, rnpm.android || {}),
     assets: findAssets(folder, rnpm.assets),
     commands: wrapCommands(rnpm.commands),
     params: rnpm.params || [],

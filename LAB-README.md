@@ -1,4 +1,4 @@
-所有修改以注释 'LAB modify'  标记
+## fork说明
 lab-master 分支最初checkout 自 fackbook/0.36-stable，所有修改统一在该分支进行，
 该分支版本保持与当前最新的react-native 稳定版一致,
 通过 git merge facebook/xxx-stable
@@ -7,4 +7,10 @@ lab-master 分支最初checkout 自 fackbook/0.36-stable，所有修改统一在
 lab-master合并的最新react-native 版本号一致,在lab-xxx-stable 分支通过
 git merge origin/lab-master 实现与lab-master 同步
 
+## 修改记录
+所有修改以注释 'LAB modify'  标记
+* .gitignore
 未忽略android maven目录，使得npm可直接依赖该git分支，在发布前运行./gradlew installArchives
+* react-native link 支持忽略 local-cli/core/config.index.js
+* 修改packager Server 支持serverBuildBundleInterceptor  packager/react-packager/src/Server/index.js
+* 修改android TextInput 减少在oppo上无法弹出键盘的问题(还是有问题) ReactAndroid/src/**/ReactEditText.java
