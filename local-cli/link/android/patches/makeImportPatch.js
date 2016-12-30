@@ -1,6 +1,8 @@
 module.exports = function makeImportPatch(packageImportPath) {
   return {
-    pattern: 'import com.facebook.react.ReactApplication;',
+    // LAB modify
+    //pattern: 'import com.facebook.react.ReactApplication;',
+    pattern: /(import com\.facebook\.react\.shell\.MainReactPackage;)|(import com\.facebook\.react\.ReactApplication;)/,
     patch: '\n' + packageImportPath,
   };
 };
