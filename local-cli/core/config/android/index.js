@@ -13,14 +13,16 @@ const getPackageName = (manifest) => manifest.attr.package;
  * defaults specified by user into consideration
  */
 exports.projectConfig = function projectConfigAndroid(folder, userConfig) {
-  const src = userConfig.sourceDir || findAndroidAppFolder(folder);
+  // LAB modify 增加rnpm.android.moduleName 配置
+  const moduleName = userConfig.moduleName || 'app';
+  const src = userConfig.sourceDir || findAndroidAppFolder(folder, moduleName);
 
   if (!src) {
     return null;
   }
 
   const sourceDir = path.join(folder, src);
-  const isFlat = sourceDir.indexOf('app') === -1;
+  const isFlat = sourceDir.indexOf(moduleName) === -1;
   const manifestPath = findManifest(sourceDir);
 
   if (!manifestPath) {

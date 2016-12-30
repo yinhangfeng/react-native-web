@@ -12,5 +12,6 @@ git merge origin/lab-master 实现与lab-master 同步
 * .gitignore
 未忽略android maven目录，使得npm可直接依赖该git分支，在发布前运行./gradlew installArchives
 * react-native link 支持忽略 local-cli/core/config.index.js
+* react-native link 支持配置android moduleName 代替默认的'app' local-cli/core/config/android/index.js
 * 修改packager Server 支持serverBuildBundleInterceptor  packager/react-packager/src/Server/index.js
 * 修改android TextInput 减少在oppo上无法弹出键盘的问题(还是有问题) ReactAndroid/src/**/ReactEditText.java

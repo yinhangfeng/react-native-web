@@ -5,9 +5,9 @@ const path = require('path');
  * @param  {String} folder Folder to seek in
  * @return {String}
  */
-module.exports = function findAndroidAppFolder(folder) {
+module.exports = function findAndroidAppFolder(folder, moduleName) {
   const flat = 'android';
-  const nested = path.join('android', 'app');
+  const nested = path.join('android', moduleName || 'app');
 
   if (fs.existsSync(path.join(folder, nested))) {
     return nested;
