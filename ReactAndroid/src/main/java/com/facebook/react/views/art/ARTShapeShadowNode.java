@@ -232,11 +232,18 @@ public class ARTShapeShadowNode extends ARTVirtualNode {
           float r = data[i++] * mScale;
           float start = (float) Math.toDegrees(data[i++]);
           float end = (float) Math.toDegrees(data[i++]);
-          boolean clockwise = data[i++] == 0f;
-          if (!clockwise) {
-            end = 360 - end;
+          // LAB modify 修复由于ios clockwise方向相反以及sweep 计算错误引起的bug
+          boolean clockwise = data[i++] == 1f;
+          float sweep = end - start;
+          if (clockwise) {
+            if (sweep < 0) {
+              sweep = sweep % 360 + 360;
+            }
+          } else {
+            if (sweep > 0) {
+              sweep = sweep % 360 - 360;
+            }
           }
-          float sweep = start - end;
           RectF oval = new RectF(x - r, y - r, x + r, y + r);
           path.addArc(oval, start, sweep);
           break;
