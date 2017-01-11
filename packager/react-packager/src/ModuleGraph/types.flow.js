@@ -12,80 +12,105 @@
 
 import type {Console} from 'console';
 
-type callback<T> = (error: ?Error, result?: T) => any;
-type callback2<T, T1> = (error: ?Error, a?: T, b?: T1) => any;
+export type Callback<A = void, B = void>
+  = (Error => mixed)
+  & ((null | void, A, B) => mixed);
 
 type ResolveOptions = {
   log?: Console,
 };
 
-type LoadOptions = {
+type LoadOptions = {|
   log?: Console,
   optimize?: boolean,
   platform?: string,
-};
+|};
 
-type GraphOptions = {
+type GraphOptions = {|
   cwd?: string,
   log?: Console,
   optimize?: boolean,
   skip?: Set<string>,
-};
+|};
 
-type Dependency = {
+type Dependency = {|
   id: string,
   path: string,
-};
+|};
 
-export type File = {
+export type File = {|
+  code: string,
+  map?: ?Object,
   path: string,
-  code?: string,
-  ast: Object,
-};
+  type: FileTypes,
+|};
 
-export type Module = {
-  file: File,
+type FileTypes = 'module' | 'script';
+
+export type Module = {|
   dependencies: Array<Dependency>,
-};
+  file: File,
+|};
 
 export type GraphFn = (
   entryPoints: Iterable<string>,
   platform: string,
-  options?: GraphOptions,
-  callback?: callback<Array<Module>>,
+  options?: ?GraphOptions,
+  callback?: Callback<GraphResult>,
 ) => void;
+
+export type GraphResult = {
+  entryModules: Array<Module>,
+  modules: Array<Module>,
+};
 
 export type ResolveFn = (
   id: string,
   source: string,
   platform: string,
   options?: ResolveOptions,
-  callback: callback<string>,
+  callback: Callback<string>,
 ) => void;
 
 export type LoadFn = (
   file: string,
   options: LoadOptions,
-  callback: callback2<File, Array<string>>,
+  callback: Callback<File, Array<string>>,
 ) => void;
 
-type TransformResult = {
+export type TransformResult = {|
   code: string,
+  dependencies: Array<string>,
+  dependencyMapName?: string,
   map: ?Object,
-  dependencies: Array<String>,
-};
+|};
 
 export type TransformedFile = {
-  file: string,
   code: string,
-  transformed: {[variant: string]: TransformResult},
+  file: string,
   hasteID: ?string,
   package?: PackageData,
+  transformed: {[variant: string]: TransformResult},
+  type: FileTypes,
 };
 
-export type PackageData = {
-  name?: string,
-  main?: string,
+export type PackageData = {|
   browser?: Object | string,
+  main?: string,
+  name?: string,
   'react-native'?: Object | string,
+|};
+
+export type TransformFnResult = {
+  ast: Object,
 };
+
+export type TransformFn = (
+  data: {|
+    filename: string,
+    options?: Object,
+    plugins?: Array<string | Object | [string | Object, any]>,
+    sourceCode: string,
+  |},
+  callback: Callback<TransformFnResult>
+) => void;

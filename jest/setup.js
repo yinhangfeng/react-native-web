@@ -20,6 +20,7 @@ global.Promise = require.requireActual('promise');
 global.regeneratorRuntime = require.requireActual('regenerator-runtime/runtime');
 
 jest
+  .mock('setupDevtools')
   .mock('npmlog');
 
 // there's a __mock__ for it.
@@ -69,6 +70,9 @@ const mockNativeModules = {
   AlertManager: {
     alertWithArgs: jest.fn(),
   },
+  AppState: {
+    addEventListener: jest.fn(),
+  },
   AsyncLocalStorage: {
     clear: jest.fn(),
     getItem: jest.fn(),
@@ -113,9 +117,26 @@ const mockNativeModules = {
     ),
     prefetchImage: jest.fn(),
   },
+  KeyboardObserver: {
+    addListener: jest.fn(),
+    removeListeners: jest.fn(),
+  },
   ModalFullscreenViewManager: {},
+  Networking: {
+    sendRequest: jest.fn(),
+    abortRequest: jest.fn(),
+    addListener: jest.fn(),
+    removeListeners: jest.fn(),
+  },
   SourceCode: {
     scriptURL: null,
+  },
+  StatusBarManager: {
+    setStyle: jest.fn(),
+    setHidden: jest.fn(),
+    setNetworkActivityIndicatorVisible: jest.fn(),
+    setBackgroundColor: jest.fn(),
+    setTranslucent: jest.fn(),
   },
   Timing: {
     createTimer: jest.fn(),
@@ -132,15 +153,24 @@ const mockNativeModules = {
         width: 750,
       },
     },
-    RCTModalFullscreenView: {
+    ModalFullscreenView: {
       Constants: {},
     },
-    RCTScrollView: {
+    ScrollView: {
       Constants: {},
     },
-    RCTView: {
+    View: {
       Constants: {},
     },
+  },
+  WebSocketModule: {
+    connect: jest.fn(),
+    send: jest.fn(),
+    sendBinary: jest.fn(),
+    ping: jest.fn(),
+    close: jest.fn(),
+    addListener: jest.fn(),
+    removeListeners: jest.fn(),
   },
 };
 
