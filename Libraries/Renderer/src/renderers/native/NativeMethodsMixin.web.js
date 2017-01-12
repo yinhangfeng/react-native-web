@@ -1,3 +1,6 @@
+/**
+ * @providesModule NativeMethodsMixin
+ */
 'use strict';
 
 var UIManager = require('UIManager');

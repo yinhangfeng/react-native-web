@@ -3,8 +3,7 @@
  */
 'use strict';
 
-const NativeMethodsMixin = require('react/lib/NativeMethodsMixin');
-const PropTypes = require('react/lib/ReactPropTypes');
+const NativeMethodsMixin = require('NativeMethodsMixin');
 const React = require('React');
 const StyleSheet = require('StyleSheet');
 const View = require('View');
@@ -12,6 +11,8 @@ const ColorPropType = require('ColorPropType');
 import CircularProgress from 'material-ui/CircularProgress';
 const Image = require('Image');
 const RWPerformance = require('RWPerformance');
+
+const PropTypes = React.PropTypes;
 
 /**
  * Displays a circular loading indicator.

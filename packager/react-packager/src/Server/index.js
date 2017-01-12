@@ -800,6 +800,12 @@ class Server {
         if (requestType === 'bundle') {
           debug('Generating source code');
 
+          let bundleSource = p.getSource({
+            inlineSourceMap: options.inlineSourceMap,
+            minify: options.minify,
+            dev: options.dev,
+          });
+
           if (options.platform === 'web') {
             //RW 添加资源服务器地址代码，使得图片资源从代码服务器加载
             //console.log('http://' + req.headers.host);
@@ -808,11 +814,6 @@ class Server {
             bundleSource = `(function(global) {global.SOURCE_CODE_SERVER_URL='http://${req.headers.host}';})(typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : this);${bundleSource}`;
           }
 
-          const bundleSource = p.getSource({
-            inlineSourceMap: options.inlineSourceMap,
-            minify: options.minify,
-            dev: options.dev,
-          });
           debug('Writing response headers');
           const etag = p.getEtag();
           mres.setHeader('Content-Type', 'application/javascript');

@@ -5,10 +5,10 @@
 // based on https://github.com/facebook/react/pull/4303/files
 'use strict';
 
-const EventConstants = require('react/lib/EventConstants');
-const EventPluginRegistry = require('react/lib/EventPluginRegistry');
-const ResponderEventPlugin = require('react/lib/ResponderEventPlugin');
-const ResponderTouchHistoryStore = require('react/lib/ResponderTouchHistoryStore');
+const EventConstants = require('react-dom/lib/EventConstants');
+const EventPluginRegistry = require('react-dom/lib/EventPluginRegistry');
+const ResponderEventPlugin = require('react-dom/lib/ResponderEventPlugin');
+const ResponderTouchHistoryStore = require('react-dom/lib/ResponderTouchHistoryStore');
 const normalizeNativeEvent = require('./normalizeNativeEvent');
 
 const supportsTouch = 'ontouchstart' in window || window.DocumentTouch && document instanceof window.DocumentTouch;

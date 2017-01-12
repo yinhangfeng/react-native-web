@@ -2,7 +2,7 @@
  * @providesModule UIManager
  */
 
-const CSSPropertyOperations = require('react/lib/CSSPropertyOperations');
+const CSSPropertyOperations = require('react-dom/lib/CSSPropertyOperations');
 const createReactDOMStyleObject = require('../lrnw/createReactDOMStyleObject');
 
 const _measureLayout = (node, relativeToNativeNode, callback) => {

@@ -1,3 +1,7 @@
+/**
+ * @providesModule ReactNativeDefaultInjection
+ * @flow
+ */
 'use strict';
 
 /**
@@ -6,7 +10,7 @@
  * ensures it exists in the dependency graph and can be `require`d.
  * TODO: require this in packager, not in React #10932517
  */
-require('InitializeJavaScriptAppEngine');
+require('InitializeCore');
 
 //兼容native touch机制
 require('./injectResponderEventPlugin');

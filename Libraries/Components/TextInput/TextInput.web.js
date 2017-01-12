@@ -13,12 +13,10 @@
 
 const DocumentSelectionState = require('DocumentSelectionState');
 //const EventEmitter = require('EventEmitter');
-const NativeMethodsMixin = require('react/lib/NativeMethodsMixin');
+const NativeMethodsMixin = require('NativeMethodsMixin');
 const Platform = require('Platform');
-const PropTypes = require('react/lib/ReactPropTypes');
 const React = require('React');
 const ReactNative = require('ReactNative');
-const ReactChildren = require('react/lib/ReactChildren');
 //const StyleSheet = require('StyleSheet');
 const Text = require('Text');
 //const TextInputState = require('TextInputState');
@@ -28,6 +26,8 @@ const Text = require('Text');
 const View = require('View');
 const createWebCoreElement = require('createWebCoreElement');
 const CSSClassNames = require('CSSClassNames');
+
+const PropTypes = React.PropTypes;
 
 //const emptyFunction = require('fbjs/lib/emptyFunction');
 //const invariant = require('fbjs/lib/invariant');

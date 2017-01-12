@@ -14,7 +14,7 @@
 // Note (avik): add @flow when Flow supports spread properties in propTypes
 
 //var Animated = require('Animated');
-var NativeMethodsMixin = require('react/lib/NativeMethodsMixin');
+var NativeMethodsMixin = require('NativeMethodsMixin');
 var React = require('React');
 var TimerMixin = require('react-timer-mixin');
 var Touchable = require('Touchable');
@@ -24,7 +24,7 @@ var ensurePositiveDelayProps = require('ensurePositiveDelayProps');
 var flattenStyle = require('flattenStyle');
 
 var View = require('View');
-var ReactDOM = require('react/lib/ReactDOM');
+var ReactDOM = require('react-dom');
 var CSSClassNames = require('CSSClassNames');
 
 const RWPerformance = require('RWPerformance');

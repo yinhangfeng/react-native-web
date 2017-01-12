@@ -4,7 +4,7 @@
 'use strict';
 
 import React from 'react';
-import ReactDOM from 'react/lib/ReactDOM';
+import ReactDOM from 'react-dom';
 import getLayout from 'RWGetLayout';
 
 //让组件具有onLayout回调功能，在componentDidMount和componentDidUpdate触发判断可能不合理 TODO

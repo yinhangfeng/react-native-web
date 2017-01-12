@@ -1,13 +1,16 @@
+/**
+ * @providesModule ReactNative
+ */
 'use strict';
 
 var ReactNativeDefaultInjection = require('./ReactNativeDefaultInjection');
 
 var findNodeHandle = require('./findNodeHandle');
-var ReactDOM = require('react/lib/ReactDOM');
+var ReactDOM = require('react-dom');
 
 // RW 在dev 模式去除ReactDOMUnknownPropertyHook，防止警告 TODO
 if (__DEV__) {
-  require('react/lib/ReactDebugTool').removeHook(require('react/lib/ReactDOMUnknownPropertyHook'));
+  require('react-dom/lib/ReactDebugTool').removeHook(require('react-dom/lib/ReactDOMUnknownPropertyHook'));
 }
 
 // ReactNativeDefaultInjection.inject();

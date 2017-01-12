@@ -26,7 +26,7 @@
 const React = require('react');
 const ReactNative = require('react-native');
 const UIExplorerList = require('./UIExplorerList');
-const UIExplorerExampleList = require('./UIExplorerExampleList');
+const UIExplorerExampleContainer = require('./UIExplorerExampleContainer');
 
 const {
   AppRegistry,
@@ -38,6 +38,8 @@ const {
   TouchableHighlight,
   TouchableWithoutFeedback,
 } = ReactNative;
+
+const xxxxx = require('xxxxx');
 
 class UIExplorerApp extends React.Component {
 
@@ -175,14 +177,14 @@ class UIExplorerApp extends React.Component {
   }
 
   _renderExample() {
-    const Example = UIExplorerList.Modules[this.state.exampleKey];
+    const ExampleModule = UIExplorerList.Modules[this.state.exampleKey];
     let exampleEle = null;
-    if (Example) {
-      const Component = UIExplorerExampleList.makeRenderable(Example);
+    if (ExampleModule) {
       exampleEle = (
-        <View style={{flex: 1}}>
-          <Component />
-        </View>
+        <UIExplorerExampleContainer
+          module={ExampleModule}
+          ref={(example) => { this._exampleRef = example; }}
+        />
       );
     }
     return (
@@ -193,7 +195,7 @@ class UIExplorerApp extends React.Component {
               exampleKey: null,
             });
           }} style={{alignSelf: 'stretch', padding: 5, justifyContent: 'center', alignItems: 'center'}}><Text style={{fontSize: 16, alignSelf: 'center'}}>back</Text></TouchableOpacity>
-          <Text style={{fontSize: 16, alignSelf: 'center', marginLeft: 20}}>{Example ? Example.title : 'Unknown'}</Text>
+          <Text style={{fontSize: 16, alignSelf: 'center', marginLeft: 20}}>{ExampleModule ? ExampleModule.title : 'Unknown'}</Text>
         </View>
         {exampleEle}
       </View>

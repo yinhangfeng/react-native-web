@@ -12,8 +12,7 @@
 'use strict';
 
 const EdgeInsetsPropType = require('EdgeInsetsPropType');
-const NativeMethodsMixin = require('react/lib/NativeMethodsMixin');
-const PropTypes = require('react/lib/ReactPropTypes');
+const NativeMethodsMixin = require('NativeMethodsMixin');
 const React = require('React');
 const ReactNativeStyleAttributes = require('ReactNativeStyleAttributes');
 //const ReactNativeViewAttributes = require('ReactNativeViewAttributes');
@@ -25,6 +24,8 @@ const createWebCoreElement = require('createWebCoreElement');
 //const StyleSheet = require('StyleSheet');
 const CSSClassNames = require('CSSClassNames');
 const normalizeNativeEvent = require('normalizeNativeEvent');
+
+const PropTypes = React.PropTypes;
 
 //const requireNativeComponent = require('requireNativeComponent');
 

@@ -46,7 +46,7 @@ var flattenStyle = require('flattenStyle');
 var invariant = require('fbjs/lib/invariant');
 //var rebound = require('rebound');
 
-var ReactDOM = require('react/lib/ReactDOM');
+var ReactDOM = require('react-dom');
 var CSSClassNames = require('CSSClassNames');
 import createHistory from 'history/lib/createBrowserHistory';
 

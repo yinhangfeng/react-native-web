@@ -18,7 +18,7 @@ const invariant = require('fbjs/lib/invariant');
 
 const PropTypes = React.PropTypes;
 const createWebCoreElement = require('createWebCoreElement');
-const ReactDOM = require('react/lib/ReactDOM');
+const ReactDOM = require('react-dom');
 const CSSClassNames = require('CSSClassNames');
 const createHistory = require('history/lib/createBrowserHistory');
 const HistoryActions = require('history/lib/Actions');

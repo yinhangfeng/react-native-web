@@ -174,7 +174,7 @@ const ScrollView = React.createClass({
      * taps, and the keyboard will not dismiss automatically. The default value
      * is false.
      */
-    keyboardShouldPersistTaps: PropTypes.bool,
+    keyboardShouldPersistTaps: PropTypes.oneOf(['always', 'never', 'handled', false, true]),
     /**
      * The maximum allowed zoom scale. The default value is 1.0.
      * @platform ios

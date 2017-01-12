@@ -11,4 +11,4 @@ StyleSheet 相关完成
 injectResponderEventPlugin 相关完成
 
 ## 0.40(当前)
-初步合并与冲突解决完成
+初步可运行，结构调整完成，但所有.web.js 未与对应组件同步
