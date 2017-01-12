@@ -14,8 +14,7 @@
 const ColorPropType = require('ColorPropType');
 const EdgeInsetsPropType = require('EdgeInsetsPropType');
 const Image = require('Image');
-const NativeMethodsMixin = require('react/lib/NativeMethodsMixin');
-const Platform = require('Platform');
+const NativeMethodsMixin = require('NativeMethodsMixin');
 const React = require('React');
 const StyleSheet = require('StyleSheet');
 const View = require('View');
@@ -28,40 +27,43 @@ const requireNativeComponent = require('requireNativeComponent');
 type Event = Object;
 
 /**
- * State an annotation on the map.
+ * State of an annotation on the map.
  */
 export type AnnotationDragState = $Enum<{
   /**
    * Annotation is not being touched.
    */
-  idle: string;
+  idle: string,
   /**
    * Annotation dragging has began.
    */
-  starting: string;
+  starting: string,
   /**
    * Annotation is being dragged.
    */
-  dragging: string;
+  dragging: string,
   /**
    * Annotation dragging is being canceled.
    */
-  canceling: string;
+  canceling: string,
   /**
    * Annotation dragging has ended.
    */
-  ending: string;
+  ending: string,
 }>;
 
 /**
- * **This component is only supported on iOS.**
+ * **IMPORTANT: This component is now DEPRECATED and will be removed
+ * in React Native version 0.42. This component only supports iOS.**
+ *
+ * **Please use
+ * [react-native-maps](https://github.com/airbnb/react-native-maps) by Airbnb
+ * instead of this component.** Our friends at Airbnb have done an amazing job
+ * building a cross-platform `MapView` component that is more feature
+ * complete. It is used extensively (over 9k installs / month).
  *
  * `MapView` is used to display embeddable maps and annotations using
  * `MKMapView`.
- *
- * For a cross-platform solution, check out
- * [react-native-maps](https://github.com/lelandrichardson/react-native-maps)
- * by Leland Richardson.
  *
  * ```
  * import React, { Component } from 'react';
@@ -82,6 +84,19 @@ export type AnnotationDragState = $Enum<{
  */
 
 const MapView = React.createClass({
+
+  componentWillMount: function() {
+    console.warn(
+      'MapView is now deprecated and will be removed from React Native in version 0.42. ' +
+      'Please use the react-native-maps module which is more feature complete ' +
+      'and works on Android too: https://github.com/airbnb/react-native-maps\n' +
+      'It is actively maintained and used extensively.\n\n' +
+      'Once MapView is removed from React Native in v0.42, we will release the ' +
+      'code as deprecated-react-native-ios-mapview. You will be able to ' +
+      'continue using that and migrate to react-native-maps your own pace later.\n\n' +
+      'For more info, check out https://github.com/facebook/react-native/pull/10500'
+    );
+  },
 
   mixins: [NativeMethodsMixin],
 
@@ -119,6 +134,13 @@ const MapView = React.createClass({
      * Default value is `true`.
      */
     showsCompass: React.PropTypes.bool,
+
+    /**
+     * If `true` the map will show the callouts for all annotations without
+     * the user having to click on the annotation.
+     * Default value is `false`.
+     */
+    showsAnnotationCallouts: React.PropTypes.bool,
 
     /**
      * If `false` the user won't be able to pinch/zoom the map.
@@ -412,7 +434,7 @@ const MapView = React.createClass({
         }));
       }
 
-      let result = {
+      const result = {
         ...annotation,
         tintColor: tintColor && processColor(tintColor),
         image,
@@ -430,8 +452,8 @@ const MapView = React.createClass({
       return result;
     });
     overlays = overlays && overlays.map((overlay: Object) => {
-      let {id, fillColor, strokeColor} = overlay;
-      let result = {
+      const {id, fillColor, strokeColor} = overlay;
+      const result = {
         ...overlay,
         strokeColor: strokeColor && processColor(strokeColor),
         fillColor: fillColor && processColor(fillColor),

@@ -15,6 +15,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
+import android.graphics.DashPathEffect;
 
 import com.facebook.common.logging.FLog;
 import com.facebook.react.bridge.JSApplicationIllegalArgumentException;
@@ -158,8 +159,7 @@ public class ARTShapeShadowNode extends ARTVirtualNode {
         (int) (mStrokeColor[1] * 255),
         (int) (mStrokeColor[2] * 255));
     if (mStrokeDash != null && mStrokeDash.length > 0) {
-      // TODO(6352067): Support dashes
-      FLog.w(ReactConstants.TAG, "ART: Dashes are not supported yet!");
+      paint.setPathEffect(new DashPathEffect(mStrokeDash, 0));
     }
     return true;
   }
@@ -232,11 +232,18 @@ public class ARTShapeShadowNode extends ARTVirtualNode {
           float r = data[i++] * mScale;
           float start = (float) Math.toDegrees(data[i++]);
           float end = (float) Math.toDegrees(data[i++]);
-          boolean clockwise = data[i++] == 0f;
-          if (!clockwise) {
-            end = 360 - end;
+          // LAB modify 修复由于ios clockwise方向相反以及sweep 计算错误引起的bug
+          boolean clockwise = data[i++] == 1f;
+          float sweep = end - start;
+          if (clockwise) {
+            if (sweep < 0) {
+              sweep = sweep % 360 + 360;
+            }
+          } else {
+            if (sweep > 0) {
+              sweep = sweep % 360 - 360;
+            }
           }
-          float sweep = start - end;
           RectF oval = new RectF(x - r, y - r, x + r, y + r);
           path.addArc(oval, start, sweep);
           break;

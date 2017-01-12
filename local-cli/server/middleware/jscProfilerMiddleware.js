@@ -11,11 +11,13 @@
 const SourceMapConsumer = require('source-map').SourceMapConsumer;
 const fs = require('fs');
 const http = require('http');
+const path = require('path');
 const urlLib = require('url');
 
 class TreeTransformator {
   constructor() {
     this.urlResults = {};
+    this.fakeNodeId = 1073741824;
   }
 
   transform(tree, callback) {
@@ -25,25 +27,62 @@ class TreeTransformator {
   }
 
   // private
+  createFakeNode(name, id) {
+    return {
+      'functionName': name,
+      'scriptId': 0,
+      'url': '',
+      'lineNumber': 0,
+      'columnNumber': 0,
+      'hitCount': 0,
+      'callUID': id,
+      'children': [],
+      'deoptReason': 'fake_node',
+      'id': id,
+      'positionTicks': [],
+    };
+  }
+
+  // private
   transformNode(tree) {
     if (tree.url in this.urlResults) {
       const original = this.urlResults[tree.url].originalPositionFor({
         line: tree.lineNumber,
         column: tree.columnNumber,
       });
-      tree.functionName = original.name;
+      const functionName = original.name
+        || (path.posix.basename(original.source || '') + ':' + original.line);
+      if (tree.functionName === '(unnamed builtin)') {
+        tree.functionName += ':' + functionName;
+      } else {
+        tree.functionName = tree.functionName || functionName;
+      }
       tree.scriptId = tree.id;
       tree.url = 'file://' + original.source;
       tree.lineNumber = original.line;
       tree.columnNumber = original.column;
+    } else if (tree.deoptReason === 'outside_vm') {
+      tree.functionName = 'OUTSIDE VM';
     }
     tree.children = tree.children.map((t) => this.transformNode(t));
+    if (tree.deoptReason.startsWith('host:')) {
+      // Creating a fake node to mark not doing JS, steal the id and hitCount
+      // of the original node
+      const fakeNode = this.createFakeNode('INSIDE VM', tree.id);
+      tree.id = tree.callUID = this.fakeNodeId++;
+      fakeNode.hitCount = tree.hitCount;
+      tree.hitCount = 0;
+
+      // Append the fake node to the tree
+      fakeNode.children = tree.children;
+      tree.children = [fakeNode];
+    }
     return tree;
   }
 
   // private
   afterUrlsCacheBuild(tree, callback) {
-    let urls = new Set();
+    const urls = new Set();
     this.gatherUrls(tree, urls);
 
     let size = urls.size;
@@ -75,10 +114,11 @@ class TreeTransformator {
     }
 
     const parsedUrl = urlLib.parse(url);
+    const mapPath = parsedUrl.pathname.replace(/\.bundle$/, '.map');
     const options = {
-      host: parsedUrl.hostname,
+      host: 'localhost',
       port: parsedUrl.port,
-      path: parsedUrl.pathname.replace(/\.bundle$/, '.map') + parsedUrl.search,
+      path: mapPath + parsedUrl.search + '&babelSourcemap=true',
     };
 
     http.get(options, (res) => {
@@ -89,20 +129,17 @@ class TreeTransformator {
         resBody += chunk;
       }).on('end', () => {
         sawEnd = true;
-        const map = JSON.parse(resBody.replace(/^\)\]\}'/, ''));
-        this.urlResults[url] = new SourceMapConsumer(map);
+        this.urlResults[url] = new SourceMapConsumer(resBody);
         callback();
       }).on('close', (err) => {
         if (!sawEnd) {
           console.error('Connection terminated prematurely because of: '
                         + err.code + ' for url: ' + url);
-          this.urlResults[url] = null;
           callback();
         }
       });
     }).on('error', (err) => {
       console.error('Could not get response from: ' + url);
-      this.urlResults[url] = null;
       callback();
     });
   }
@@ -115,7 +152,7 @@ module.exports = function(req, res, next) {
   }
 
   console.log('Received request from JSC profiler, post processing it...');
-  let profile = JSON.parse(req.rawBody);
+  const profile = JSON.parse(req.rawBody);
   (new TreeTransformator()).transform(profile.head, (newHead) => {
     profile.head = newHead;
 

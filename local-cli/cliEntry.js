@@ -10,27 +10,21 @@
  */
 'use strict';
 
-const commander = require('commander');
-
 const Config = require('./util/Config');
-const childProcess = require('child_process');
-const Promise = require('promise');
-const chalk = require('chalk');
-const path = require('path');
-const fs = require('fs');
-const gracefulFs = require('graceful-fs');
 
-const init = require('./init/init');
-const commands = require('./commands');
 const assertRequiredOptions = require('./util/assertRequiredOptions');
-const pkg = require('../package.json');
+const chalk = require('chalk');
+const childProcess = require('child_process');
+const commander = require('commander');
+const commands = require('./commands');
 const defaultConfig = require('./default.config');
+const init = require('./init/init');
+const minimist = require('minimist');
+const path = require('path');
+const pkg = require('../package.json');
 
-import type { Command } from './commands';
-
-// graceful-fs helps on getting an error when we run out of file
-// descriptors. When that happens it will enqueue the operation and retry it.
-gracefulFs.gracefulify(fs);
+import type {Command} from './commands';
+import type {ConfigT} from './util/Config';
 
 commander.version(pkg.version);
 
@@ -51,11 +45,19 @@ function printHelpInformation() {
     cmdName = cmdName + '|' + this._alias;
   }
 
+  const sourceInformation = this.pkg
+    ? [
+      `  ${chalk.bold('Source:')} ${this.pkg.name}@${this.pkg.version}`,
+      '',
+    ]
+    : [];
+
   let output = [
     '',
     chalk.bold(chalk.cyan((`  react-native ${cmdName} ${this.usage()}`))),
     `  ${this._description}`,
     '',
+    ...sourceInformation,
     `  ${chalk.bold('Options:')}`,
     '',
     this.optionHelp().replace(/^/gm, '    '),
@@ -91,7 +93,7 @@ function printUnknownCommand(cmdName) {
   ].join('\n'));
 }
 
-const addCommand = (command: Command, config: Config) => {
+const addCommand = (command: Command, config: ConfigT) => {
   const options = command.options || [];
 
   const cmd = commander
@@ -113,6 +115,7 @@ const addCommand = (command: Command, config: Config) => {
 
     cmd.helpInformation = printHelpInformation.bind(cmd);
     cmd.examples = command.examples;
+    cmd.pkg = command.pkg;
 
   options
     .forEach(opt => cmd.option(
@@ -121,20 +124,43 @@ const addCommand = (command: Command, config: Config) => {
       opt.parse || defaultOptParser,
       typeof opt.default === 'function' ? opt.default(config) : opt.default,
     ));
+
+  // Placeholder option for --config, which is parsed before any other option,
+  // but needs to be here to avoid "unknown option" errors when specified
+  cmd.option('--config [string]', 'Path to the CLI configuration file');
 };
 
+function getCliConfig() {
+  // Use a lightweight option parser to look up the CLI configuration file,
+  // which we need to set up the parser for the other args and options
+  const cliArgs = minimist(process.argv.slice(2));
+
+  let cwd;
+  let configPath;
+  if (cliArgs.config != null) {
+    cwd = process.cwd();
+    configPath = cliArgs.config;
+  } else {
+    cwd = __dirname;
+    configPath = Config.findConfigPath(cwd);
+  }
+
+  return Config.get(cwd, defaultConfig, configPath);
+}
+
 function run() {
-  let config = Config.get(__dirname, defaultConfig);
+  const setupEnvScript = /^win/.test(process.platform)
+    ? 'setup_env.bat'
+    : 'setup_env.sh';
+  childProcess.execFileSync(path.join(__dirname, setupEnvScript));
+
+  const config = getCliConfig();
+
   // RW 增加lab-react-native-web 的extraNodeModules 配置  使得react-native 与 react renders native 中的依赖定位到lab-react-native-web
   config.extraNodeModules = Object.assign({}, config.extraNodeModules, {
     'react': path.join(path.dirname(__dirname), 'ReactNativeRenders'), //用于查找react中的renders部分
     'react-native': path.dirname(__dirname), //react-native 引用到当前库
   });
-
-  const setupEnvScript = /^win/.test(process.platform)
-    ? 'setup_env.bat'
-    : 'setup_env.sh';
-  childProcess.execFileSync(path.join(__dirname, setupEnvScript));
 
   commands.forEach(cmd => addCommand(cmd, config));
 

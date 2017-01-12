@@ -18,20 +18,12 @@ module.exports = [
     default: 'ios',
   }, {
     command: '--transformer [string]',
-    description: 'Specify a custom transformer to be used (absolute path)',
-    default: require.resolve('../../packager/transformer'),
-    //default: require.resolve('../../react-web/scripts/transformer'), //替换code transformer， 目前node-haste不够完善，需要使用transformer来达到依赖别名的目的 （已用extraNodeModules实现）
+    description: 'Specify a custom transformer to be used',
   }, {
     command: '--dev [boolean]',
     description: 'If false, warnings are disabled and the bundle is minified',
     parse: (val) => val === 'false' ? false : true,
     default: true,
-  }, {
-    command: '--prepack',
-    description: 'When passed, the output bundle will use the Prepack format.',
-  }, {
-    command: '--bridge-config [string]',
-    description: 'File name of a a JSON export of __fbBatchedBridgeConfig. Used by Prepack. Ex. ./bridgeconfig.json',
   }, {
     command: '--bundle-output <string>',
     description: 'File name where to store the resulting bundle, ex. /tmp/groups.bundle',
@@ -56,5 +48,13 @@ module.exports = [
   }, {
     command: '--css-dest [string]',
     description: 'Directory name where to store lrnw css',
-  }
+  }, {
+    // LAB modify
+    command: '--lab-extra [string]',
+    description: 'lab extra',
+  }, {
+    command: '--read-global-cache',
+    description: 'Try to fetch transformed JS code from the global cache, if configured.',
+    default: false,
+  },
 ];

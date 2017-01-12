@@ -33,6 +33,7 @@ const React = require('react');
 const StatusBar = require('StatusBar');
 const StyleSheet = require('StyleSheet');
 const ToolbarAndroid = require('ToolbarAndroid');
+const UIExplorerExampleContainer = require('./UIExplorerExampleContainer');
 const UIExplorerExampleList = require('./UIExplorerExampleList');
 const UIExplorerList = require('./UIExplorerList');
 const UIExplorerNavigationReducer = require('./UIExplorerNavigationReducer');
@@ -40,6 +41,13 @@ const UIExplorerStateTitleMap = require('./UIExplorerStateTitleMap');
 const UIManager = require('UIManager');
 const URIActionMap = require('./URIActionMap');
 const View = require('View');
+
+// LAB modify xxxxx
+const xxxxx = require('xxxxx');
+
+const nativeImageSource = require('nativeImageSource');
+
+import type {UIExplorerNavigationState} from './UIExplorerNavigationReducer';
 
 UIManager.setLayoutAnimationEnabledExperimental(true);
 
@@ -49,8 +57,8 @@ type Props = {
   exampleFromAppetizeParams: string,
 };
 
-type State = {
-  initialExampleUri: ?string,
+type State = UIExplorerNavigationState & {
+  externalExample: ?string,
 };
 
 class UIExplorerApp extends React.Component {
@@ -146,17 +154,25 @@ class UIExplorerApp extends React.Component {
     if (stack && stack.routes[index]) {
       const {key} = stack.routes[index];
       const ExampleModule = UIExplorerList.Modules[key];
-      const ExampleComponent = UIExplorerExampleList.makeRenderable(ExampleModule);
       return (
         <View style={styles.container}>
           <ToolbarAndroid
-            logo={require('image!launcher_icon')}
-            navIcon={require('image!ic_menu_black_24dp')}
+            logo={nativeImageSource({
+              android: 'launcher_icon',
+              width: 132,
+              height: 144
+            })}
+            navIcon={nativeImageSource({
+              android: 'ic_menu_black_24dp',
+              width: 48,
+              height: 48
+            })}
             onIconClicked={() => this.drawer.openDrawer()}
             style={styles.toolbar}
             title={title}
           />
-          <ExampleComponent
+          <UIExplorerExampleContainer
+            module={ExampleModule}
             ref={(example) => { this._exampleRef = example; }}
           />
         </View>
@@ -165,8 +181,16 @@ class UIExplorerApp extends React.Component {
     return (
       <View style={styles.container}>
         <ToolbarAndroid
-          logo={require('image!launcher_icon')}
-          navIcon={require('image!ic_menu_black_24dp')}
+          logo={nativeImageSource({
+            android: 'launcher_icon',
+            width: 132,
+            height: 144
+          })}
+          navIcon={nativeImageSource({
+            android: 'ic_menu_black_24dp',
+            width: 48,
+            height: 48
+          })}
           onIconClicked={() => this.drawer.openDrawer()}
           style={styles.toolbar}
           title={title}
@@ -184,8 +208,10 @@ class UIExplorerApp extends React.Component {
     this.drawer && this.drawer.closeDrawer();
     const newState = UIExplorerNavigationReducer(this.state, action);
     if (this.state !== newState) {
-      this.setState(newState);
-      AsyncStorage.setItem('UIExplorerAppState', JSON.stringify(this.state));
+      this.setState(
+        newState,
+        () => AsyncStorage.setItem('UIExplorerAppState', JSON.stringify(this.state))
+      );
       return true;
     }
     return false;
@@ -228,3 +254,34 @@ const styles = StyleSheet.create({
 AppRegistry.registerComponent('UIExplorerApp', () => UIExplorerApp);
 
 module.exports = UIExplorerApp;
+
+// 测试OPPO手机键盘弹出bug
+// const {
+//   Text,
+//   TextInput,
+// } = require('react-native');
+// class TextInputTest extends React.Component {
+//
+//   constructor(props) {
+//     super(props);
+//
+//     this.state = {
+//       show: true,
+//     };
+//   }
+//
+//   render() {
+//     return (
+//       <View style={{paddingTop: 40,}}>
+//         <Text onPress={() => {
+//           this.setState({
+//             show: !this.state.show,
+//           });
+//         }} style={{fontSize: 24,}}>toggle show</Text>
+//         <TextInput style={{height: 50, backgroundColor: '#E4FFD6', marginBottom: 10}}/>
+//         {this.state.show ? <TextInput style={{height: 50, backgroundColor: '#E4FFD6', marginBottom: 10}}/> : null}
+//       </View>
+//     );
+//   }
+// }
+// AppRegistry.registerComponent('UIExplorerApp', () => TextInputTest);
