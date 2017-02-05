@@ -142,6 +142,10 @@ class ViewPagerAndroidExample extends React.Component {
     this.setState({page});
   };
 
+  // setState() {
+
+  // }
+
   render() {
     var pages = [];
     for (var i = 0; i < PAGES; i++) {
@@ -162,7 +166,7 @@ class ViewPagerAndroidExample extends React.Component {
     }
     var { page, animationsAreEnabled } = this.state;
     return (
-      <View style={styles.container}>
+      <View removeClippedSubviews={true} style={styles.container}>
         <ViewPagerAndroid
           style={styles.viewPager}
           initialPage={0}

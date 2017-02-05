@@ -32,6 +32,9 @@ const {
   NavigationExperimental,
   ScrollView,
   StyleSheet,
+  View,
+  Text,
+  ViewPagerAndroid, //测试与ViewPager的兼容性
 } = ReactNative;
 
 const {
@@ -215,6 +218,18 @@ class YourScene extends React.Component {
           text="Exit Card Stack Example"
           onPress={this.props.onExit}
         />
+        <ViewPagerAndroid
+          style={{height: 300,}}>
+          <View style={{}}>
+            <Text style={{fontSize: 20}}>AAAAAAA</Text>
+          </View>
+          <View style={{}}>
+            <Text style={{fontSize: 20}}>AAAAAAA</Text>
+          </View>
+          <View style={{}}>
+            <Text style={{fontSize: 20}}>AAAAAAA</Text>
+          </View>
+        </ViewPagerAndroid>
       </ScrollView>
     );
   }
