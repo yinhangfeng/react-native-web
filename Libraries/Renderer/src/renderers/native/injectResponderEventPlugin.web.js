@@ -1,93 +1,79 @@
-//兼容react native 的touch机制  代码来自react-native-web
+//兼容react native 的touch机制  代码参考react-native-web
 //https://github.com/necolas/react-native-web/blob/master/src/modules/injectResponderEventPlugin.js
-//tab 机制的其它实现 https://github.com/zilverline/react-tap-event-plugin
 
-// based on https://github.com/facebook/react/pull/4303/files
 'use strict';
 
-const EventConstants = require('react-dom/lib/EventConstants');
+// const EventConstants = require('react-dom/lib/EventConstants');
 const EventPluginRegistry = require('react-dom/lib/EventPluginRegistry');
 const ResponderEventPlugin = require('react-dom/lib/ResponderEventPlugin');
 const ResponderTouchHistoryStore = require('react-dom/lib/ResponderTouchHistoryStore');
-const normalizeNativeEvent = require('./normalizeNativeEvent');
 
-const supportsTouch = 'ontouchstart' in window || window.DocumentTouch && document instanceof window.DocumentTouch;
+const normalizeResponderNativeEvent = require('./normalizeResponderNativeEvent');
 
-const {
-  topMouseDown,
-  topMouseMove,
-  topMouseUp,
-  topScroll,
-  topSelectionChange,
-  topTouchCancel,
-  topTouchEnd,
-  topTouchMove,
-  topTouchStart,
-} = EventConstants.topLevelTypes;
+// const supportsTouch = 'ontouchstart' in window || window.DocumentTouch && document instanceof window.DocumentTouch;
 
-const endDependencies = [ topTouchCancel, topTouchEnd, topMouseUp ];
-const moveDependencies = [ topTouchMove, topMouseMove ];
-const startDependencies = [ topTouchStart, topMouseDown ];
+const responderDependencies = {
+  topMouseDown: 'topMouseDown',
+  topMouseMove: 'topMouseMove',
+  topMouseUp: 'topMouseUp',
+  topScroll: 'topScroll',
+  topSelectionChange: 'topSelectionChange',
+  topTouchCancel: 'topTouchCancel',
+  topTouchEnd: 'topTouchEnd',
+  topTouchMove: 'topTouchMove',
+  topTouchStart: 'topTouchStart',
+};
 
-/**
- * 1.Setup ResponderEventPlugin dependencies
- */
-ResponderEventPlugin.eventTypes.responderMove.dependencies = moveDependencies;
-ResponderEventPlugin.eventTypes.responderEnd.dependencies = endDependencies;
-ResponderEventPlugin.eventTypes.responderStart.dependencies = startDependencies;
-ResponderEventPlugin.eventTypes.responderRelease.dependencies = endDependencies;
-ResponderEventPlugin.eventTypes.responderTerminationRequest.dependencies = [];
-ResponderEventPlugin.eventTypes.responderGrant.dependencies = [];
-ResponderEventPlugin.eventTypes.responderReject.dependencies = [];
-ResponderEventPlugin.eventTypes.responderTerminate.dependencies = [];
-ResponderEventPlugin.eventTypes.moveShouldSetResponder.dependencies = moveDependencies;
-ResponderEventPlugin.eventTypes.selectionChangeShouldSetResponder.dependencies = [ topSelectionChange ];
-ResponderEventPlugin.eventTypes.scrollShouldSetResponder.dependencies = [ topScroll ];
-ResponderEventPlugin.eventTypes.startShouldSetResponder.dependencies = startDependencies;
+const endDependencies = [ responderDependencies.topTouchCancel, responderDependencies.topTouchEnd, responderDependencies.topMouseUp ];
+const moveDependencies = [ responderDependencies.topTouchMove, responderDependencies.topMouseMove ];
+const startDependencies = [ responderDependencies.topTouchStart, responderDependencies.topMouseDown ];
+const emptyDependencies = [];
 
 /**
- * 2.ResponderTouchHistoryStore.recordTouchTrack normalizeNativeEvent
+ * Setup ResponderEventPlugin dependencies
  */
-const originalRecordTouchTrack = ResponderTouchHistoryStore.recordTouchTrack;
+const REPEventTypes = ResponderEventPlugin.eventTypes;
+REPEventTypes.responderMove.dependencies = moveDependencies;
+REPEventTypes.responderEnd.dependencies = endDependencies;
+REPEventTypes.responderStart.dependencies = startDependencies;
+REPEventTypes.responderRelease.dependencies = endDependencies;
+REPEventTypes.responderTerminationRequest.dependencies = emptyDependencies;
+REPEventTypes.responderGrant.dependencies = emptyDependencies;
+REPEventTypes.responderReject.dependencies = emptyDependencies;
+REPEventTypes.responderTerminate.dependencies = emptyDependencies;
+REPEventTypes.moveShouldSetResponder.dependencies = moveDependencies;
+REPEventTypes.selectionChangeShouldSetResponder.dependencies = [ responderDependencies.topSelectionChange ];
+REPEventTypes.scrollShouldSetResponder.dependencies = [ responderDependencies.topScroll ];
+REPEventTypes.startShouldSetResponder.dependencies = startDependencies;
 
-let isMouseDown = false;
-
-ResponderTouchHistoryStore.recordTouchTrack = (topLevelType, nativeEvent) => {
-  // Filter out mouse-move events when the mouse button is not down
-  // console.log('recordTouchTrack', topLevelType, nativeEvent.type);
-
-  if (supportsTouch) {
-    if (topLevelType.startsWith('topMouse')) {
-      // 对支持touch的环境 直接过滤掉mouse event
-      return;
-    }
-  } else {
-    //对不支持touch 的环境 使用isMouseDown 标记鼠标是否按下 (需关注react native web 修复情况)
+const originalExtractEvents = ResponderEventPlugin.extractEvents;
+ResponderEventPlugin.extractEvents = function(
+  topLevelType,
+  targetInst,
+  nativeEvent,
+  nativeEventTarget
+) {
+  if (responderDependencies[topLevelType]) {
+    // console.log('ResponderEventPlugin.extractEvents topLevelType:', topLevelType, 'touchHistory:', ResponderTouchHistoryStore.touchHistory, 'nativeEvent:', nativeEvent);
     switch (topLevelType) {
-      case topMouseDown:
-        isMouseDown = true;
+      case 'topScroll':
+      case 'topSelectionChange':
+        // TODO 这两个事件是否需要normalize?
         break;
-      case topMouseUp:
-        isMouseDown = false;
-        break;
-      default:
-        if (!isMouseDown) {
-          return;
+      case 'topMouseMove':
+        if (!ResponderTouchHistoryStore.touchHistory.numberActiveTouches) {
+          // 过滤掉鼠标悬浮时的事件
+          return null;
         }
-        break;
+      default:
+        // TODO nativeEvent 重用
+        nativeEvent = normalizeResponderNativeEvent(nativeEvent);
     }
+    return originalExtractEvents(topLevelType, targetInst, nativeEvent, nativeEventTarget);
   }
+  return null;
+};
 
-  // XXX
-  // 1.不调用recordTouchTrack 组件还是会收到onResponderMove等事件
-  // 2.这里的normalizeNativeEvent 不会影响组件onResponderMove 中的事件，所以需要在View中对事件再次处理
-
-  originalRecordTouchTrack.call(ResponderTouchHistoryStore, topLevelType, normalizeNativeEvent(nativeEvent));
-}
-
-/**
- * 3.injectEventPluginsByName
- */
 EventPluginRegistry.injectEventPluginsByName({
-  ResponderEventPlugin
+  ResponderEventPlugin,
 });

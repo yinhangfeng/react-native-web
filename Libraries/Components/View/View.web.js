@@ -23,57 +23,8 @@ const LayoutMixin = require('RWLayoutMixin');
 const createWebCoreElement = require('createWebCoreElement');
 //const StyleSheet = require('StyleSheet');
 const CSSClassNames = require('CSSClassNames');
-const normalizeNativeEvent = require('normalizeNativeEvent');
 
 const PropTypes = React.PropTypes;
-
-//const requireNativeComponent = require('requireNativeComponent');
-
-const eventHandlerNames = [
-  // 'onClick',
-  // 'onClickCapture',
-  'onMoveShouldSetResponder',
-  'onMoveShouldSetResponderCapture',
-  'onResponderGrant',
-  'onResponderMove',
-  'onResponderReject',
-  'onResponderRelease',
-  'onResponderTerminate',
-  'onResponderTerminationRequest',
-  'onStartShouldSetResponder',
-  'onStartShouldSetResponderCapture',
-  'onTouchCancel',
-  'onTouchCancelCapture',
-  'onTouchEnd',
-  'onTouchEndCapture',
-  'onTouchMove',
-  'onTouchMoveCapture',
-  'onTouchStart',
-  'onTouchStartCapture',
-];
-
-// 将事件处理成与react native 兼容, TODO 寻找更好的方式  https://github.com/necolas/react-native-web/blob/master/src/components/View/index.js
-function normalizeEventForHandler(handler, handlerName) {
-  // Browsers fire mouse events after touch events. This causes the
-  // ResponderEvents and their handlers to fire twice for Touchables.
-  // Auto-fix this issue by calling 'preventDefault' to cancel the mouse
-  // events.
-  // XXX preventDefault 会造成ScrollView 无法滚动
-  //const shouldCancelEvent = handlerName.startsWith('onResponder');
-
-  return (e) => {
-    if (e.type.indexOf('mouse') >= 0) {
-      // 鼠标事件不向外传递 TODO
-      return;
-    }
-    e.nativeEvent = normalizeNativeEvent(e.nativeEvent);
-    const returnValue = handler(e);
-    // if (shouldCancelEvent && e.cancelable) {
-    //   e.preventDefault();
-    // }
-    return returnValue;
-  }
-}
 
 const stylePropType = StyleSheetPropType(ViewStylePropTypes);
 
@@ -382,21 +333,10 @@ const View = React.createClass({
       className += ' ' + this.props.className;
     }
 
-    const normalizedEventHandlers = eventHandlerNames.reduce(this._reduceEventHandlers, {});
-
     return createWebCoreElement('div', {
       ...this.props,
-      ...normalizedEventHandlers,
       className,
     });
-  },
-
-  _reduceEventHandlers: function(handlerProps, handlerName) {
-    const handler = this.props[handlerName];
-    if (handler) {
-      handlerProps[handlerName] = normalizeEventForHandler(handler, handlerName);
-    }
-    return handlerProps;
   },
 });
 

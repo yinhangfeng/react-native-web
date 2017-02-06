@@ -13,8 +13,6 @@ if (__DEV__) {
   require('react-dom/lib/ReactDebugTool').removeHook(require('react-dom/lib/ReactDOMUnknownPropertyHook'));
 }
 
-// ReactNativeDefaultInjection.inject();
-
 var render = function(
   element: ReactElement,
   rootTag: any
@@ -23,7 +21,7 @@ var render = function(
 };
 
 var ReactNative = {
-  hasReactNativeInitialized: true, //RW 不知道什么作用?
+  hasReactNativeInitialized: true, //RW 不知道什么作用 TODO
   findNodeHandle: findNodeHandle,
   render: render,
   //unmountComponentAtNode: ReactNativeMount.unmountComponentAtNode,

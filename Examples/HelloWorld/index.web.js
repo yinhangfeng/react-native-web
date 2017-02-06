@@ -37,11 +37,11 @@ class Hello extends Component {
   }
 
   render() {
-    //return this._renderTouch();
+    return this._renderTouch();
     //return this._renderScrollTouch();
     //return this._renderOverlap();
     //return this._renderRNWImage();
-    return this._renderFlex();
+    // return this._renderFlex();
   }
 
   _renderFlex() {

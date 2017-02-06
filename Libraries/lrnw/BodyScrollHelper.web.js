@@ -61,7 +61,7 @@ let BodyScrollHelper = {
   },
 
   _onBodyScroll(e) {
-    console.log('_onBodyScroll ', this._enabled);
+    // console.log('_onBodyScroll ', this._enabled);
     if (!this._enabled) {
       return;
     }
