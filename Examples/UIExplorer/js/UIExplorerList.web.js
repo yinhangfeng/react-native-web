@@ -41,10 +41,10 @@ var ComponentExamples: Array<UIExplorerExample> = [
   //   key: 'ModalExample',
   //   module: require('./ModalExample'),
   // },
-  {
-    key: 'NavigatorExample',
-    module: require('./Navigator/NavigatorExample'),
-  },
+  // {
+  //   key: 'NavigatorExample',
+  //   module: require('./Navigator/NavigatorExample'),
+  // },
   {
     key: 'PickerExample',
     module: require('./PickerExample'),

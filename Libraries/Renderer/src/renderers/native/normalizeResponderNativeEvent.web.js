@@ -85,6 +85,7 @@ function normalizeTouchEvent(nativeEvent) {
 }
 
 function normalizeMouseEvent(nativeEvent) {
+  const timestamp = nativeEvent.timestamp || Date.now();
   const touches = [{
     clientX: nativeEvent.clientX,
     clientY: nativeEvent.clientY,
@@ -97,21 +98,21 @@ function normalizeMouseEvent(nativeEvent) {
     screenX: nativeEvent.screenX,
     screenY: nativeEvent.screenY,
     target: nativeEvent.target,
-    timestamp: Date.now(),
+    timestamp,
   }];
   return {
     changedTouches: touches,
-    identifier: touches[0].identifier,
+    touches: (nativeEvent.type === 'mouseup') ? [] : touches,
+    identifier: 0,
     locationX: nativeEvent.offsetX,
     locationY: nativeEvent.offsetY,
     pageX: nativeEvent.pageX,
     pageY: nativeEvent.pageY,
-    preventDefault: nativeEvent.preventDefault.bind(nativeEvent),
-    stopImmediatePropagation: nativeEvent.stopImmediatePropagation.bind(nativeEvent),
-    stopPropagation: nativeEvent.stopPropagation.bind(nativeEvent),
+    preventDefault,
+    stopImmediatePropagation,
+    stopPropagation,
     target: nativeEvent.target,
-    timestamp: touches[0].timestamp,
-    touches: (nativeEvent.type === 'mouseup') ? [] : touches,
+    _event: nativeEvent,
   };
 }
 
