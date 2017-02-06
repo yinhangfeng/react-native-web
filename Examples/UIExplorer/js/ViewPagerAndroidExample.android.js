@@ -123,7 +123,8 @@ class ViewPagerAndroidExample extends React.Component {
     this.setState({progress: e.nativeEvent});
   };
 
-  onPageScrollStateChanged = (state : ViewPagerScrollState) => {
+  onPageScrollStateChanged = (state : ViewPagerScrollState, position) => {
+    console.log('onPageScrollStateChanged', state, position);
     this.setState({scrollState: state});
   };
 

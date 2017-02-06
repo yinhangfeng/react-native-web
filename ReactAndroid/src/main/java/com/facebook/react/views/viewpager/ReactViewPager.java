@@ -150,8 +150,9 @@ public class ReactViewPager extends ViewPager {
         default:
           throw new IllegalStateException("Unsupported pageScrollState");
       }
+      // LAB modify 增加发送当前position
       mEventDispatcher.dispatchEvent(
-        new PageScrollStateChangedEvent(getId(), pageScrollState));
+        new PageScrollStateChangedEvent(getId(), pageScrollState, getCurrentItem()));
     }
   }
 

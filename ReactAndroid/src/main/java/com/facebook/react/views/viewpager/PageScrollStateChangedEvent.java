@@ -25,10 +25,12 @@ class PageScrollStateChangedEvent extends Event<PageScrollStateChangedEvent> {
   public static final String EVENT_NAME = "topPageScrollStateChanged";
 
   private final String mPageScrollState;
+  private final int mPosition;
 
-  protected PageScrollStateChangedEvent(int viewTag, String pageScrollState) {
+  protected PageScrollStateChangedEvent(int viewTag, String pageScrollState, int position) {
     super(viewTag);
     mPageScrollState = pageScrollState;
+    mPosition = position;
   }
 
   @Override
@@ -44,6 +46,7 @@ class PageScrollStateChangedEvent extends Event<PageScrollStateChangedEvent> {
   private WritableMap serializeEventData() {
     WritableMap eventData = Arguments.createMap();
     eventData.putString("pageScrollState", mPageScrollState);
+    eventData.putInt("position", mPosition);
     return eventData;
   }
 }
