@@ -45,7 +45,7 @@ var ReactNative = {
   get ListView() { return require('ListView'); },
   // get MapView() { return require('MapView'); },
   // get Modal() { return require('Modal'); },
-  get Navigator() { return require('HistoryNavigator'); }, //TODO
+  // get Navigator() { return require('HistoryNavigator'); },
   // get NavigatorIOS() { return require('NavigatorIOS'); },
   get Picker() { return require('Picker'); },
   // get PickerIOS() { return require('PickerIOS'); },
@@ -106,7 +106,7 @@ var ReactNative = {
   // get PushNotificationIOS() { return require('PushNotificationIOS'); },
   // get Settings() { return require('Settings'); },
   // get StatusBarIOS() { return require('StatusBarIOS'); },
-  get StyleSheet() { return require('StyleSheet'); },
+  StyleSheet: require('StyleSheet'),
   // get TimePickerAndroid() { return require('TimePickerAndroid'); },
   get UIManager() { return require('UIManager'); },
   // get Vibration() { return require('Vibration'); },
