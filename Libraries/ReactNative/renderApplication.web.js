@@ -10,22 +10,31 @@ const ReactNative = require('ReactNative');
 const CSSClassNames = require('CSSClassNames');
 
 // TODO material-ui 库需要, 暂时放在这里，应该由使用者提供
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import getMuiTheme from 'material-ui/src/styles/getMuiTheme';
 const RWConfig = require('RWConfig');
 
 /**
  * 对未设置bodyScrollMode 的ROOT_CONTAINER样式设为overflow: 'hidden',
  * 否则在某些浏览器中会出现body滚动
  */
-class AppContainer extends MuiThemeProvider {
+class AppContainer extends React.Component {
+
+  static childContextTypes = {
+    muiTheme: React.PropTypes.object,
+  };
+
+  getChildContext() {
+    return {
+      muiTheme: getMuiTheme(),
+    };
+  }
 
   render() {
-    let RootComponent = this.props.rootComponent;
     return (
       <div
         className={CSSClassNames.ROOT_CONTAINER}
         style={RWConfig.bodyScrollMode ? null : {overflow: 'hidden',}}>
-        <RootComponent
+        <this.props.rootComponent
           {...this.props.initialProps}
           rootTag={this.props.rootTag}/>
       </div>

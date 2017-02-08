@@ -8,7 +8,7 @@ const React = require('React');
 const StyleSheet = require('StyleSheet');
 const View = require('View');
 const ColorPropType = require('ColorPropType');
-import CircularProgress from 'material-ui/CircularProgress';
+import CircularProgress from 'material-ui/src/CircularProgress';
 const Image = require('Image');
 const RWPerformance = require('RWPerformance');
 

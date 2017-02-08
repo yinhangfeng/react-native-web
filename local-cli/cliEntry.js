@@ -158,7 +158,6 @@ function run() {
 
   // RW 增加lab-react-native-web 的extraNodeModules 配置  使得react-native 与 react renders native 中的依赖定位到lab-react-native-web
   config.extraNodeModules = Object.assign({}, config.extraNodeModules, {
-    // 'react': path.join(path.dirname(__dirname), 'ReactNativeRenders'), //用于查找react中的renders部分 0.40 开始已放入Libraries/Render所以不需要了
     'react-native': path.dirname(__dirname), //react-native 引用到当前库
   });
 
