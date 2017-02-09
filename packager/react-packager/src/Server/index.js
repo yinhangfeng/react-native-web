@@ -324,7 +324,7 @@ class Server {
       return Promise.resolve({
         bundleOptions,
         options: Object.assign({
-          nonPersistent: this._opts.nonPersistent,
+          nonPersistent: !this._opts.watch,
         }, options),
         entryFuncName,
       }).then(require(this._opts.serverBuildBundleInterceptorModulePath))
