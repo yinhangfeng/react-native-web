@@ -16,6 +16,7 @@ const path = require('path');
 const saveAssets = require('./saveAssets');
 const defaultAssetExts = require('../../packager/defaults').assetExts;
 const mkdirp = require('mkdirp');
+const fs = require('fs');
 
 import type RequestOptions from './types.flow';
 
