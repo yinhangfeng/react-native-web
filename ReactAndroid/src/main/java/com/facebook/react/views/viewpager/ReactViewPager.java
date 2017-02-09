@@ -150,8 +150,9 @@ public class ReactViewPager extends ViewPager {
         default:
           throw new IllegalStateException("Unsupported pageScrollState");
       }
+      // LAB modify 增加发送当前position
       mEventDispatcher.dispatchEvent(
-        new PageScrollStateChangedEvent(getId(), pageScrollState));
+        new PageScrollStateChangedEvent(getId(), pageScrollState, getCurrentItem()));
     }
   }
 
@@ -226,5 +227,18 @@ public class ReactViewPager extends ViewPager {
 
   public void removeAllViewsFromAdapter() {
     getAdapter().removeAllViewsFromAdapter(this);
+  }
+
+  // LAB modify 修复ViewPager 在removeClippedSubviews中无法populate的bug
+  @Override
+  protected void onAttachedToWindow() {
+    super.onAttachedToWindow();
+    if (getMeasuredWidth() > 0 && getMeasuredHeight() > 0 && getAdapter().getCount() > 0 && getChildCount() == 0) {
+      // 已经measure过了 且adapter不为空 且当前没有子View，说明上一次measure时未attached(在父view为removeClippedSubviews时会发生)
+      forceLayout();
+      measure(MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.EXACTLY),
+        MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.EXACTLY));
+      layout(getLeft(), getTop(), getRight(), getBottom());
+    }
   }
 }

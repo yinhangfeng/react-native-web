@@ -32,6 +32,9 @@ const {
   NavigationExperimental,
   ScrollView,
   StyleSheet,
+  View,
+  Text,
+  ViewPagerAndroid, //测试与ViewPager的兼容性
 } = ReactNative;
 
 const {
@@ -77,20 +80,32 @@ class YourApplication extends React.Component {
     let {navigationState} = this.state;
     switch (type) {
       case 'push':
-        // push a new route.
-        const route = {key: 'route-' + Date.now()};
+        // push a new route. 增加random 使每个route 都唯一
+        const route = {key: 'route-' + Date.now() + '-' + Math.random()};
         navigationState = NavigationStateUtils.push(navigationState, route);
         break;
 
       case 'pop':
         navigationState = NavigationStateUtils.pop(navigationState);
         break;
+
+      case 'reset':
+        navigationState = NavigationStateUtils.reset(navigationState, [
+          {key: 'route-' + Date.now() + '-' + Math.random()},
+          {key: 'route-' + Date.now() + '-' + Math.random()},
+          {key: 'route-' + Date.now() + '-' + Math.random()},
+        ]);
+        break;
     }
 
     // NavigationStateUtils gives you back the same `navigationState` if nothing
     // has changed. You could use that to avoid redundant re-rendering.
+    console.log('_onNavigationChange prev navigationState:', this.state.navigationState, ' next navigationState:', navigationState);
     if (this.state.navigationState !== navigationState) {
-      this.setState({navigationState});
+      // this.setState({navigationState});
+      // 直接修改state 使并发的修改能够进行
+      this.state.navigationState = navigationState;
+      this.forceUpdate();
     }
   }
 
@@ -154,6 +169,7 @@ class YourNavigator extends React.Component {
         route={sceneProps.scene.route}
         onPushRoute={this._onPushRoute}
         onPopRoute={this._onPopRoute}
+        onNavigationChange={this.props.onNavigationChange}
         onExit={this.props.onExit}
       />
     );
@@ -178,9 +194,42 @@ class YourScene extends React.Component {
           onPress={this.props.onPopRoute}
         />
         <NavigationExampleRow
+          text="reset"
+          onPress={() => {
+
+            this.props.onNavigationChange('reset');
+          }}
+        />
+        <NavigationExampleRow
+          text="concurrent"
+          onPress={() => {
+            
+            this.props.onPushRoute();
+            this.props.onPushRoute();
+            this.props.onPopRoute();
+            this.props.onPopRoute();
+            this.props.onPushRoute();
+            this.props.onPopRoute();
+            this.props.onPopRoute();
+            this.props.onPushRoute();
+          }}
+        />
+        <NavigationExampleRow
           text="Exit Card Stack Example"
           onPress={this.props.onExit}
         />
+        <ViewPagerAndroid
+          style={{height: 300,}}>
+          <View style={{}}>
+            <Text style={{fontSize: 20}}>AAAAAAA</Text>
+          </View>
+          <View style={{}}>
+            <Text style={{fontSize: 20}}>AAAAAAA</Text>
+          </View>
+          <View style={{}}>
+            <Text style={{fontSize: 20}}>AAAAAAA</Text>
+          </View>
+        </ViewPagerAndroid>
       </ScrollView>
     );
   }

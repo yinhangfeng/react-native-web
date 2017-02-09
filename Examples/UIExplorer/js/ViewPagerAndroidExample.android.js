@@ -123,7 +123,8 @@ class ViewPagerAndroidExample extends React.Component {
     this.setState({progress: e.nativeEvent});
   };
 
-  onPageScrollStateChanged = (state : ViewPagerScrollState) => {
+  onPageScrollStateChanged = (state : ViewPagerScrollState, position) => {
+    console.log('onPageScrollStateChanged', state, position);
     this.setState({scrollState: state});
   };
 
@@ -141,6 +142,10 @@ class ViewPagerAndroidExample extends React.Component {
 
     this.setState({page});
   };
+
+  // setState() {
+
+  // }
 
   render() {
     var pages = [];
@@ -162,7 +167,7 @@ class ViewPagerAndroidExample extends React.Component {
     }
     var { page, animationsAreEnabled } = this.state;
     return (
-      <View style={styles.container}>
+      <View removeClippedSubviews={true} style={styles.container}>
         <ViewPagerAndroid
           style={styles.viewPager}
           initialPage={0}
