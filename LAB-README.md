@@ -11,6 +11,8 @@ git merge origin/lab-master 实现与lab-master 同步
 所有修改以注释 'LAB modify'  标记
 * .gitignore
 未忽略android maven目录，使得npm可直接依赖该git分支，在发布前运行./gradlew installArchives
+### js
+* 修复NavigationTransitioner push过程中replace 引起的并发问题this._isTransitioning
 ### react-native link
 * react-native link 支持忽略 local-cli/core/config.index.js
 * react-native link 支持配置android moduleName 代替默认的'app' local-cli/core/config/android/index.js

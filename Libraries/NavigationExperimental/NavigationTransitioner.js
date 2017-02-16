@@ -132,7 +132,17 @@ class NavigationTransitioner extends React.Component<any, Props, State> {
       progress,
     } = nextState;
 
-    progress.setValue(0);
+    // LAB modify 修复前后index 相同引起的问题
+    const sameIndex = nextProps.navigationState.index === this.props.navigationState.index;
+    let needAnimation = true;
+    if (sameIndex && this._isTransitioning) {
+      // 如果当前正在动画在 且下一次的前后index相同，则直接调用上一个的_onTransitionEnd
+      // 且本次也不需要启动新动画
+      this._onTransitionEnd();
+      needAnimation = false;
+    } else {
+      progress.setValue(0);
+    }
 
     this._prevTransitionProps = this._transitionProps;
     this._transitionProps = buildTransitionProps(nextProps, nextState);
@@ -153,17 +163,20 @@ class NavigationTransitioner extends React.Component<any, Props, State> {
     const {timing} = transitionSpec;
     delete transitionSpec.timing;
 
-    const animations = [
-      timing(
-        progress,
-        {
-          ...transitionSpec,
-          toValue: 1,
-        },
-      ),
-    ];
+    const animations = [];
+    if (needAnimation) {
+      animations.push(
+        timing(
+          progress,
+          {
+            ...transitionSpec,
+            toValue: 1,
+          },
+        )
+      );
+    }
 
-    if (nextProps.navigationState.index !== this.props.navigationState.index) {
+    if (!sameIndex) {
       animations.push(
         timing(
           position,
@@ -177,6 +190,7 @@ class NavigationTransitioner extends React.Component<any, Props, State> {
 
     // update scenes and play the transition
     this.setState(nextState, () => {
+      this._isTransitioning = true;
       nextProps.onTransitionStart && nextProps.onTransitionStart(
         this._transitionProps,
         this._prevTransitionProps,
@@ -224,6 +238,11 @@ class NavigationTransitioner extends React.Component<any, Props, State> {
     if (!this._isMounted) {
       return;
     }
+
+    if (!this._isTransitioning) {
+      return;
+    }
+    this._isTransitioning = false;
 
     const prevTransitionProps = this._prevTransitionProps;
     this._prevTransitionProps = null;
