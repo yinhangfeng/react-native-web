@@ -252,11 +252,11 @@ class NavigationTransitioner extends React.Component<any, Props, State> {
       scenes: this.state.scenes.filter(isSceneNotStale),
     };
 
-    this._transitionProps = buildTransitionProps(this.props, nextState);
+    const transitionProps = this._transitionProps = buildTransitionProps(this.props, nextState);
 
     this.setState(nextState, () => {
       this.props.onTransitionEnd && this.props.onTransitionEnd(
-        this._transitionProps,
+        transitionProps, // LAB modify 让onTransitionEnd的transitionProps与上一次onTransitionStart时的scene一致
         prevTransitionProps,
       );
     });
