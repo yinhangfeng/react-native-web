@@ -15,38 +15,47 @@
  */
 'use strict';
 
-//TODO RW
+const UIManager = require('UIManager');
 
-var TextInputState = {
+const TextInputState = {
    /**
    * Internal state
    */
-  _currentlyFocusedID: (null: ?number),
+  _currentlyFocusedNode: (null: ?Object),
 
   /**
    * Returns the ID of the currently focused text field, if one exists
    * If no text field is focused it returns null
    */
-  currentlyFocusedField: function(): ?number {
-    return this._currentlyFocusedID;
+  currentlyFocusedField(): ?Object {
+    if (document.activeElement !== this._currentlyFocusedNode) {
+      this._currentlyFocusedNode = null;
+    }
+    return this._currentlyFocusedNode;
   },
 
   /**
-   * @param {number} TextInputID id of the text field to focus
+   * @param {Object} TextInputID id of the text field to focus
    * Focuses the specified text field
    * noop if the text field was already focused
    */
-  focusTextInput: function(textFieldID: ?number) {
-
+  focusTextInput(textFieldNode: ?Object) {
+    if (document.activeElement !== textFieldNode && textFieldNode !== null) {
+      this._currentlyFocusedNode = textFieldNode;
+      UIManager.focus(textFieldNode);
+    }
   },
 
   /**
-   * @param {number} textFieldID id of the text field to focus
+   * @param {Object} textFieldNode id of the text field to focus
    * Unfocuses the specified text field
    * noop if it wasn't focused
    */
-  blurTextInput: function(textFieldID: ?number) {
-
+  blurTextInput(textFieldNode: ?Object) {
+    if (document.activeElement === textFieldNode && textFieldNode !== null) {
+      this._currentlyFocusedNode = null;
+      UIManager.blur(textFieldNode);
+    }
   }
 };
 
