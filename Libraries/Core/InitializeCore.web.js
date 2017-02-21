@@ -127,7 +127,9 @@ if (!global.process.env.NODE_ENV) {
 // Set up timers
 if (!global.setImmediate) {
   //RW Promise 需要setImmediate 如果浏览器没有提供则用setTimeout代替 但效率会比较低
-  global.setImmediate = setTimeout;
+  global.setImmediate = function(func, ...args) {
+    return setTimeout(func, 0, ...args);
+  };
   global.clearImmediate = clearTimeout;
 }
 
