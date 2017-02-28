@@ -26,7 +26,7 @@ const STATUS_ERRORED = 'ERRORED';
 const STATUS_LOADED = 'LOADED';
 const STATUS_LOADING = 'LOADING';
 const STATUS_PENDING = 'PENDING';
-const STATUS_IDLE = 'IDLE';
+const STATUS_IDLE = 'IDLE'; // 表示空闲状态 对于不需要加载事件的情况 始终为IDLE
 
 const EMPTY_SOURCE = {};
 
@@ -202,7 +202,7 @@ const Image = React.createClass({
     } else {
       this._imageState = STATUS_IDLE;
     }
-    return { showSource: this._imageState == STATUS_IDLE };
+    return {};
   },
 
   componentWillMount: function() {
@@ -212,16 +212,16 @@ const Image = React.createClass({
   },
 
   componentWillReceiveProps: function(nextProps) {
-    let nextSource = resolveImageSource(nextProps.source);
-    if (this._imageState !== STATUS_IDLE && !needImageLoader(nextProps)) {
+    const nextSource = resolveImageSource(nextProps.source);
+    const curSource = this._source;
+    this._source = nextSource;
+    if (!needImageLoader(nextProps)) {
       this._updateImageState(STATUS_IDLE);
     } else if (nextSource.uri != this._source.uri) {
       this._updateImageState(nextSource.uri ? STATUS_PENDING : STATUS_IDLE);
-    }
-    this._source = nextSource;
-
-    if (this._imageState === STATUS_PENDING && !this.image) {
-      this._createImageLoader();
+      if (this._imageState === STATUS_PENDING) {
+        this._createImageLoader();
+      }
     }
   },
 
@@ -240,10 +240,16 @@ const Image = React.createClass({
       testID,
     } = this.props;
 
-    let displaySource = resolveAssetSource(this.state.showSource ? source : defaultSource) || EMPTY_SOURCE;
+    let displaySource;
+    if (this._imageState === STATUS_LOADING || this._imageState === STATUS_ERRORED) {
+      displaySource = resolveAssetSource(defaultSource);
+    } else {
+      displaySource = this._source.uri ? this._source : resolveAssetSource(defaultSource);
+    }
+    displaySource = displaySource || EMPTY_SOURCE;
     const {width, height, uri} = displaySource;
     const backgroundImage = !this.props.responsive ? uri && `url("${uri}")` : null;
-    let style = flattenStyle([{width, height}, this.props.style]);
+    const style = flattenStyle([{width, height}, this.props.style]);
 
     const resizeMode = this.props.resizeMode || style.resizeMode || ImageResizeMode.cover;
     delete style.resizeMode;
@@ -314,10 +320,9 @@ const Image = React.createClass({
   },
 
   _updateImageState: function(status) {
-    this._imageState = status;
-    const showSource = this._imageState === STATUS_LOADED;
-    if (showSource !== this.state.showSource) {
-      this.setState({ showSource });
+    if (status !== this._imageState) {
+      this._imageState = status;
+      this.forceUpdate();
     }
   },
 });
