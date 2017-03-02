@@ -8,6 +8,8 @@
  */
 package com.facebook.react.uimanager;
 
+import android.view.View;
+
 import javax.annotation.Nullable;
 
 import java.util.Arrays;
@@ -95,12 +97,25 @@ public class UIImplementation {
     return viewManager.createShadowNodeInstance();
   }
 
-  protected final ReactShadowNode resolveShadowNode(int reactTag) {
+  /**
+   * LAB modify 通过reactTag 获取shadowNode
+   * 必须在NativeModulesQueueThread 执行
+   */
+  public final ReactShadowNode resolveShadowNode(int reactTag) {
     return mShadowNodeRegistry.getNode(reactTag);
   }
 
   protected final ViewManager resolveViewManager(String className) {
     return mViewManagers.get(className);
+  }
+
+  /**
+   * LAB modify: 通过reactTag 获取View 必须在UI线程调用
+   * throws IllegalViewOperationException View不存在时
+   */
+  public final View resolveView(int tag) {
+    UiThreadUtil.assertNotOnUiThread();
+    return mOperationsQueue.getNativeViewHierarchyManager().resolveView(tag);
   }
 
   /*package*/ UIViewOperationQueue getUIViewOperationQueue() {
