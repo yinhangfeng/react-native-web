@@ -35,8 +35,21 @@ import ReactNative, {
   TextInput,
   TouchableHighlight,
   View,
-  Button,
 } from 'react-native';
+
+class Button extends React.Component {
+  render() {
+    return (
+      <TouchableHighlight
+        style={styles.wrapper}
+        onPress={this.props.onPress}>
+        <View style={styles.button}>
+          <Text>{this.props.title}</Text>
+        </View>
+      </TouchableHighlight>
+    );
+  }
+}
 
 class Example extends React.Component {
 
@@ -127,4 +140,12 @@ exports.examples = [{
 }];
 
 const styles = StyleSheet.create({
+  wrapper: {
+    borderRadius: 5,
+    marginBottom: 5,
+  },
+  button: {
+    backgroundColor: '#eeeeee',
+    padding: 8,
+  },
 });
