@@ -11,6 +11,7 @@
  */
 'use strict';
 
+/*
 const Promise = require('fbjs/lib/Promise.native');
 
 if (__DEV__) {
@@ -33,5 +34,14 @@ if (__DEV__) {
     },
   });
 }
+*/
+
+// 使用bluebird TODO Global rejection events
+const Promise = require('bluebird/js/release/bluebird');
+
+Promise.config({
+  warnings: __DEV__,
+  cancellation: true,
+});
 
 module.exports = Promise;

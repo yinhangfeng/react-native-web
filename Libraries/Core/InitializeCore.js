@@ -151,7 +151,10 @@ if (!global.alert) {
 // Set up Promise
 // The native Promise implementation throws the following error:
 // ERROR: Event loop not supported.
-defineProperty(global, 'Promise', () => require('Promise'));
+// defineProperty(global, 'Promise', () => require('Promise'));
+// 使用bluebird， bluebird 会根据全局的Promise 来决定async 实现 所以先设置原Promise为空 且不能延迟定义
+global.Promise = null;
+global.Promise = require('Promise');
 
 // Set up regenerator.
 defineProperty(global, 'regeneratorRuntime', () => {
