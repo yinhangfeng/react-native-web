@@ -132,6 +132,10 @@ var APIExamples: Array<UIExplorerExample> = [
     key: 'XHRExample',
     module: require('./XHRExample'),
   },
+  {
+    key: 'PromiseExample',
+    module: require('./PromiseExample'),
+  },
 ];
 
 const Modules = {};

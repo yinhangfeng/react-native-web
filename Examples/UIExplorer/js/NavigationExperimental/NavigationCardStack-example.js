@@ -93,8 +93,15 @@ class YourApplication extends React.Component {
         navigationState = NavigationStateUtils.reset(navigationState, [
           {key: 'route-' + Date.now() + '-' + Math.random()},
           {key: 'route-' + Date.now() + '-' + Math.random()},
-          {key: 'route-' + Date.now() + '-' + Math.random()},
+          // {key: 'route-' + Date.now() + '-' + Math.random()},
         ]);
+      case 'replace':
+        let routes = navigationState.routes.slice();
+        routes[routes.length - 1] = {key: 'xxxx' + Math.random()};
+        navigationState = {
+          index: navigationState.index,
+          routes,
+        };
         break;
     }
 
@@ -205,13 +212,10 @@ class YourScene extends React.Component {
           onPress={() => {
             
             this.props.onPushRoute();
-            this.props.onPushRoute();
-            this.props.onPopRoute();
-            this.props.onPopRoute();
-            this.props.onPushRoute();
-            this.props.onPopRoute();
-            this.props.onPopRoute();
-            this.props.onPushRoute();
+
+            setTimeout(() => {
+              this.props.onNavigationChange('replace');
+            }, 180);
           }}
         />
         <NavigationExampleRow

@@ -11,6 +11,7 @@
  */
 'use strict';
 
+/*
 require('Promise'); // make sure the default rejection handler is installed
 const rejectionTracking = require('promise/setimmediate/rejection-tracking');
 
@@ -23,3 +24,7 @@ module.exports = () => {
     onHandled: () => {},
   });
 };
+*/
+
+// 使用bluebird TODO
+module.exports = () => {};

@@ -125,13 +125,14 @@ if (!global.process.env.NODE_ENV) {
 // }
 
 // Set up timers
-if (!global.setImmediate) {
-  //RW Promise 需要setImmediate 如果浏览器没有提供则用setTimeout代替 但效率会比较低
-  global.setImmediate = function(func, ...args) {
-    return setTimeout(func, 0, ...args);
-  };
-  global.clearImmediate = clearTimeout;
-}
+// 使用bluebird 之后已经不需要setImmediate了
+// if (!global.setImmediate) {
+//   //RW Promise 需要setImmediate 如果浏览器没有提供则用setTimeout代替 但效率会比较低
+//   global.setImmediate = function(func, ...args) {
+//     return setTimeout(func, 0, ...args);
+//   };
+//   global.clearImmediate = clearTimeout;
+// }
 
 // // Set up alert
 // if (!global.alert) {
@@ -145,7 +146,8 @@ if (!global.setImmediate) {
 // Set up Promise
 // The native Promise implementation throws the following error:
 // ERROR: Event loop not supported.
-defineProperty(global, 'Promise', () => require('Promise'));
+// defineProperty(global, 'Promise', () => require('Promise'));
+global.Promise = require('Promise');
 
 // Set up regenerator.
 defineProperty(global, 'regeneratorRuntime', () => {
