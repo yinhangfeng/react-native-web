@@ -39,9 +39,12 @@ if (__DEV__) {
 // 使用bluebird TODO Global rejection events
 const Promise = require('bluebird/js/release/bluebird');
 
-Promise.config({
+const config = {
   warnings: __DEV__,
   cancellation: true,
-});
+  longStackTraces: false,
+};
+
+Promise.config(config);
 
 module.exports = Promise;
