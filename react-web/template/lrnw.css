@@ -511,21 +511,21 @@ body {
 
 .lrnw-fadeout {
 	opacity: 0;
-	-webkit-animation-duration: 350ms;
+	-webkit-animation-duration: 370ms;
 	-webkit-animation-name: lrnw-fadeout;
-	-moz-animation-duration: 350ms;
+	-moz-animation-duration: 370ms;
 	-moz-animation-name: lrnw-fadeout;
-	animation-duration: 350ms;
+	animation-duration: 370ms;
 	animation-name: lrnw-fadeout;
 }
 
 .lrnw-fadein {
 	opacity: 1;
-	-webkit-animation-duration: 350ms;
+	-webkit-animation-duration: 370ms;
 	-webkit-animation-name: lrnw-fadein;
-	-moz-animation-duration: 350ms;
+	-moz-animation-duration: 370ms;
 	-moz-animation-name: lrnw-fadein;
-	animation-duration: 350ms;
+	animation-duration: 370ms;
 	animation-name: lrnw-fadein;
 }
 
