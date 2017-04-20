@@ -106,8 +106,8 @@
     "start": "/usr/bin/env bash -c './packager/packager.sh \"$@\" || true' --",
     "bundle-test": "node local-cli/cli.js bundle --platform web --dev true --entry-file Libraries/react-native/react-native.web.js --bundle-output react-web/test/bundletest/test.bundle --assets-dest react-web/test/bundletest --css-dest react-web/test/bundletest/css",
     "bundle-uiexplorer": "node local-cli/cli.js bundle --platform web --dev true --entry-file Examples/index.web.js --bundle-output react-web/test/bundletest/uiexplorer/uiexplorer.bundle --assets-dest react-web/test/bundletest/uiexplorer/",
-    "packager": "node local-cli/cli.js start --port 9080 --reset-cache",
-    "lrnw": "node local-cli/cli.js start --port 9080 --reset-cache"
+    "packager": "node local-cli/cli.js start --port 9080",
+    "lrnw": "node local-cli/cli.js start --port 9080"
   },
   "bin": {
     "lab-react-native-web": "local-cli/wrong-react-native.js"
@@ -161,7 +161,7 @@
     "joi": "^6.6.1",
     "json-stable-stringify": "^1.0.1",
     "json5": "^0.4.0",
-    "material-ui": "git+ssh://git@git.dev.backustech.com:lab4/material-ui.git",
+    "material-ui": "git+ssh://git@git.dev.backustech.com:lab4/material-ui.git#0.17-stable",
     "left-pad": "^1.1.3",
     "lodash": "^4.16.6",
     "mime": "^1.3.4",

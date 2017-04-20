@@ -84,6 +84,7 @@ exports.examples = [
     render() {
       return (
         <ActivityIndicator
+          size="large"
           style={[styles.centering, styles.gray]}
           color="white"
         />
@@ -124,7 +125,6 @@ exports.examples = [
       return (
         <ActivityIndicator
           style={[styles.centering, styles.gray]}
-          size="large"
           color="white"
         />
       );
