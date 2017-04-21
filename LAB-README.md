@@ -10,6 +10,7 @@ git merge origin/lab-master 实现与lab-master 同步
 ## 修改记录
 所有修改以注释 'LAB modify'  标记
 ### js
+* InitializeCore.js 修改Promise 使用bluebird
 * 修复NavigationTransitioner push过程中replace 引起的并发问题this._isTransitioning
 * NavigationTransitioner onTransitionEnd 的当前transitionProps 始终与其对应的onTransitionStart一致
 ### Android
