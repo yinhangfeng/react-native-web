@@ -17,7 +17,10 @@
 //
 // actually, that's a lie, because babel6 omits _extends and createRawReactElement
 
-var babelHelpers = global.babelHelpers = {};
+// RW modify babelHelpers变量放入最外层闭包内 不对global暴露 对应Bundler/Bundle.js修改
+// var babelHelpers = global.babelHelpers = {};
+// babelHelpers是定义在最外层闭包定义的变量
+babelHelpers = {};
 
 babelHelpers.createRawReactElement = (function () {
   var REACT_ELEMENT_TYPE = typeof Symbol === "function" && Symbol.for && Symbol.for("react.element") || 0xeac7;
@@ -232,6 +235,7 @@ babelHelpers.toConsumableArray = function (arr) {
 
 
 //
+// RW modify
 // 扩展 有些库需要其它babelHelpers 功能(如inline-style-prefixer) 使用 react-web/scripts/_babel.js生成
 // 需要研究一下babel配置相关，react-native 使用babel编译但是相关polyfills 的添加没用通过babel(Resolver/index.js _getPolyfillDependencies),所以可能是不标准的
 //

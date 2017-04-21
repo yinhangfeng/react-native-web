@@ -142,7 +142,7 @@ class Bundle extends BundleBase {
     let source = super.getSource(options);
 
     // RW modify 添加一个全局闭包 此改动与requre.js Resolver/index.js definePolyfillCode 关联
-    source = `(function(global) {var __d,require;${source}})(typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : this);`;
+    source = `(function(global) {var __d,require,babelHelpers;${source}})(typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : this);`;
 
     if (options.inlineSourceMap) {
       source += SOURCEMAPPING_URL + this._getInlineSourceMap(options.dev);
