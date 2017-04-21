@@ -698,8 +698,8 @@ class Bundler {
       const dimensions = res[0];
       const assetData = res[1];
       const asset = {
-        __packager_asset: true,
-        fileSystemLocation: pathDirname(module.path), //RW web不需要
+        // __packager_asset: true, // RW 为减小体积 不需要
+        // fileSystemLocation: pathDirname(module.path), // RW 为减小体积 不需要
         httpServerLocation: assetUrlPath, //RW TODO 路径可能需要可配置
         /* $FlowFixMe: `resolution` is assets-only */
         width: dimensions ? dimensions.width / module.resolution : undefined,
@@ -707,7 +707,7 @@ class Bundler {
         height: dimensions ? dimensions.height / module.resolution : undefined,
         scales: assetData.scales,
         files: assetData.files,
-        hash: assetData.hash,
+        // hash: assetData.hash, // RW 为减小体积 不需要
         name: assetData.name,
         type: assetData.type,
       };

@@ -79,8 +79,9 @@ class AssetSourceResolver {
   defaultAsset(): ResolvedAssetSource {
     let url = this.serverUrl || this.devServerUrl;
     return this.fromSource(
-      url + getScaledAssetPath(this.asset) +
-      '?platform=' + Platform.OS + '&hash=' + this.asset.hash
+      url + getScaledAssetPath(this.asset)
+      // XXX platform 和 hash 暂时不需要
+      //+ '?platform=' + Platform.OS + '&hash=' + this.asset.hash
     );
   }
 

@@ -1,5 +1,6 @@
 # 修改记录
 * 对源代码增加最外层闭包 涉及文件 Resolver/index.js Resolver/polyfills/require.js Resolver/polyfills/babelHelpers.js Bundler/Bundle.js
+* 图片资源asset中去掉不必要的字段__packager_asset fileSystemLocation hash 涉及文件 resolveAssetSource.web.js AssetSourceResolver.web.js Bundler/index.js
 
 # 升级流程
 * 切出新的分支
