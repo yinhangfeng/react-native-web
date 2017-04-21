@@ -320,11 +320,20 @@ function defineModuleCode(moduleName, code, verboseName = '', dev = true) {
   ].join('');
 }
 
+// RW modify 与Bundler/Bundle.js 对应的修改 global变量在最外层闭包提供
+// function definePolyfillCode(code,) {
+//   return [
+//     '(function(global) {',
+//     code,
+//     `\n})(typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : this);`,
+//   ].join('');
+// }
+
 function definePolyfillCode(code,) {
   return [
-    '(function(global) {',
+    '(function() {',
     code,
-    `\n})(typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : this);`,
+    `\n})();`,
   ].join('');
 }
 

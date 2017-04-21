@@ -45,8 +45,13 @@ type ModuleMap =
 type RequireFn = (id: ModuleID | VerboseModuleNameForDev) => Exports;
 type VerboseModuleNameForDev = string;
 
-global.require = require;
-global.__d = define;
+// RW modify 不对global暴露 将require限定在闭包内
+// global.require = require;
+// global.__d = define;
+// RW __d, require是最外层闭包定义的变量
+require = _require;
+__d = define;
+
 
 const modules: ModuleMap = Object.create(null);
 if (__DEV__) {
@@ -85,7 +90,7 @@ function define(
   }
 }
 
-function require(moduleId: ModuleID | VerboseModuleNameForDev) {
+function _require(moduleId: ModuleID | VerboseModuleNameForDev) {
   if (__DEV__ && typeof moduleId === 'string') {
     const verboseName = moduleId;
     moduleId = verboseNamesToModuleIds[moduleId];
@@ -145,7 +150,7 @@ function loadModuleImplementation(moduleId, module) {
   // it can be used here.
   // TODO(davidaurelio) Scan polyfills for dependencies, too (t9759686)
   if (__DEV__) {
-    var {Systrace} = require;
+    var {Systrace} = _require;
   }
 
   // We must optimistically mark module as initialized before running the
@@ -168,7 +173,7 @@ function loadModuleImplementation(moduleId, module) {
     // keep args in sync with with defineModuleCode in
     // packager/react-packager/src/Resolver/index.js
     // and packager/react-packager/src/ModuleGraph/worker.js
-    factory(global, require, moduleObject, exports, dependencyMap);
+    factory(global, _require, moduleObject, exports, dependencyMap);
 
     // avoid removing factory in DEV mode as it breaks HMR
     if (!__DEV__) {
@@ -203,7 +208,7 @@ function moduleThrewError(id) {
 }
 
 if (__DEV__) {
-  require.Systrace = { beginEvent: () => {}, endEvent: () => {} };
+  _require.Systrace = { beginEvent: () => {}, endEvent: () => {} };
 
   // HOT MODULE RELOADING
   var createHotReloadingObject = function() {
@@ -265,7 +270,7 @@ if (__DEV__) {
     }
     mod.hasError = false;
     mod.isInitialized = false;
-    require(id);
+    _require(id);
 
     if (hot.acceptCallback) {
       hot.acceptCallback();
