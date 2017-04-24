@@ -629,12 +629,16 @@ display: -webkit-box;可以 但 display: flex不可以?
 }
 
 .lrnw-hide {
-  /*display: none;*/
-  visibility: hidden !important;
+  /*visibility: hidden !important;
   position: absolute !important;
   pointer-events: none !important;
   z-index: -999 !important;
-  opacity: 0;
+  opacity: 0;*/
+
+  position: absolute !important;
+  top: -999999px !important;
+  bottom: 999999px !important;
+  visibility: hidden !important;
 }
 
 .lrnw-nav-scene-anim {
@@ -652,11 +656,16 @@ display: -webkit-box;可以 但 display: flex不可以?
 }
 
 .lrnw-nav .lrnw-nav-scene.hide {
-  visibility: hidden !important;
+  /*visibility: hidden !important;
   position: absolute !important;
   pointer-events: none !important;
   z-index: -999 !important;
-  opacity: 0;
+  opacity: 0;*/
+
+  position: absolute !important;
+  top: -999999px !important;
+  bottom: 999999px !important;
+  visibility: hidden !important;
 }
 
 /*.lrnw-nav .lrnw-nav-scene.transition {
@@ -674,13 +683,10 @@ display: -webkit-box;可以 但 display: flex不可以?
 .lrnw-nav-scroll .lrnw-nav-scene.hide {
   position: fixed;
   left: 0;
-  top: 0;
+  top: -999999px;
   right: 0;
-  bottom: 0;
+  bottom: 999999px;
   visibility: hidden;
-  pointer-events: none;
-  z-index: -999;
-  opacity: 0;
 }
 
 .lrnw-nav-scroll .lrnw-nav-scene.transition {
