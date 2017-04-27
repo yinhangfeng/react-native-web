@@ -92,6 +92,14 @@ class ResolutionRequest {
   }
 
   // TODO(cpojer): Remove 'any' type. This is used for ModuleGraph/node-haste
+  /**
+   * 查找并获取module
+   * @param {(Module | any)} fromModule 
+   * @param {string} toModuleName  require或import的名字 可能是绝对路径 相对路径 packageName/xxx.js node-haste等
+   * @return Promise
+   * resolve: Module
+   * reject: UnableToResolveError
+   */
   resolveDependency(fromModule: Module | any, toModuleName: string) {
     const resHash = resolutionHash(fromModule.path, toModuleName);
 
@@ -127,12 +135,16 @@ class ResolutionRequest {
     onProgress?: ?(finishedModules: number, totalModules: number) => mixed,
     recursive: boolean,
   }) {
+    // 创建entry module
     const entry = this._moduleCache.getModule(this._entryPath);
 
+    // 放入第一个module
     response.pushDependency(entry);
     let totalModules = 1;
     let finishedModules = 0;
 
+    // 获取module的所有dependencyNames(通过解析code获取)
+    // 并对每一个dependency 调用resolveDependency 最后得到dependencyNames dependencies
     const resolveDependencies = module =>
       module.getDependencies(transformOptions)
         .then(dependencyNames =>
@@ -141,7 +153,10 @@ class ResolutionRequest {
           ).then(dependencies => [dependencyNames, dependencies])
         );
 
+    // 已经搜集的module对应dependencies map, 获取时 对不存在的调用collect
     const collectedDependencies = new MapWithDefaults(module => collect(module));
+
+    // 遍历mod的dependencies 调用onProgress 通过调用collectedDependencies.get 搜集新的module
     const crawlDependencies = (mod, [depNames, dependencies]) => {
       const filteredPairs = [];
 
@@ -180,6 +195,7 @@ class ResolutionRequest {
     };
 
     const collectionsInProgress = new AsyncTaskGroup();
+    // 递归获取module的所有依赖和依赖的依赖
     function collect(module) {
       collectionsInProgress.start(module);
       const result = resolveDependencies(module)
@@ -210,6 +226,7 @@ class ResolutionRequest {
           if (seen.has(dependency)) { return; }
 
           seen.add(dependency);
+          // 将其它(除了entry) module放入response
           response.pushDependency(dependency);
           traverse(moduleDependencies.get(dependency));
         });
