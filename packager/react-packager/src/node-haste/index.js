@@ -163,7 +163,7 @@ class DependencyGraph {
       ignorePattern: {test: this._opts.ignoreFilePath},
       maxWorkers: typeof mw === 'number' && mw >= 1 ? mw : getMaxWorkers(),
       mocksPattern: '',
-      // 使用不同的cache名字 防止与react-native冲突
+      // RW modify 使用不同的cache名字 防止与react-native冲突
       name: 'lab-react-native-web-packager',
       platforms: Array.from(this._opts.platforms),
       providesModuleNodeModules: this._opts.providesModuleNodeModules,
