@@ -384,6 +384,54 @@ class DependencyGraph {
     return this._hasteMap;
   }
 
+  // LAB modify
+  /**
+   * 创建ResolutionRequest
+   * 到new ResolutionRequest为止 与getDependencies完全相同，之后直接返回ResolutionRequest
+   */
+  newResolutionRequest({
+    entryPath,
+    platform,
+    transformOptions,
+    onProgress,
+    recursive = true,
+    // LAB modify
+    extraNodeModules,
+  }: {
+    entryPath: string,
+    platform: string,
+    transformOptions: TransformOptions,
+    onProgress?: ?(finishedModules: number, totalModules: number) => mixed,
+    recursive: boolean,
+  }) {
+    return this.load().then(() => {
+      platform = this._getRequestPlatform(entryPath, platform);
+      const absPath = this._getAbsolutePath(entryPath);
+      const dirExists = filePath => {
+        try {
+          return fs.lstatSync(filePath).isDirectory();
+        } catch (e) {}
+        return false;
+      };
+      return new ResolutionRequest({
+        dirExists,
+        entryPath: absPath,
+        extraNodeModules: this._opts.extraNodeModules,
+        hasteFS: this._hasteFS,
+        hasteMap: this._hasteMap,
+        helpers: this._helpers,
+        moduleCache: this._moduleCache,
+        // LAB modify 让extraNodeModules支持通过getDependencies参数传入
+        extraNodeModules: Object.assign({}, this._opts.extraNodeModules, extraNodeModules),
+        platform,
+        platforms: this._opts.platforms,
+        preferNativePlatform: this._opts.preferNativePlatform,
+      });
+    });
+  }
+
+  // LAB modify END
+
   static Cache;
   static Module;
   static Polyfill;

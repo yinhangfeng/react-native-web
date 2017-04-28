@@ -489,6 +489,20 @@ class ResolutionRequest {
     this._immediateResolutionCache = Object.create(null);
   }
 
+  // LAB modify
+
+  /**
+   * 获取ModuleCache
+   */
+  getModuleCache() {
+    return this._moduleCache;
+  }
+
+  getPlatform() {
+    return this._platform;
+  }
+  // LAB modify END
+
 }
 
 

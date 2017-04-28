@@ -306,6 +306,37 @@ class Resolver {
   getDependencyGraph(): DependencyGraph {
     return this._depGraph;
   }
+
+  // LAB modify
+  /**
+   * 调用DependencyGraph.newResolutionRequest
+   * 与getDependencies 参数和部分代码保持一致
+   */
+  newResolutionRequest(
+    entryPath: string,
+    options: {},
+    transformOptions: TransformOptions,
+    onProgress?: ?(finishedModules: number, totalModules: number) => mixed,
+    getModuleId: mixed,
+    extraNodeModules,
+  ) {
+    // LAB modify  xxxxxx
+    if (!extraNodeModules) {
+      console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx Resolver DependencyGraph !extraNodeModules');
+    }
+
+    const {platform, recursive} = getDependenciesValidateOpts(options);
+    return this._depGraph.newResolutionRequest({
+      entryPath,
+      platform,
+      transformOptions,
+      recursive,
+      onProgress,
+      // LAB modify
+      extraNodeModules,
+    });
+  }
+  // LAB modify END
 }
 
 function defineModuleCode(moduleName, code, verboseName = '', dev = true) {

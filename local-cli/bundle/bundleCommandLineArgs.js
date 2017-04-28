@@ -53,6 +53,11 @@ module.exports = [
     command: '--lab-extra [string]',
     description: 'lab extra',
   }, {
+    // LAB modify
+    command: '--rollup [boolean]',
+    description: 'use rollup bundle',
+    default: false,
+  }, {
     command: '--read-global-cache',
     description: 'Try to fetch transformed JS code from the global cache, if configured.',
     default: false,

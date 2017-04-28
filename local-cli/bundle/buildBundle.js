@@ -67,13 +67,19 @@ function buildBundle(args, config, output = outputBundle, packagerInstance) {
     shouldClosePackager = true;
   }
 
-  const bundlePromise = output.build(packagerInstance, requestOpts)
+  // LAB modify 处理rollup
+  let bundlePromise;
+  if (args.rollup) {
+    bundlePromise = require('./rollupBundle')(packagerInstance, requestOpts, args, config, shouldClosePackager);
+  } else {
+    bundlePromise = output.build(packagerInstance, requestOpts)
     .then(bundle => {
       if (shouldClosePackager) {
         packagerInstance.end();
       }
       return saveBundle(output, bundle, args);
     });
+  }
 
   // Save the assets of the bundle
   const assets = bundlePromise
@@ -89,7 +95,7 @@ function buildBundle(args, config, output = outputBundle, packagerInstance) {
   return assets;
 }
 
-//RW 拷贝css
+//RW modify 拷贝css
 function copyCss(cssDest) {
   if (!cssDest) {
     console.warn('css destination folder is not set, skipping...');

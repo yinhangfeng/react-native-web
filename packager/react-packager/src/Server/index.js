@@ -1046,6 +1046,29 @@ class Server {
 
     return query[opt] === 'true' || query[opt] === '1';
   }
+
+  // LAB modify
+  /**
+   * 调用Bundler.newResolutionRequest
+   * 与buildBundle参数相同
+   */
+  newResolutionRequest(options) {
+    return this._bundler.getResolver().getDependencyGraph().load().then(() => {
+      if (!options.platform) {
+        options.platform = getPlatformExtension(options.entryFile);
+      }
+
+      // 验证参数 Bundler.newResolutionRequest的参数与 Bundler.bundle相同
+      const opts = bundleOpts(options);
+      return this._bundler.newResolutionRequest(opts);
+    });
+  }
+
+  getBundler() {
+    return this._bundler;
+  }
+
+  // LAB modify END
 }
 
 function contentsEqual(array: Array<mixed>, set: Set<mixed>): boolean {

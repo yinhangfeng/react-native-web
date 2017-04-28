@@ -798,6 +798,58 @@ class Bundler {
   getResolver() {
     return this._resolver;
   }
+
+  // LAB modify
+  /**
+   * 调用Resolver.newResolutionRequest
+   * 与bundle() 参数保持一致
+   */
+  newResolutionRequest({
+    entryFile,
+    dev,
+    minify,
+    platform,
+    hot,
+    // LAB modify
+    extraNodeModules,}) {
+
+    return this.getTransformOptions(
+      entryFile,
+      {
+        dev,
+        platform,
+        hot,
+        generateSourceMaps: false,
+        projectRoots: this._projectRoots,
+      },
+    ).then((transformSpecificOptions) => {
+      const transformOptions = {
+        minify,
+        dev,
+        platform,
+        transform: transformSpecificOptions,
+      };
+      return this._resolver.newResolutionRequest(
+        entryFile,
+        {
+          dev,
+          platform,
+          recursive: true,
+        },
+        transformOptions,
+        null, // onProgress
+        isolateModuleIDs ? createModuleIdFactory() : this._getModuleId,
+        // LAB modify
+        extraNodeModules,
+      );
+    });
+  }
+
+  generateAssetObjAndCode(module, assetPlugins, platform) {
+    return this._generateAssetObjAndCode(module, assetPlugins, platform);
+  }
+
+  // LAB modify END
 }
 
 function getPathRelativeToRoot(roots, absPath) {
