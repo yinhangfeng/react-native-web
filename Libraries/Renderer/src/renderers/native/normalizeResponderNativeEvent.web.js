@@ -2,10 +2,9 @@
 const normalizeTouches = function(touches, timestamp) {
   // const identifier = touch.identifier > 20 ? (touch.identifier % 20) : touch.identifier;
 
-  const touchsLen = touches.length;
-  const newTouches = new Array(touchsLen);
+  const newTouches = [];
   let touch;
-  for (let i = 0; i < touchsLen; ++i) {
+  for (let i = 0; i < touches.length; ++i) {
     touch = touches[i];
     let locationX;
     let locationY;
