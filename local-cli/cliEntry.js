@@ -181,3 +181,7 @@ module.exports = {
   run: run,
   init: init,
 };
+
+if (require.main === module) {
+  run();
+}

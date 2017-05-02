@@ -134,6 +134,10 @@ class Transformer {
         ['minify', 'transformAndExtractDependencies'],
         opts.transformTimeoutInterval,
       );
+
+      // RW modify 方便调试
+      // this._workers = require('./worker');
+
       this._transform = denodeify(this._workers.transformAndExtractDependencies);
       this.minify = denodeify(this._workers.minify);
     }

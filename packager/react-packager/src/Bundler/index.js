@@ -810,6 +810,7 @@ class Bundler {
     minify,
     platform,
     hot,
+    isolateModuleIDs,
     // LAB modify
     extraNodeModules,}) {
 

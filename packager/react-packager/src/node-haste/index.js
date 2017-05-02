@@ -156,7 +156,8 @@ class DependencyGraph {
       return this._loading;
     }
 
-    const mw = this._opts.maxWorkers;
+    // const mw = this._opts.maxWorkers;
+    const mw = 1; // RW modify 方便调试
     this._haste = new JestHasteMap({
       extensions: this._opts.extensions.concat(this._opts.assetExts),
       forceNodeFilesystemAPI: this._opts.forceNodeFilesystemAPI,

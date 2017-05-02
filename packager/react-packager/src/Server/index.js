@@ -1058,9 +1058,11 @@ class Server {
         options.platform = getPlatformExtension(options.entryFile);
       }
 
-      // 验证参数 Bundler.newResolutionRequest的参数与 Bundler.bundle相同
-      const opts = bundleOpts(options);
-      return this._bundler.newResolutionRequest(opts);
+      return this._callBuildBundleInterceptor(options, 'buildBundle')
+        .then((opts) => {
+          // 验证参数 Bundler.newResolutionRequest的参数与 Bundler.bundle相同
+          return this._bundler.newResolutionRequest(bundleOpts(opts));
+        });
     });
   }
 
