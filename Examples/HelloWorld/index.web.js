@@ -22,6 +22,9 @@ import ReactNative, {
   RWConfig,
 } from 'react-native';
 
+import TestImage from './Image';
+import img_test from './img/test.png';
+
 //RWConfig.bodyScrollMode = true;
 
 let SHOW_TOUCH_EVENT = false;
@@ -55,7 +58,6 @@ class Hello extends Component {
   }
 
   _renderRNWImage() {
-    const TestImage = require('./Image');
 
     return (
       <View style={{padding: 10,}}>
@@ -67,7 +69,7 @@ class Hello extends Component {
         </TestImage>
 
         <Image
-          defaultSource={require('./img/test.png')}
+          defaultSource={img_test}
           source={{uri: 'http://desk.fd.zol-img.com.cn/t_s960x600c5/g5/M00/00/0A/ChMkJ1ecZb2IQdT8AATJRtrzV70AAT_1gNHoPkABMle872.jpg?xx1234'}}
           resizeMode="center"
           // onLoadStart={() => {

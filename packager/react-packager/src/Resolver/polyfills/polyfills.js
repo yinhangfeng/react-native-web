@@ -67,3 +67,8 @@ Object.assign = function(target, sources) {
 
   return target;
 };
+
+// RW modify 获取require得到的esModule 的default
+global.__requireDefault = function(obj) {
+  return (obj && obj.default) || obj;
+};

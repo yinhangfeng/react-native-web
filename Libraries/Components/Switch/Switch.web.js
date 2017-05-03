@@ -8,7 +8,7 @@ const NativeMethodsMixin = require('NativeMethodsMixin');
 const React = require('React');
 const StyleSheet = require('StyleSheet');
 const View = require('View');
-import Toggle from 'material-ui/src/Toggle';
+const Toggle = __requireDefault(require('material-ui/src/Toggle'));
 
 const Switch = React.createClass({
   propTypes: {

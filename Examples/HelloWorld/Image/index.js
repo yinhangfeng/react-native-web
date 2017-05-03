@@ -25,7 +25,7 @@ const resolveAssetSource = (source) => {
   return ((typeof source === 'object') ? source.uri : source) || null;
 };
 
-class Image extends Component {
+export default class Image extends Component {
   static displayName = 'Image';
 
   static propTypes = {
@@ -238,5 +238,3 @@ const resizeModeStyles = StyleSheet.create({
     backgroundSize: '100% 100%'
   }
 });
-
-module.exports = Image;

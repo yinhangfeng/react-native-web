@@ -8,10 +8,9 @@ const ReactNative = require('ReactNative');
 //const StyleSheet = require('StyleSheet');
 //const View = require('View');
 const CSSClassNames = require('CSSClassNames');
-
-// TODO material-ui 库需要, 暂时放在这里，应该由使用者提供
-import getMuiTheme from 'material-ui/src/styles/getMuiTheme';
 const RWConfig = require('RWConfig');
+// TODO material-ui 库需要, 暂时放在这里，应该由使用者提供
+const getMuiTheme = __requireDefault(require('material-ui/src/styles/getMuiTheme'));
 
 /**
  * 对未设置bodyScrollMode 的ROOT_CONTAINER样式设为overflow: 'hidden',

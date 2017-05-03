@@ -2,6 +2,9 @@
 
 const VIRTUAL_ENTRY = 'lab-rollup-virtual-entry';
 
+const prelude = require.resolve('../../packager/react-packager/src/Resolver/polyfills/prelude.js');
+const prelude_dev = require.resolve('../../packager/react-packager/src/Resolver/polyfills/prelude_dev.js');
+
 const polyfills = [
   require.resolve('../../packager/react-packager/src/Resolver/polyfills/polyfills.js'),
   require.resolve('../../packager/react-packager/src/Resolver/polyfills/error-guard.js'),
@@ -12,9 +15,6 @@ const polyfills = [
   require.resolve('../../packager/react-packager/src/Resolver/polyfills/Object.es7.js'),
   // require.resolve('../../react-packager/src/Resolver/polyfills/babelHelpers.js'), // babel plugin 内置
 ];
-
-const prelude = require.resolve('../../packager/react-packager/src/Resolver/polyfills/prelude.js');
-const prelude_dev = require.resolve('../../packager/react-packager/src/Resolver/polyfills/prelude_dev.js');
 
 function isPluginsHelpers(id) {
   // plugins helpers 比如 rollup-plugin-commonjs
