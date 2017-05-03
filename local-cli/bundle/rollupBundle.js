@@ -39,7 +39,7 @@ function getRollupConfig(requestOptions, rnConfig, labRnPlugin) {
   // 将entry 转换为绝对路径 方便labRnPlugin处理
   rollupConfig.entry = path.resolve(requestOptions.entryFile);
   // 'use strict' 会在bundle外部拼接
-  // rollupConfig.useStrict = false;
+  rollupConfig.useStrict = false;
 
   const babelConfig = buildBabelConfig(projectRoots);
 

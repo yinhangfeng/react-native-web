@@ -18,7 +18,7 @@
 
 if (!String.prototype.startsWith) {
   String.prototype.startsWith = function(search) {
-    'use strict';
+    // 'use strict';
     if (this == null) {
       throw TypeError();
     }
@@ -32,7 +32,7 @@ if (!String.prototype.startsWith) {
 
 if (!String.prototype.endsWith) {
   String.prototype.endsWith = function(search) {
-    'use strict';
+    // 'use strict';
     if (this == null) {
       throw TypeError();
     }
@@ -52,7 +52,7 @@ if (!String.prototype.endsWith) {
 
 if (!String.prototype.repeat) {
   String.prototype.repeat = function(count) {
-    'use strict';
+    // 'use strict';
     if (this == null) {
       throw TypeError();
     }
@@ -79,7 +79,7 @@ if (!String.prototype.repeat) {
 
 if (!String.prototype.includes) {
   String.prototype.includes = function(search, start) {
-    'use strict';
+    // 'use strict';
     if (typeof start !== 'number') {
       start = 0;
     }

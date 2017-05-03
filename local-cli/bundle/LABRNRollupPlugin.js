@@ -14,6 +14,9 @@ const polyfills = [
   require.resolve('../../packager/react-packager/src/Resolver/polyfills/Array.es6.js'),
   require.resolve('../../packager/react-packager/src/Resolver/polyfills/Object.es7.js'),
   // require.resolve('../../react-packager/src/Resolver/polyfills/babelHelpers.js'), // babel plugin 内置
+
+  // 把InitializeCore 当做polyfill
+  require.resolve('../../Libraries/Core/InitializeCore.web.js'),
 ];
 
 function isPluginsHelpers(id) {
@@ -39,6 +42,7 @@ module.exports = function LABRN(config) {
   const platform = config.platform;
 
   let entry;
+  let entryModule;
 
   return {
     name: 'LABRN',
@@ -61,16 +65,27 @@ module.exports = function LABRN(config) {
       if (importer === VIRTUAL_ENTRY) {
         if (importee === entry) {
           // entry
-          moduleCache.getModule(importee);
+          entryModule = moduleCache.getModule(importee);
         } else {
           // polyfills
         }
         return importee;
       }
-      if (moduleCache._moduleCache[importer]) {
-        return resolutionRequest.resolveDependency(moduleCache.getModule(importer), importee)
+      if (importer === importee) {
+        return;
+      }
+
+      const importerModule = moduleCache._moduleCache[importer];
+      if (importerModule) {
+        return resolutionRequest.resolveDependency(importerModule.isAsset() ? entryModule : importerModule, importee)
           .then((module) => {
             console.log('resolveId resolveDependency path:', module.path);
+            if (module.isAsset()) {
+              // 修改asset module 路径的扩展名 使其能被其他插件处理
+              let assetJsName = module.path.slice(0, module.path.lastIndexOf('.')) + '.js';
+              moduleCache._moduleCache[assetJsName] = module;
+              return assetJsName;
+            }
             return module.path;
           });
       }
@@ -83,26 +98,31 @@ module.exports = function LABRN(config) {
         return;
       }
       if (id === VIRTUAL_ENTRY) {
+        // 优先导入polyfills
         let codeArr;
         let pfs = dev ? [prelude_dev] : [prelude];
         pfs = pfs.concat(polyfills);
         codeArr = pfs.map((polyfillPath, idx) => `import x${idx} from '${polyfillPath}';`);
+        // entry
         codeArr.push(`import entry from '${entry}';`);
         return codeArr.join('\n');
       }
-      if (moduleCache._moduleCache[id]) {
-        const module = moduleCache.getModule(id);
-        if (module.isAsset()) {
-          return bundler.generateAssetObjAndCode(module, [] /* assetPlugins */, platform)
+
+      const module = moduleCache._moduleCache[id];
+      if (module && module.isAsset()) {
+        if (!module.generateAssetObjAndCodePromise) {
+          module.generateAssetObjAndCodePromise = bundler.generateAssetObjAndCode(module, [] /* assetPlugins */, platform)
             .then(({asset, code, meta}) => {
               assetsOutput.push(asset);
               return code;
             });
         }
+        return module.generateAssetObjAndCodePromise;
       }
     },
 
-    // transformBundle(source, { format }) {
+    // transformBundle(source, options) {
+    //   console.log('transformBundle', source.slice(0, 20), options);
     //   return `(function(global) { ${source} })(window);`;
     // },
   };

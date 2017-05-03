@@ -10,8 +10,8 @@
  * @polyfill
  */
 
-(function() {
-  'use strict';
+// (function() {
+//   'use strict';
 
   const hasOwnProperty = Object.prototype.hasOwnProperty;
 
@@ -57,4 +57,4 @@
     };
   }
 
-})();
+// })();

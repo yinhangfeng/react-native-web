@@ -10,7 +10,7 @@
  * @flow
  */
 
-'use strict';
+// 'use strict';
 
 type DependencyMap = Array<ModuleID>;
 type Exports = any;
