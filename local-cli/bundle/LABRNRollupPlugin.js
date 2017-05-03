@@ -69,7 +69,10 @@ module.exports = function LABRN(config) {
       }
       if (moduleCache._moduleCache[importer]) {
         return resolutionRequest.resolveDependency(moduleCache.getModule(importer), importee)
-          .then((module) => module.path);
+          .then((module) => {
+            console.log('resolveId resolveDependency path:', module.path);
+            return module.path;
+          });
       }
     },
 
