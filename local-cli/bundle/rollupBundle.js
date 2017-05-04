@@ -47,10 +47,10 @@ function getRollupConfig(requestOptions, rnConfig, labRnPlugin) {
     labRnPlugin,
     json(pluginsConfig.json),
     babel(Object.assign({
-      comments: false,
+      // comments: false,
       // compact: true,
       // exclude: 'node_modules/**',
-      externalHelpers: true,
+      // externalHelpers: true,
     }, babelConfig)),
     commonjs(Object.assign({
       ignoreGlobal: true,
@@ -131,7 +131,7 @@ function bundle(packagerInstance, requestOptions, outputOptions, config, shouldC
     return bundle.write({
       format: 'cjs',
       dest: bundleOutput,
-      sourceMap: true,
+      sourceMap: false,
     });
   }).then(() => {
     return {

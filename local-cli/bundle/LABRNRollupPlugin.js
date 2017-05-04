@@ -77,6 +77,8 @@ module.exports = function LABRN(config) {
 
       const importerModule = moduleCache._moduleCache[importer];
       if (importerModule) {
+        // 如果importerModule 是asset 则表示importee是 AssetRegistry
+        // 因为rn packager对asset的deps是直接设置的(在Bundler/index.js)， 通过resolutionRequest无法获取，所以需要设置fromeMoudle为entryModule
         return resolutionRequest.resolveDependency(importerModule.isAsset() ? entryModule : importerModule, importee)
           .then((module) => {
             console.log('resolveId resolveDependency path:', module.path);
@@ -121,9 +123,13 @@ module.exports = function LABRN(config) {
       }
     },
 
-    // transformBundle(source, options) {
-    //   console.log('transformBundle', source.slice(0, 20), options);
-    //   return `(function(global) { ${source} })(window);`;
-    // },
+    transform(source, id) {
+      return `/** ${id} **/\n${source}`;
+    },
+
+    transformBundle(source, options) {
+      // console.log('transformBundle', source.slice(0, 20), options);
+      return `(function(global) { ${source} })(window);`;
+    },
   };
 }
