@@ -73,12 +73,12 @@ class ToggleAnimatingActivityIndicator extends Component {
 
 
 
-exports.displayName = (undefined: ?string);
-exports.framework = 'React';
-exports.title = '<ActivityIndicator>';
-exports.description = 'Animated loading indicators.';
+export var displayName = (undefined: ?string);
+export var framework = 'React';
+export var title = '<ActivityIndicator>';
+export var description = 'Animated loading indicators.';
 
-exports.examples = [
+export var examples = [
   {
     title: 'Default (small, white)',
     render() {

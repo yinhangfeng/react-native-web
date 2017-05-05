@@ -149,13 +149,17 @@ if (!global.setImmediate) {
 }
 
 // Set up regenerator.
-defineProperty(global, 'regeneratorRuntime', () => {
+// RW modify 使用rollup时 require 会替换为import 会被提前 所以加入判断
+if (!global.regeneratorRuntime) {
+  defineProperty(global, 'regeneratorRuntime', () => {
   // The require just sets up the global, so make sure when we first
   // invoke it the global does not exist
   delete global.regeneratorRuntime;
   require('regenerator-runtime/runtime');
   return global.regeneratorRuntime;
 });
+}
+
 
 // Set up XHR
 // The native XMLHttpRequest in Chrome dev tools is CORS aware and won't

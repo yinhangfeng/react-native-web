@@ -2,23 +2,6 @@
 
 const VIRTUAL_ENTRY = 'lab-rollup-virtual-entry';
 
-const prelude = require.resolve('../../packager/react-packager/src/Resolver/polyfills/prelude.js');
-const prelude_dev = require.resolve('../../packager/react-packager/src/Resolver/polyfills/prelude_dev.js');
-
-const polyfills = [
-  require.resolve('../../packager/react-packager/src/Resolver/polyfills/polyfills.js'),
-  require.resolve('../../packager/react-packager/src/Resolver/polyfills/error-guard.js'),
-  require.resolve('../../packager/react-packager/src/Resolver/polyfills/Number.es6.js'),
-  require.resolve('../../packager/react-packager/src/Resolver/polyfills/String.prototype.es6.js'),
-  require.resolve('../../packager/react-packager/src/Resolver/polyfills/Array.prototype.es6.js'),
-  require.resolve('../../packager/react-packager/src/Resolver/polyfills/Array.es6.js'),
-  require.resolve('../../packager/react-packager/src/Resolver/polyfills/Object.es7.js'),
-  // require.resolve('../../react-packager/src/Resolver/polyfills/babelHelpers.js'), // babel plugin 内置
-
-  // 把InitializeCore 当做polyfill
-  require.resolve('../../Libraries/Core/InitializeCore.web.js'),
-];
-
 function isPluginsHelpers(id) {
   // plugins helpers 比如 rollup-plugin-commonjs
   return id[0] === '\0';
@@ -31,6 +14,7 @@ function isPluginsHelpers(id) {
  *   bundler,
  *   dev,
  *   assetsOutput,
+ *   polyfills,
  * }
  */
 module.exports = function LABRN(config) {
@@ -40,6 +24,7 @@ module.exports = function LABRN(config) {
   const dev = config.dev;
   const assetsOutput = config.assetsOutput;
   const platform = config.platform;
+  const polyfills = config.polyfills;
 
   let entry;
   let entryModule;
@@ -101,12 +86,9 @@ module.exports = function LABRN(config) {
       }
       if (id === VIRTUAL_ENTRY) {
         // 优先导入polyfills
-        let codeArr;
-        let pfs = dev ? [prelude_dev] : [prelude];
-        pfs = pfs.concat(polyfills);
-        codeArr = pfs.map((polyfillPath, idx) => `import x${idx} from '${polyfillPath}';`);
+        const codeArr = polyfills.map((polyfillPath) => `import '${polyfillPath}';`);
         // entry
-        codeArr.push(`import entry from '${entry}';`);
+        codeArr.push(`import '${entry}';`);
         return codeArr.join('\n');
       }
 
@@ -123,13 +105,13 @@ module.exports = function LABRN(config) {
       }
     },
 
-    transform(source, id) {
-      return `/** ${id} **/\n${source}`;
-    },
+    // transform(source, id) {
+    //   return `/** ${id} **/\n${source}`;
+    // },
 
     transformBundle(source, options) {
       // console.log('transformBundle', source.slice(0, 20), options);
-      return `(function(global) { ${source} })(window);`;
+      return `(function(global) { var babelHelpers; ${source} })(window);`;
     },
   };
 }

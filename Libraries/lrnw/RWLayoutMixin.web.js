@@ -36,4 +36,6 @@ const LayoutMixin = {
   },
 };
 
-module.exports = LayoutMixin;
+export { LayoutMixin };
+export default LayoutMixin;
+

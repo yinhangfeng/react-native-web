@@ -15,6 +15,23 @@ const commonjs = require('rollup-plugin-commonjs');
 const LABRNPlugin = require('./LABRNRollupPlugin');
 const transformer = require('../../packager/transformer');
 
+const prelude = require.resolve('../../packager/react-packager/src/Resolver/polyfills/prelude.js');
+const prelude_dev = require.resolve('../../packager/react-packager/src/Resolver/polyfills/prelude_dev.js');
+
+const polyfills = [
+  require.resolve('../../packager/react-packager/src/Resolver/polyfills/polyfills.js'),
+  require.resolve('../../packager/react-packager/src/Resolver/polyfills/error-guard.js'),
+  require.resolve('../../packager/react-packager/src/Resolver/polyfills/Number.es6.js'),
+  require.resolve('../../packager/react-packager/src/Resolver/polyfills/String.prototype.es6.js'),
+  require.resolve('../../packager/react-packager/src/Resolver/polyfills/Array.prototype.es6.js'),
+  require.resolve('../../packager/react-packager/src/Resolver/polyfills/Array.es6.js'),
+  require.resolve('../../packager/react-packager/src/Resolver/polyfills/Object.es7.js'),
+  require.resolve('../../packager/react-packager/src/Resolver/polyfills/babelHelpers.js'),
+
+  // 把InitializeCore 当做polyfill
+  require.resolve('../../Libraries/Core/InitializeCore.web.js'),
+];
+
 function getRollupConfig(requestOptions, rnConfig, labRnPlugin) {
 
   let rollupConfig;
@@ -47,10 +64,10 @@ function getRollupConfig(requestOptions, rnConfig, labRnPlugin) {
     labRnPlugin,
     json(pluginsConfig.json),
     babel(Object.assign({
-      // comments: false,
+      comments: false,
       // compact: true,
-      // exclude: 'node_modules/**',
-      // externalHelpers: true,
+      exclude: ['**/react-packager/src/Resolver/polyfills/babelHelpers*'],
+      externalHelpers: true,
     }, babelConfig)),
     commonjs(Object.assign({
       ignoreGlobal: true,
@@ -110,12 +127,15 @@ function bundle(packagerInstance, requestOptions, outputOptions, config, shouldC
     ...requestOptions,
     isolateModuleIDs: true,
   }).then((resolutionRequest) => {
+    let pfs = dev ? [prelude_dev] : [prelude];
+    pfs = pfs.concat(polyfills);
     const labRnPlugin = LABRNPlugin({
       resolutionRequest,
       bundler: packagerInstance.getBundler(),
       dev,
       assetsOutput,
       platform: requestOptions.platform,
+      polyfills: pfs,
     });
     const rollupConfig = getRollupConfig(requestOptions, config, labRnPlugin);
     return rollup.rollup(rollupConfig);
