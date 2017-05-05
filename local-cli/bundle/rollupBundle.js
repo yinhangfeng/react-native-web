@@ -12,6 +12,7 @@ const json = require('rollup-plugin-json');
 const babel = require('rollup-plugin-babel');
 // const babelrc = require('babelrc-rollup');
 const commonjs = require('rollup-plugin-commonjs');
+const _ = require('lodash');
 const LABRNPlugin = require('./LABRNRollupPlugin');
 const transformer = require('../../packager/transformer');
 
@@ -58,18 +59,21 @@ function getRollupConfig(requestOptions, rnConfig, labRnPlugin) {
   // 'use strict' 会在bundle外部拼接
   rollupConfig.useStrict = false;
 
-  const babelConfig = buildBabelConfig(projectRoots);
+  // const babelConfig = buildBabelConfig(projectRoots);
+  const babelConfig = require('./rollupBabelConfig');
 
   const innerPlugins = [
     labRnPlugin,
     json(pluginsConfig.json),
-    babel(Object.assign({
-      comments: false,
-      // compact: true,
-      exclude: ['**/react-packager/src/Resolver/polyfills/babelHelpers*'],
-      externalHelpers: true,
-    }, babelConfig)),
-    commonjs(Object.assign({
+    babel(Object.assign(
+      {},
+      babelConfig,
+      {
+        comments: false,
+        exclude: ['**/react-packager/src/Resolver/polyfills/babelHelpers*'],
+        externalHelpers: true,
+      })),
+    commonjs(_.merge({
       ignoreGlobal: true,
       namedExports: {
         'node_modules/react/react.js': [
