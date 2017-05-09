@@ -10,8 +10,6 @@
  * @flow
  */
 
-// 'use strict';
-
 type DependencyMap = Array<ModuleID>;
 type Exports = any;
 type FactoryFn = (
