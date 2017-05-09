@@ -810,8 +810,8 @@ class Server {
             //RW modify 添加资源服务器地址代码，使得图片资源从代码服务器加载
             //console.log('http://' + req.headers.host);
             //TODO 是否放在项目的index.html里跟合适?
-            //TODO 通过polyfills 设置某个变量 标记是从开发服务器加载的资源，是的图片也从开发服务器加载
-            bundleSource = `(function(global) {global.SOURCE_CODE_SERVER_URL='http://${req.headers.host}';})(typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : this);${bundleSource}`;
+            //TODO 通过polyfills 设置某个变量 标记是从开发服务器加载的资源，使的图片也从开发服务器加载
+            bundleSource = `(function(global) {global.SOURCE_CODE_SERVER_URL='http://${req.headers.host}';})(window);${bundleSource}`;
           }
 
           debug('Writing response headers');

@@ -603,7 +603,7 @@ display: -webkit-box;可以 但 display: flex不可以?
 
 .lrnw-scroll-view {
   overflow-y: auto;
-  display: block;
+  display: block; /* TODO */
   -webkit-overflow-scrolling: touch;
 }
 
