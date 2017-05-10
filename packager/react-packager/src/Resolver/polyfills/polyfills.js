@@ -68,7 +68,8 @@ Object.assign = function(target, sources) {
   return target;
 };
 
-// RW modify 获取require得到的esModule 的default
+// LAB modify 获取require得到的esModule的default导出
 __requireDefault = function (obj) {
+  // XXX 没有判断esModule 因为rollup
   return (obj && obj.default) || obj;
 };
