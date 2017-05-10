@@ -263,4 +263,4 @@ class ScrollBehavior {
   };
 }
 
-module.exports = ScrollBehavior;
+export default ScrollBehavior;
