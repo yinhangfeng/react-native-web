@@ -13,6 +13,7 @@ git merge origin/lab-master 实现与lab-master 同步
 * InitializeCore.js 修改Promise 使用bluebird
 * 修复NavigationTransitioner push过程中replace 引起的并发问题this._isTransitioning
 * NavigationTransitioner onTransitionEnd 的当前transitionProps 始终与其对应的onTransitionStart一致
+* Resolver/polyfills/polyfills.js __requireDefault
 ### Android
 * 修改android TextInput 减少在oppo上无法弹出键盘的问题(还是有问题) ReactAndroid/src/**/ReactEditText.java
 * 修改ARTShapeShadowNode.java 修复绘制时的PATH_TYPE_ARC错误

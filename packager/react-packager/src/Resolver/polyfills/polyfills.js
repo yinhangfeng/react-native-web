@@ -67,3 +67,8 @@ Object.assign = function(target, sources) {
 
   return target;
 };
+
+// LAB modify 获取require得到的esModule的default导出
+global.__requireDefault = function (obj) {
+  return obj && obj.__esModule ? obj.default : obj;
+};
