@@ -41,7 +41,7 @@ buck-out
 .gradle
 local.properties
 *.iml
-# /android/
+/android/
 
 # Node
 node_modules
@@ -51,8 +51,9 @@ node_modules
 # OS X
 .DS_Store
 
+Examples/UIExplorer/Build/
+React/Build/
+
 # Test generated files
 /ReactAndroid/src/androidTest/assets/AndroidTestBundle.js
-
-/React/Build/
-/Examples/UIExplorer/Build/
+*.js.meta

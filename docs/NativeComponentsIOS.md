@@ -4,6 +4,7 @@ title: Native UI Components
 layout: docs
 category: Guides (iOS)
 permalink: docs/native-components-ios.html
+banner: ejected
 next: linking-libraries-ios
 previous: native-modules-ios
 ---
@@ -28,7 +29,7 @@ Vending a view is simple:
 // RCTMapManager.m
 #import <MapKit/MapKit.h>
 
-#import "RCTViewManager.h"
+#import <React/RCTViewManager.h>
 
 @interface RCTMapManager : RCTViewManager
 @end
@@ -231,7 +232,7 @@ So now we have a native map component that we can control easily from JS, but ho
 
 #import <MapKit/MapKit.h>
 
-#import "RCTComponent.h"
+#import <React/RCTComponent.h>
 
 @interface RCTMap: MKMapView
 
@@ -258,7 +259,7 @@ So now we have a native map component that we can control easily from JS, but ho
 #import <MapKit/MapKit.h>
 
 #import "RCTMap.h"
-#import "UIView+React.h"
+#import <React/UIView+React.h>
 
 @interface RCTMapManager() <MKMapViewDelegate>
 @end

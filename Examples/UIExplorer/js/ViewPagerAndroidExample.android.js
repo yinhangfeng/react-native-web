@@ -143,10 +143,6 @@ class ViewPagerAndroidExample extends React.Component {
     this.setState({page});
   };
 
-  // setState() {
-
-  // }
-
   render() {
     var pages = [];
     for (var i = 0; i < PAGES; i++) {
