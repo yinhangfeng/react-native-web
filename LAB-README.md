@@ -28,3 +28,6 @@ git merge origin/lab-master 实现与lab-master 同步
 * 修改packager Server 支持serverBuildBundleInterceptor  packager/react-packager/src/Server/index.js
 ### other
 * .gitignore 未忽略android maven目录，使得npm可直接依赖该git分支，在发布前运行./gradlew installArchives
+### patch
+#### 0.42
+* 提前应用https://github.com/facebook/react-native/commit/d2939eafbf56f99ea4da7374b9812ae6f54c1d3d?diff=split 和 https://github.com/facebook/react-native/commit/15429e333f8fd80c4778f222058dbb16278cf625?diff=split
