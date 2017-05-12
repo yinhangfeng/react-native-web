@@ -61,6 +61,7 @@ public class JSTouchDispatcher {
    * event (when the gesture starts).
    */
   public void handleTouchEvent(MotionEvent ev, EventDispatcher eventDispatcher) {
+//    Log.i("handleTouchEvent", "handleTouchEvent: mTargetTag:" + mTargetTag + " mTargetCoordinates:" + Arrays.toString(mTargetCoordinates) + " x:" + ev.getX() + " y:" + ev.getY() + " action:" + ev.getAction());
     int action = ev.getAction() & MotionEvent.ACTION_MASK;
     if (action == MotionEvent.ACTION_DOWN) {
       if (mTargetTag != -1) {

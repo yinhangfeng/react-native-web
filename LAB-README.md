@@ -20,6 +20,7 @@ git merge origin/lab-master 实现与lab-master 同步
 * ReactViewPager.java 修复ViewPagerAndroid 在父View为removeClippedSubviews时 无法populate的BUG
 * ViewPagerAndroid 
 * UIImplementation 对外暴露resolveShadowNode resolveView
+* TouchableNativeFeedback ReactViewGroup TNFHolder (TODO flat/RCTView)
 ### cli
 * react-native link 支持忽略 local-cli/core/config.index.js
 * react-native link 支持配置android moduleName 代替默认的'app' local-cli/core/config/android/index.js

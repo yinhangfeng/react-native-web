@@ -9,17 +9,11 @@
 
 package com.facebook.react.views.view;
 
-import javax.annotation.Nullable;
-
-import java.util.Locale;
-import java.util.Map;
-
 import android.annotation.TargetApi;
 import android.graphics.Rect;
 import android.os.Build;
 import android.view.View;
 
-import com.facebook.yoga.YogaConstants;
 import com.facebook.react.bridge.JSApplicationIllegalArgumentException;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
@@ -34,6 +28,12 @@ import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.ViewProps;
 import com.facebook.react.uimanager.annotations.ReactProp;
 import com.facebook.react.uimanager.annotations.ReactPropGroup;
+import com.facebook.yoga.YogaConstants;
+
+import java.util.Locale;
+import java.util.Map;
+
+import javax.annotation.Nullable;
 
 /**
  * View manager for AndroidViews (plain React Views).
@@ -108,6 +108,7 @@ public class ReactViewManager extends ViewGroupManager<ReactViewGroup> {
   public void setNativeBackground(ReactViewGroup view, @Nullable ReadableMap bg) {
     view.setTranslucentBackgroundDrawable(bg == null ?
             null : ReactDrawableHelper.createDrawableFromJSDescription(view.getContext(), bg));
+    view.createOrDestroyTNFHolder(bg != null);
   }
 
   @TargetApi(Build.VERSION_CODES.M)
@@ -116,6 +117,7 @@ public class ReactViewManager extends ViewGroupManager<ReactViewGroup> {
     view.setForeground(fg == null
         ? null
         : ReactDrawableHelper.createDrawableFromJSDescription(view.getContext(), fg));
+    view.createOrDestroyTNFHolder(fg != null);
   }
 
   @ReactProp(name = com.facebook.react.uimanager.ReactClippingViewGroupHelper.PROP_REMOVE_CLIPPED_SUBVIEWS)
@@ -194,7 +196,9 @@ public class ReactViewManager extends ViewGroupManager<ReactViewGroup> {
           throw new JSApplicationIllegalArgumentException(
               "Illegal number of arguments for 'setPressed' command");
         }
-        root.setPressed(args.getBoolean(0));
+        boolean pressed = args.getBoolean(0);
+        root.setPressed(pressed);
+        root.setTNFPressed(pressed);
         break;
       }
     }
@@ -253,5 +257,10 @@ public class ReactViewManager extends ViewGroupManager<ReactViewGroup> {
     } else {
       parent.removeAllViews();
     }
+  }
+
+  @Override
+  public void onDropViewInstance(ReactViewGroup view) {
+    super.onDropViewInstance(view);
   }
 }
