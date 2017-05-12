@@ -192,6 +192,7 @@ class ViewPagerAndroid extends React.Component {
 
   _onPageScrollStateChanged = (e: Event) => {
     if (this.props.onPageScrollStateChanged) {
+    // LAB modify 增加position参数
       this.props.onPageScrollStateChanged(e.nativeEvent.pageScrollState, e.nativeEvent.position);
     }
   };

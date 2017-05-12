@@ -94,6 +94,7 @@ public class TouchTargetHelper {
     View nativeTargetView = findTouchTargetView(viewCoords, viewGroup);
     if (nativeTargetView != null) {
       View reactTargetView = findClosestReactAncestor(nativeTargetView);
+//      Log.i("TouchTargetHelper", "findTargetTagAndCoordinatesForTouch: nativeTargetView:" + nativeTargetView.getId() + " reactTargetView:" + (reactTargetView != null ? reactTargetView.getId() : -1));
       if (reactTargetView != null) {
         if (nativeViewTag != null) {
           nativeViewTag[0] = reactTargetView.getId();

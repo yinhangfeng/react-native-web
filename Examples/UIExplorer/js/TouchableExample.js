@@ -75,6 +75,45 @@ exports.examples = [
       </View>
     );
   },
+ },{
+  title: '<TouchableNativeFeedback>',
+  description: 'TouchableNativeFeedback',
+  render: function() {
+    return (
+      <View>
+        <View style={{flexDirection: 'column', alignItems: 'center'}}>
+          <TouchableNativeFeedback
+            useForeground={true}>
+            <View style={{width: 250, height: 150, backgroundColor: '#039be5', justifyContent: 'center', alignItems: 'center',}}>
+              <Text style={{fontSize: 16, padding: 10, backgroundColor: '#4dd0e1'}}>TouchableNativeFeedback default</Text>
+            </View>
+          </TouchableNativeFeedback>
+
+          <TouchableNativeFeedback
+            background={TouchableNativeFeedback.SelectableBackgroundBorderless()}>
+            <View style={{width: 250, height: 150, backgroundColor: '#039be5', justifyContent: 'center', alignItems: 'center', marginTop: 30}}>
+              <Text style={{fontSize: 16}}>SelectableBackgroundBorderless</Text>
+            </View>
+          </TouchableNativeFeedback>
+
+          <TouchableNativeFeedback
+            background={TouchableNativeFeedback.Ripple('#26c6da', true)}>
+            <View style={{width: 250, height: 150, backgroundColor: '#039be5', justifyContent: 'center', alignItems: 'center', marginTop: 30}}>
+              <Text style={{fontSize: 16}}>Ripple</Text>
+            </View>
+          </TouchableNativeFeedback>
+
+          <TouchableNativeFeedback
+            background={TouchableNativeFeedback.Ripple('#26c6da', true)}
+            useForeground={true}>
+            <View style={{width: 250, height: 150, backgroundColor: '#039be5', justifyContent: 'center', alignItems: 'center', marginTop: 30}}>
+              <Text style={{fontSize: 16}}>Ripple useForeground</Text>
+            </View>
+          </TouchableNativeFeedback>
+        </View>
+      </View>
+    );
+  },
  }, {
   title: 'TouchableNativeFeedback with Animated child',
   description: 'TouchableNativeFeedback can have an AnimatedComponent as a' +

@@ -198,11 +198,12 @@ var TouchableNativeFeedback = React.createClass({
   },
 
   _dispatchHotspotUpdate: function(destX, destY) {
-    UIManager.dispatchViewManagerCommand(
-      ReactNative.findNodeHandle(this),
-      UIManager.RCTView.Commands.hotspotUpdate,
-      [destX || 0, destY || 0]
-    );
+    // LAB modify android native 实现
+    // UIManager.dispatchViewManagerCommand(
+    //   ReactNative.findNodeHandle(this),
+    //   UIManager.RCTView.Commands.hotspotUpdate,
+    //   [destX || 0, destY || 0]
+    // );
   },
 
   _dispatchPressedStateChange: function(pressed) {

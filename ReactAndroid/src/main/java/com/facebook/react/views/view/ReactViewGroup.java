@@ -11,11 +11,14 @@ package com.facebook.react.views.view;
 
 import javax.annotation.Nullable;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
+import android.os.Build;
+import android.util.Log;
 import android.view.animation.Animation;
 import android.view.MotionEvent;
 import android.view.View;
@@ -44,6 +47,42 @@ public class ReactViewGroup extends ViewGroup implements
   private static final LayoutParams sDefaultLayoutParam = new ViewGroup.LayoutParams(0, 0);
   /* should only be used in {@link #updateClippingToRect} */
   private static final Rect sHelperRect = new Rect();
+
+  // LAB modify TouchableNativeFeedback
+  static class TNFHolder {
+    boolean isPressed;
+    float lastX = Integer.MIN_VALUE;
+    float lastY;
+
+    @Override
+    public String toString() {
+      return "" + isPressed;
+    }
+  }
+
+  private TNFHolder tnfHolder;
+
+  public void createOrDestroyTNFHolder(boolean create) {
+    if (Build.VERSION.SDK_INT >= 21) {
+      if (create) {
+        if (tnfHolder == null) {
+          tnfHolder = new TNFHolder();
+        }
+      } else {
+        tnfHolder = null;
+      }
+    }
+  }
+
+  public void setTNFPressed(boolean pressed) {
+    if (Build.VERSION.SDK_INT >= 21 && tnfHolder != null) {
+      tnfHolder.isPressed = pressed;
+//      Log.i("ReactViewGroup", "setTNFPressed: " + pressed + " tnfHolder.lastX:" + tnfHolder.lastX  + " lastY:" + tnfHolder.lastY);
+      if (pressed && tnfHolder.lastX != Integer.MIN_VALUE) {
+        drawableHotspotChanged(tnfHolder.lastX, tnfHolder.lastY);
+      }
+    }
+  }
 
   /**
    * This listener will be set for child views when removeClippedSubview property is enabled. When
@@ -156,12 +195,29 @@ public class ReactViewGroup extends ViewGroup implements
     mOnInterceptTouchEventListener = listener;
   }
 
+  @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+  @Override
+  public boolean dispatchTouchEvent(MotionEvent ev) {
+//    Log.i("ReactViewGroup", "dispatchTouchEvent: " + getId() + " x:" + ev.getX() + " y:" + ev.getY() + " isPressed:" + tnfHolder + " action:" + ev.getAction());
+    if (tnfHolder != null) {
+      if (tnfHolder.isPressed) {
+        drawableHotspotChanged(ev.getX(), ev.getY());
+      } else {
+        tnfHolder.lastX = ev.getX();
+        tnfHolder.lastY = ev.getY();
+      }
+    }
+    return super.dispatchTouchEvent(ev);
+  }
+
   @Override
   public boolean onInterceptTouchEvent(MotionEvent ev) {
     if (mOnInterceptTouchEventListener != null &&
         mOnInterceptTouchEventListener.onInterceptTouchEvent(this, ev)) {
+//      Log.i("ReactViewGroup", "onInterceptTouchEvent: mOnInterceptTouchEventListener " + getId() + " x:" + ev.getX() + " y:" + ev.getY());
       return true;
     }
+//    Log.i("ReactViewGroup", "onInterceptTouchEvent: " + getId() + " x:" + ev.getX() + " y:" + ev.getY() + mOnInterceptTouchEventListener);
     // We intercept the touch event if the children are not supposed to receive it.
     if (mPointerEvents == PointerEvents.NONE || mPointerEvents == PointerEvents.BOX_ONLY) {
       return true;
@@ -171,6 +227,7 @@ public class ReactViewGroup extends ViewGroup implements
 
   @Override
   public boolean onTouchEvent(MotionEvent ev) {
+//    Log.i("ReactViewGroup", "onTouchEvent: " + getId() + " x:" + ev.getX() + " y:" + ev.getY());
     // We do not accept the touch event if this view is not supposed to receive it.
     if (mPointerEvents == PointerEvents.NONE || mPointerEvents == PointerEvents.BOX_NONE) {
       return false;

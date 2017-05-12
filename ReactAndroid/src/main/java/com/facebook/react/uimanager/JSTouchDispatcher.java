@@ -30,6 +30,7 @@ public class JSTouchDispatcher {
   private int mTargetTag = -1;
   private final float[] mTargetCoordinates = new float[2];
   private boolean mChildIsHandlingNativeGesture = false;
+  private long mGestureStartTime = TouchEvent.UNSET;
   private final ViewGroup mRootViewGroup;
   private final TouchEventCoalescingKeyHelper mTouchEventCoalescingKeyHelper =
     new TouchEventCoalescingKeyHelper();
@@ -60,6 +61,7 @@ public class JSTouchDispatcher {
    * event (when the gesture starts).
    */
   public void handleTouchEvent(MotionEvent ev, EventDispatcher eventDispatcher) {
+//    Log.i("handleTouchEvent", "handleTouchEvent: mTargetTag:" + mTargetTag + " mTargetCoordinates:" + Arrays.toString(mTargetCoordinates) + " x:" + ev.getX() + " y:" + ev.getY() + " action:" + ev.getAction());
     int action = ev.getAction() & MotionEvent.ACTION_MASK;
     if (action == MotionEvent.ACTION_DOWN) {
       if (mTargetTag != -1) {
@@ -72,6 +74,7 @@ public class JSTouchDispatcher {
       // {@link #findTargetTagForTouch} to find react view ID that will be responsible for handling
       // this gesture
       mChildIsHandlingNativeGesture = false;
+      mGestureStartTime = ev.getEventTime();
       mTargetTag = TouchTargetHelper.findTargetTagAndCoordinatesForTouch(
         ev.getX(),
         ev.getY(),
@@ -83,6 +86,7 @@ public class JSTouchDispatcher {
           mTargetTag,
           TouchEventType.START,
           ev,
+          mGestureStartTime,
           mTargetCoordinates[0],
           mTargetCoordinates[1],
           mTouchEventCoalescingKeyHelper));
@@ -105,10 +109,12 @@ public class JSTouchDispatcher {
           mTargetTag,
           TouchEventType.END,
           ev,
+          mGestureStartTime,
           mTargetCoordinates[0],
           mTargetCoordinates[1],
           mTouchEventCoalescingKeyHelper));
       mTargetTag = -1;
+      mGestureStartTime = TouchEvent.UNSET;
     } else if (action == MotionEvent.ACTION_MOVE) {
       // Update pointer position for current gesture
       eventDispatcher.dispatchEvent(
@@ -116,6 +122,7 @@ public class JSTouchDispatcher {
           mTargetTag,
           TouchEventType.MOVE,
           ev,
+          mGestureStartTime,
           mTargetCoordinates[0],
           mTargetCoordinates[1],
           mTouchEventCoalescingKeyHelper));
@@ -126,6 +133,7 @@ public class JSTouchDispatcher {
           mTargetTag,
           TouchEventType.START,
           ev,
+          mGestureStartTime,
           mTargetCoordinates[0],
           mTargetCoordinates[1],
           mTouchEventCoalescingKeyHelper));
@@ -136,6 +144,7 @@ public class JSTouchDispatcher {
           mTargetTag,
           TouchEventType.END,
           ev,
+          mGestureStartTime,
           mTargetCoordinates[0],
           mTargetCoordinates[1],
           mTouchEventCoalescingKeyHelper));
@@ -149,6 +158,7 @@ public class JSTouchDispatcher {
         );
       }
       mTargetTag = -1;
+      mGestureStartTime = TouchEvent.UNSET;
     } else {
       FLog.w(
         ReactConstants.TAG,
@@ -176,6 +186,7 @@ public class JSTouchDispatcher {
         mTargetTag,
         TouchEventType.CANCEL,
         androidEvent,
+        mGestureStartTime,
         mTargetCoordinates[0],
         mTargetCoordinates[1],
         mTouchEventCoalescingKeyHelper));

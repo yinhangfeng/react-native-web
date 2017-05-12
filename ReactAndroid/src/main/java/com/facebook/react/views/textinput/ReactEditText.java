@@ -352,6 +352,11 @@ public class ReactEditText extends EditText {
     mIsSettingTextFromJS = true;
     getText().replace(0, length(), spannableStringBuilder);
     mIsSettingTextFromJS = false;
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+      if (getBreakStrategy() != reactTextUpdate.getTextBreakStrategy()) {
+        setBreakStrategy(reactTextUpdate.getTextBreakStrategy());
+      }
+    }
   }
 
   /**
