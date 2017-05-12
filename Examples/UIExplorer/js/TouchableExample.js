@@ -78,6 +78,7 @@ exports.examples = [
  },{
   title: '<TouchableNativeFeedback>',
   description: 'TouchableNativeFeedback',
+  platform: 'android',
   render: function() {
     return (
       <View>
