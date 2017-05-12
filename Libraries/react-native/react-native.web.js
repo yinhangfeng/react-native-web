@@ -35,7 +35,7 @@ var ReactNative = {
   get RWPerformance() { return require('RWPerformance'); },
 
   // Components
-  ActivityIndicator require('ActivityIndicator'),
+  ActivityIndicator: require('ActivityIndicator'),
   // get ART() { return require('ReactNativeART'); },
   // get DatePickerIOS() { return require('DatePickerIOS'); },
   // get DrawerLayoutAndroid() { return require('DrawerLayoutAndroid'); },

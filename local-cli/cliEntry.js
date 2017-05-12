@@ -134,8 +134,6 @@ function run() {
     : 'setup_env.sh';
   childProcess.execFileSync(path.join(__dirname, setupEnvScript));
 
-  const config = getCliConfig();
-
   // RW 增加lab-react-native-web 的extraNodeModules 配置  使得react-native 与 react renders native 中的依赖定位到lab-react-native-web
   config.extraNodeModules = Object.assign({}, config.extraNodeModules, {
     'react-native': path.dirname(__dirname), //react-native 引用到当前库
