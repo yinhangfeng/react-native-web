@@ -216,9 +216,9 @@
     "jest-repl": "18.0.0",
     "jest-runtime": "18.0.0",
     "mock-fs": "^3.11.0",
-    "react": "~15.4.1",
-    "react-dom": "~15.4.1",
-    "react-test-renderer": "~15.4.1",
+    "react": "~15.4.2",
+    "react-dom": "~15.4.2",
+    "react-test-renderer": "~15.4.2",
     "shelljs": "0.6.0",
     "sinon": "^2.0.0-pre.2"
   }

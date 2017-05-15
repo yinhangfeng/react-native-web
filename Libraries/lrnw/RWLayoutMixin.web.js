@@ -3,9 +3,9 @@
  */
 'use strict';
 
-import React from 'react';
-import ReactDOM from 'react-dom';
-import getLayout from 'RWGetLayout';
+const React = require('react');
+const ReactDOM = require('react-dom');
+const getLayout = require('RWGetLayout');
 
 function layoutHandle() {
   let layout = getLayout(ReactDOM.findDOMNode(this));
@@ -36,6 +36,5 @@ const LayoutMixin = {
   },
 };
 
-export { LayoutMixin };
-export default LayoutMixin;
+module.exports = LayoutMixin;
 
