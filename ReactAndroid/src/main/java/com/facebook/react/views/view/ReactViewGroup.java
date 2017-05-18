@@ -198,13 +198,11 @@ public class ReactViewGroup extends ViewGroup implements
   @TargetApi(Build.VERSION_CODES.LOLLIPOP)
   @Override
   public boolean dispatchTouchEvent(MotionEvent ev) {
-    if (tnfHolder != null) {
-//      Log.i("ReactViewGroup", "dispatchTouchEvent: " + getId() + " x:" + ev.getX() + " y:" + ev.getY() + " tnfHolder:" + tnfHolder + " action:" + ev.getAction());
+//    Log.i("ReactViewGroup", "dispatchTouchEvent: " + getId() + " x:" + ev.getX() + " y:" + ev.getY() + " tnfHolder:" + tnfHolder + " action:" + ev.getAction());
+    int action = ev.getAction();
+    if (tnfHolder != null && (action == MotionEvent.ACTION_DOWN || action == MotionEvent.ACTION_MOVE || action == MotionEvent.ACTION_UP)) {
       if (tnfHolder.isPressed) {
-        if (ev.getAction() == MotionEvent.ACTION_DOWN || ev.getAction() == MotionEvent.ACTION_MOVE) {
-          // 不知道问什么 在ScrollView里面收到ACTION_CANCEL时 坐标不对
-          drawableHotspotChanged(ev.getX(), ev.getY());
-        }
+        drawableHotspotChanged(ev.getX(), ev.getY());
       } else {
         tnfHolder.lastX = ev.getX();
         tnfHolder.lastY = ev.getY();
