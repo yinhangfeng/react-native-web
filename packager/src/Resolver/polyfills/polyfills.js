@@ -69,6 +69,21 @@ Object.assign = function(target, sources) {
   return target;
 };
 
+// LAB modify
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is
+if (!Object.is) {
+  Object.is = function(x, y) {
+    // SameValue algorithm
+    if (x === y) { // Steps 1-5, 7-10
+      // Steps 6.b-6.e: +0 != -0
+      return x !== 0 || 1 / x === 1 / y;
+    } else {
+     // Step 6.a: NaN == NaN
+     return x !== x && y !== y;
+    }
+  };
+}
+
 // LAB modify 获取require得到的esModule的default导出
 __requireDefault = function (obj) {
   // XXX 没有判断esModule 因为rollup

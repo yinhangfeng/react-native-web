@@ -54,10 +54,10 @@ public class ReactViewGroup extends ViewGroup implements
     float lastX = Integer.MIN_VALUE;
     float lastY;
 
-    @Override
-    public String toString() {
-      return "" + isPressed;
-    }
+//    @Override
+//    public String toString() {
+//      return "{ isPressed: " + isPressed + " lastX:" + lastX + " lastY:" + lastY + " }";
+//    }
   }
 
   private TNFHolder tnfHolder;
@@ -75,9 +75,9 @@ public class ReactViewGroup extends ViewGroup implements
   }
 
   public void setTNFPressed(boolean pressed) {
+//    Log.i("ReactViewGroup", "setTNFPressed: " + pressed + " tnfHolder:" + tnfHolder);
     if (Build.VERSION.SDK_INT >= 21 && tnfHolder != null) {
       tnfHolder.isPressed = pressed;
-//      Log.i("ReactViewGroup", "setTNFPressed: " + pressed + " tnfHolder.lastX:" + tnfHolder.lastX  + " lastY:" + tnfHolder.lastY);
       if (pressed && tnfHolder.lastX != Integer.MIN_VALUE) {
         drawableHotspotChanged(tnfHolder.lastX, tnfHolder.lastY);
       }
@@ -198,8 +198,9 @@ public class ReactViewGroup extends ViewGroup implements
   @TargetApi(Build.VERSION_CODES.LOLLIPOP)
   @Override
   public boolean dispatchTouchEvent(MotionEvent ev) {
-//    Log.i("ReactViewGroup", "dispatchTouchEvent: " + getId() + " x:" + ev.getX() + " y:" + ev.getY() + " isPressed:" + tnfHolder + " action:" + ev.getAction());
-    if (tnfHolder != null) {
+//    Log.i("ReactViewGroup", "dispatchTouchEvent: " + getId() + " x:" + ev.getX() + " y:" + ev.getY() + " tnfHolder:" + tnfHolder + " action:" + ev.getAction());
+    int action = ev.getAction();
+    if (tnfHolder != null && (action == MotionEvent.ACTION_DOWN || action == MotionEvent.ACTION_MOVE || action == MotionEvent.ACTION_UP)) {
       if (tnfHolder.isPressed) {
         drawableHotspotChanged(ev.getX(), ev.getY());
       } else {

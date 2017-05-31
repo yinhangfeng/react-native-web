@@ -164,22 +164,29 @@ class ViewPagerAndroidExample extends React.Component {
     var { page, animationsAreEnabled } = this.state;
     return (
       <View removeClippedSubviews={true} style={styles.container}>
-        <ViewPagerAndroid
-          style={styles.viewPager}
-          initialPage={0}
-          scrollEnabled={this.state.scrollEnabled}
-          onPageScroll={this.onPageScroll}
-          onPageSelected={this.onPageSelected}
-          onPageScrollStateChanged={this.onPageScrollStateChanged}
-          pageMargin={10}
-          ref={viewPager => { this.viewPager = viewPager; }}>
-          {pages}
-        </ViewPagerAndroid>
+        <View emoveClippedSubviews={true} style={{flex: 1}}>
+          <ViewPagerAndroid
+            style={[{position: 'absolute', left: 0, top: 0, right: 0, bottom: 0,}, this.state.hide ? {top: -1000, bottom: 1000,} : null]}
+            initialPage={0}
+            scrollEnabled={this.state.scrollEnabled}
+            onPageScroll={this.onPageScroll}
+            onPageSelected={this.onPageSelected}
+            onPageScrollStateChanged={this.onPageScrollStateChanged}
+            pageMargin={10}
+            ref={viewPager => { this.viewPager = viewPager; }}>
+            {pages}
+          </ViewPagerAndroid>
+        </View>
         <View style={styles.buttons}>
           <Button
             enabled={true}
             text={this.state.scrollEnabled ? 'Scroll Enabled' : 'Scroll Disabled'}
             onPress={() => this.setState({scrollEnabled: !this.state.scrollEnabled})}
+          />
+          <Button
+            enabled={true}
+            text={'toggle hide'}
+            onPress={() => this.setState({hide: !this.state.hide})}
           />
         </View>
         <View style={styles.buttons}>

@@ -9,10 +9,8 @@
 
 package com.facebook.react.views.viewpager;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.view.MotionEvent;
 import android.view.View;
@@ -22,6 +20,9 @@ import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.events.EventDispatcher;
 import com.facebook.react.uimanager.events.NativeGestureUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Wrapper view for {@link ViewPager}. It's forwarding calls to {@link ViewGroup#addView} to add
@@ -230,15 +231,49 @@ public class ReactViewPager extends ViewPager {
   }
 
   // LAB modify 修复ViewPager 在removeClippedSubviews中无法populate的bug
+  // 修复重新onAttachedToWindow 之后无法滚动的bug
+  private boolean isLayoutPosted;
+  private boolean isFirstAttach = true;
+
+  private final Runnable mLayoutRunnable = new Runnable() {
+    @Override
+    public void run() {
+    isLayoutPosted = false;
+    measure(MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.EXACTLY),
+      MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.EXACTLY));
+    layout(getLeft(), getTop(), getRight(), getBottom());
+    }
+  };
+
   @Override
   protected void onAttachedToWindow() {
     super.onAttachedToWindow();
-    if (getMeasuredWidth() > 0 && getMeasuredHeight() > 0 && getAdapter().getCount() > 0 && getChildCount() == 0) {
-      // 已经measure过了 且adapter不为空 且当前没有子View，说明上一次measure时未attached(在父view为removeClippedSubviews时会发生)
+    isLayoutPosted = false;
+
+    if (!isFirstAttach || (getMeasuredWidth() > 0 && getMeasuredHeight() > 0 && getAdapter().getCount() > 0 && getChildCount() == 0)) {
+      // 1.removeClippedSubviews恢复时 onAttachedToWindow不会触发measure layout 所以对于不是第一次attach 需要强制调用measure layout
+      // 2.已经measure过了 且adapter不为空 且当前没有子View，说明上一次measure时未attached(在父view为removeClippedSubviews时会发生)
       forceLayout();
       measure(MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.EXACTLY),
         MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.EXACTLY));
       layout(getLeft(), getTop(), getRight(), getBottom());
     }
+    isFirstAttach = false;
   }
+
+  @Override
+  protected void onDetachedFromWindow() {
+    super.onDetachedFromWindow();
+    isLayoutPosted = false;
+  }
+
+  @Override
+  public void requestLayout() {
+    super.requestLayout();
+    if (!isLayoutPosted && ViewCompat.isAttachedToWindow(this)) {
+      isLayoutPosted = true;
+      post(mLayoutRunnable);
+    }
+  }
+
 }
