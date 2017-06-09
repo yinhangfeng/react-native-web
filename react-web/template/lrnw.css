@@ -639,6 +639,7 @@ display: -webkit-box;可以 但 display: flex不可以?
   top: -999999px !important;
   bottom: 999999px !important;
   visibility: hidden !important;
+  z-index: -999 !important;
 }
 
 .lrnw-nav-scene-anim {

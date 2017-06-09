@@ -1,11 +1,13 @@
 'use strict';
 const normalizeTouches = function(touches, timestamp) {
-  // const identifier = touch.identifier > 20 ? (touch.identifier % 20) : touch.identifier;
-
   const newTouches = [];
   let touch;
   for (let i = 0; i < touches.length; ++i) {
     touch = touches[i];
+
+    // Mobile Safari re-uses touch objects, so we copy the properties we want and normalize the identifier
+    const identifier = touch.identifier > 20 ? touch.identifier % 20 : touch.identifier;
+
     let locationX;
     let locationY;
     if (touch.target) {
