@@ -361,6 +361,10 @@ const APIExamples: Array<UIExplorerExample> = [
     key: 'PromiseExample',
     module: require('./PromiseExample'),
   },
+  {
+    key: 'XXXExample',
+    module: require('./XXXExample'),
+  },
 ];
 
 const Modules = {};

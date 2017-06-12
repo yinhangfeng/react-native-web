@@ -239,6 +239,10 @@ const APIExamples: Array<UIExplorerExample> = [
     key: 'XHRExample',
     module: require('./XHRExample'),
   },
+  {
+    key: 'XXXExample',
+    module: require('./XXXExample'),
+  },
 ];
 
 const Modules = {};
