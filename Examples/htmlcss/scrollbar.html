@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>scrollbar</title>
+  <style>
+  html {
+
+  }
+
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+  }
+
+  .lrnw-view {
+    position: relative;
+    box-sizing: border-box;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+    flex-direction: column;
+    -webkit-flex-shrink: 0;
+    flex-shrink: 0; /* 对设置的flex的元素，flex-shrink会被自动覆盖 但如果是单独设置flexGrow则会有问题 TODO*/
+  }
+
+  .lrnw-scroll-view {
+    overflow-y: auto;
+    display: block; /* TODO */
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .lrnw-scroll-view-h {
+    overflow-x: auto;
+    overflow-y: visible;
+  }
+
+  /* 只设置width为0 在横向scroll时 会占据一段空白区域 */
+  .lrnw-scrollbar-none::-webkit-scrollbar {
+    width: 0 !important;
+  }
+
+  .lrnw-scroll-view-content {
+    /*-webkit-transform: translateZ(0px);
+    -webkit-transform: translate3d(0,0,0);*/
+  }
+
+  .lrnw-scroll-view-content-h {
+    display: inline-flex;
+    -webkit-box-orient: horizontal;
+    -webkit-flex-direction: row;
+    flex-direction: row;
+  }
+  </style>
+</head>
+
+<body>
+  <p>1</p>
+  <div class="lrnw-view lrnw-scroll-view lrnw-scroll-view-h lrnw-scrollbar-none" style="background-color: #80cbc4;">
+      <div class="lrnw-view lrnw-scroll-view-content-h" style="width: 1600px; height: 200px; background-color: #29b6f6;">
+          <span>xxxxxxxxxxxx</span>
+      </div>
+  </div>
+  
+</body>
+
+</html>

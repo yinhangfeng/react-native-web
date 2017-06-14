@@ -92,6 +92,22 @@ exports.examples = [
       </View>
     );
   }
+}, {
+  title: '<ScrollView> (horizontal = true)',
+  description: 'You can display <ScrollView>\'s child components horizontally rather than vertically',
+  render: function() {
+    return (
+      <View>
+        <ScrollView
+          horizontal={true}
+          style={{flex: undefined, }}>
+          <View style={{width: 1600, height: 200, backgroundColor: '#4fc3f7', }}>
+            <Text>xxxxxxx</Text>
+          </View>
+        </ScrollView>
+      </View>
+    );
+  }
 }];
 
 class Thumb extends React.Component {

@@ -613,7 +613,7 @@ display: -webkit-box;可以 但 display: flex不可以?
 }
 
 .lrnw-scrollbar-none::-webkit-scrollbar {
-  width: 0 !important;
+  display: none;
 }
 
 .lrnw-scroll-view-content {
