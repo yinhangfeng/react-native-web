@@ -24,8 +24,8 @@ git merge origin/lab-master 实现与lab-master 同步
 * TouchableNativeFeedback ReactViewGroup TNFHolder (TODO flat/RCTView)
 ### cli
 * react-native link 支持忽略 local-cli/core/config.index.js
-* react-native link 支持配置android moduleName 代替默认的'app' local-cli/core/config/android/index.js
-* 修改 local-cli/link/android/patches/makeSettingsPatch.js  应用0.40 的方式
+* react-native link 支持配置android moduleName 代替默认的 'app' local-cli/core/config/android/index.js
+* 修改 local-cli/link/android/patches/makeSettingsPatch.js 应用0.40 的方式
 * 修改 local-cli/link/android/patches/makeImportPatch.js
 * 修改packager Server 支持serverBuildBundleInterceptor  packager/react-packager/src/Server/index.js
 ### other
