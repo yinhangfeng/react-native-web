@@ -605,6 +605,20 @@ display: -webkit-box;可以 但 display: flex不可以?
   overflow-y: auto;
   display: block; /* TODO */
   -webkit-overflow-scrolling: touch;
+
+  /*
+  Enable hardware compositing in modern browsers.
+  Creates a new layer with its own backing surface that can significantly
+  improve scroll performance.
+  https://github.com/necolas/react-native-web/blob/master/src/components/ScrollView/index.js
+  https://stackoverflow.com/questions/10814178/css-performance-relative-to-translatez0
+  http://www.jianshu.com/p/133085f0eb76
+  */
+  -webkit-transform: translateZ(0);
+  -moz-transform: translateZ(0);
+  -ms-transform: translateZ(0);
+  -o-transform: translateZ(0);
+  transform: translateZ(0);
 }
 
 .lrnw-scroll-view-h {

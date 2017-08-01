@@ -48,6 +48,9 @@ if ('alignSelf' in builtinStyle) {
       'space-between': 'justify',
       'space-around': 'distribute',
     };
+    // TODO 遇到flexBasis 0 可以使用width 0% height 0% 来兼容
+    // 但由于这里无法确认容器的flex 方向 所以可以给父容器加上表示方向的 class 子容器加上表示 flexBasis 的 class 来实现
+    // http://taobaofed.org/blog/2015/11/11/flexbox-in-mobile-web/
     prefixOldFlexbox = function(property, value, result) {
       let oldProperty = flexboxProperties[property] || property;
       let oldValue = oldFlexboxValues[value] || value;

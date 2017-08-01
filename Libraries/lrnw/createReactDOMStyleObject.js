@@ -83,7 +83,8 @@ module.exports = function(style) {
     }
   }
 
-  //TODO processTextShadow https://github.com/necolas/react-native-web/blob/master/src/apis/StyleSheet/processTextShadow.js
+  // TODO processTextShadow https://github.com/necolas/react-native-web/blob/master/src/apis/StyleSheet/processTextShadow.js
+  // TODO 对新的浏览器 flex 解析成flexGrow flexShrink flexBasis 的组合
 
   return result;
 };
