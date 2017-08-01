@@ -91,7 +91,6 @@ class ScrollViewCore {
       onTouchStart: this._scrollView.scrollResponderHandleTouchStart,
       onTouchMove: this._scrollView.scrollResponderHandleTouchMove,
       onTouchEnd: this._scrollView.scrollResponderHandleTouchEnd,
-      onTouchCancel: this._scrollView.scrollResponderHandleTouchCacnel,
       onScrollBeginDrag: this._scrollView.scrollResponderHandleScrollBeginDrag,
       onScrollEndDrag: this._scrollView.scrollResponderHandleScrollEndDrag,
       onMomentumScrollBegin: this._scrollView.scrollResponderHandleMomentumScrollBegin,
