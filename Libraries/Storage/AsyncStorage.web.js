@@ -10,8 +10,35 @@
  */
 'use strict';
 
-const localStorage = window.localStorage;
 const PREFIX = 'lrnw_AS_';
+let localStorage = window.localStorage;
+const isLocalStorageSupported = (function() {
+  try {
+    localStorage.setItem('___test', '1');
+    localStorage.removeItem('___test');
+    return true;
+  } catch (error) {
+    return false;
+  }
+})();
+if (!isLocalStorageSupported) {
+  // TODO length key()
+  const _storage = Object.create(null);
+  localStorage = {
+    getItem(key) {
+      return _storage[key];
+    },
+    setItem(key, value) {
+      _storage[key] = value;
+    },
+    removeItem(key) {
+      delete _storage[key];
+    },
+    clear() {
+      _storage = Object.create(null);
+    },
+  };
+}
 
 const mergeLocalStorageItem = (key, value) => {
   const oldValue = localStorage.getItem(key);
@@ -138,6 +165,18 @@ class AsyncStorage {
      }
    });
   }
+
+  /**
+   * RW 不管是否支持localStorage 都使用
+   */
+  static forceLocalStorage() {
+    if (!isLocalStorageSupported) {
+      localStorage = window.localStorage;
+    }
+  }
 }
+
+// RW 扩展 为false 表示不支持 此时如果不调用forceLocalStorage() 则数据存在内存中
+AsyncStorage.isLocalStorageSupported = isLocalStorageSupported;
 
 module.exports = AsyncStorage;

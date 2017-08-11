@@ -20,8 +20,9 @@ var ReactNative = require('react-native');
 var {
   AsyncStorage,
   Text,
-  View
+  View,
 } = ReactNative;
+var Button = require('./UIExplorerButton');
 
 var STORAGE_KEY = '@AsyncStorageExample:key';
 var COLORS = ['red', 'orange', 'yellow', 'green', 'blue'];
@@ -56,16 +57,12 @@ var BasicStorageExample = React.createClass({
     var color = this.state.selectedValue;
     return (
       <View>
-        <Text>
-          {'Selected: '}
-          <Text style={{color}}>
-            {this.state.selectedValue}
-          </Text>
-        </Text>
         <Text>{' '}</Text>
-        <Text onPress={this._removeStorage}>
-          Press here to remove from storage.
-        </Text>
+        <Button onPress={() => {
+          this._setValue('123');
+        }}>set</Button>
+        <Button onPress={this._getValue}>get</Button>
+        <Button onPress={this._removeStorage}>remove</Button>
         <Text>{' '}</Text>
         <Text>Messages:</Text>
         {this.state.messages.map((m) => <Text key={m}>{m}</Text>)}
@@ -73,27 +70,37 @@ var BasicStorageExample = React.createClass({
     );
   },
 
-  async _onValueChange(selectedValue) {
-    this.setState({selectedValue});
-    try {
-      await AsyncStorage.setItem(STORAGE_KEY, selectedValue);
-      this._appendMessage('Saved selection to disk: ' + selectedValue);
-    } catch (error) {
-      this._appendMessage('AsyncStorage error: ' + error.message);
-    }
+  _setValue(selectedValue) {
+    // this.setState({selectedValue});
+    AsyncStorage.setItem(STORAGE_KEY, selectedValue)
+      .then(() => {
+        console.log('set success');
+      }, (error) => {
+        console.log(error);
+      });
+  },
+
+  async _getValue() {
+    AsyncStorage.getItem(STORAGE_KEY)
+      .then((value) => {
+        console.log('get success', value);
+      }, (error) => {
+        console.log(error);
+      });
   },
 
   async _removeStorage() {
-    try {
-      await AsyncStorage.removeItem(STORAGE_KEY);
-      this._appendMessage('Selection removed from disk.');
-    } catch (error) {
-      this._appendMessage('AsyncStorage error: ' + error.message);
-    }
+    AsyncStorage.removeItem(STORAGE_KEY)
+      .then(() => {
+        console.log('remove success');
+      }, (error) => {
+        console.log(error);
+      });
   },
 
   _appendMessage(message) {
-    this.setState({messages: this.state.messages.concat(message)});
+    console.log(message);
+    // this.setState({messages: this.state.messages.concat(message)});
   },
 });
 
