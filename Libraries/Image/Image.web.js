@@ -248,7 +248,7 @@ const Image = React.createClass({
     }
     displaySource = displaySource || EMPTY_SOURCE;
     const {width, height, uri} = displaySource;
-    const backgroundImage = !this.props.responsive ? uri && `url("${uri}")` : null;
+    const backgroundImage = !this.props.responsive ? uri && `url(${uri})` : null;
     const style = flattenStyle([{width, height}, this.props.style]);
 
     const resizeMode = this.props.resizeMode || style.resizeMode || ImageResizeMode.cover;
