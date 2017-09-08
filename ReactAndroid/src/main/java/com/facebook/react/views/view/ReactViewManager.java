@@ -106,18 +106,18 @@ public class ReactViewManager extends ViewGroupManager<ReactViewGroup> {
 
   @ReactProp(name = "nativeBackgroundAndroid")
   public void setNativeBackground(ReactViewGroup view, @Nullable ReadableMap bg) {
-    view.setTranslucentBackgroundDrawable(bg == null ?
-            null : ReactDrawableHelper.createDrawableFromJSDescription(view.getContext(), bg));
-    view.createOrDestroyTNFHolder(bg != null);
+    // LAB modify hotspot corner
+    view.setNativeDrawable(bg == null ?
+            null : ReactDrawableHelper.createDrawableFromJSDescription(view.getContext(), bg, true), false);
   }
 
   @TargetApi(Build.VERSION_CODES.M)
   @ReactProp(name = "nativeForegroundAndroid")
   public void setNativeForeground(ReactViewGroup view, @Nullable ReadableMap fg) {
-    view.setForeground(fg == null
+    // LAB modify hotspot corner
+    view.setNativeDrawable(fg == null
         ? null
-        : ReactDrawableHelper.createDrawableFromJSDescription(view.getContext(), fg));
-    view.createOrDestroyTNFHolder(fg != null);
+        : ReactDrawableHelper.createDrawableFromJSDescription(view.getContext(), fg, true), true);
   }
 
   @ReactProp(name = com.facebook.react.uimanager.ReactClippingViewGroupHelper.PROP_REMOVE_CLIPPED_SUBVIEWS)

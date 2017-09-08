@@ -80,6 +80,53 @@ exports.examples = [
   description: 'TouchableNativeFeedback',
   platform: 'android',
   render: function() {
+    class RandomNativeProps extends React.Component {
+      constructor(props, context) {
+        super(props, context);
+        this.state = {
+          useForeground: false,
+          borderless: false,
+          borderRadius: 0,
+          borderTopLeftRadius: undefined,
+        };
+      }
+
+      render() {
+        return (
+          <TouchableNativeFeedback
+            onPress={() => {
+              if (this.randomTimer) {
+                return;
+              }
+              this.randomTimer = setTimeout(() => {
+                this.randomTimer = null;
+                this.setState({
+                  useForeground: Math.random() > 0.5,
+                  borderless: Math.random() > 0.5,
+                  borderRadius: Math.random() > 0.3 ? Math.random() * 50 : 0,
+                  borderTopLeftRadius: Math.random() > 0.5 ? Math.random() * 50 : undefined,
+                });
+              }, 1500);
+              
+            }}
+            // color #0000001F http://androidxref.com/7.1.1_r6/xref/frameworks/support/v7/appcompat/res/values/colors_material.xml#34  ripple_material_light
+            background={TouchableNativeFeedback.Ripple('#0000001F', this.state.borderless)}>
+            <View style={{
+              width: 250,
+              height: 150,
+              backgroundColor: '#4db6ac',
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginTop: 30,
+              borderRadius: this.state.borderRadius,
+              borderTopLeftRadius: this.state.borderTopLeftRadius,
+            }}>
+              <Text style={{fontSize: 16}}>random {JSON.stringify(this.state)}</Text>
+            </View>
+          </TouchableNativeFeedback>
+        );
+      }
+    }
     return (
       <View>
         <View style={{flexDirection: 'column', alignItems: 'center'}}>
@@ -111,6 +158,25 @@ exports.examples = [
               <Text style={{fontSize: 16}}>Ripple useForeground</Text>
             </View>
           </TouchableNativeFeedback>
+
+          <TouchableNativeFeedback
+            background={TouchableNativeFeedback.Ripple('#26c6da', false)}>
+            <View style={{
+              width: 250,
+              height: 150,
+              backgroundColor: '#039be5',
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginTop: 30,
+              borderRadius: 50,
+              borderTopLeftRadius: 0,
+              borderTopRightRadius: 40,
+              borderBottomRightRadius: 60,
+            }}>
+              <Text style={{fontSize: 16}}>Ripple corner radius</Text>
+            </View>
+          </TouchableNativeFeedback>
+          <RandomNativeProps />
         </View>
       </View>
     );

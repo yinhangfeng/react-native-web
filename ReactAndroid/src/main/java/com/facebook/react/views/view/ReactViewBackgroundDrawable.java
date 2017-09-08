@@ -87,14 +87,16 @@ public class ReactViewBackgroundDrawable extends Drawable {
   private @Nullable RectF mTempRectForBorderRadius;
   private @Nullable RectF mTempRectForBorderRadiusOutline;
   private boolean mNeedUpdatePathForBorderRadius = false;
-  private float mBorderRadius = YogaConstants.UNDEFINED;
+  // LAB modify package visible
+  float mBorderRadius = YogaConstants.UNDEFINED;
 
   /* Used by all types of background and for drawing borders */
   private final Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
   private int mColor = Color.TRANSPARENT;
   private int mAlpha = 255;
 
-  private @Nullable float[] mBorderCornerRadii;
+  // LAB modify package visible
+  @Nullable float[] mBorderCornerRadii;
 
   @Override
   public void draw(Canvas canvas) {

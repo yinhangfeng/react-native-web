@@ -81,7 +81,7 @@ class Example extends Component {
         <View style={styles.separate}></View>
         <Button
           title="React render Error"
-          onPress={this.testRenderError}/>
+          onPress={this.testRenderError.bind(this)}/>
       </View>
     );
   }
