@@ -81,6 +81,7 @@ class XMLHttpRequestEventTarget extends EventTarget(...REQUEST_EVENTS) {
   onprogress: ?Function;
   ontimeout: ?Function;
   onerror: ?Function;
+  onabort: ?Function;
   onloadend: ?Function;
 }
 
@@ -109,6 +110,7 @@ class XMLHttpRequest extends EventTarget(...XHR_EVENTS) {
   onprogress: ?Function;
   ontimeout: ?Function;
   onerror: ?Function;
+  onabort: ?Function;
   onloadend: ?Function;
   onreadystatechange: ?Function;
 
@@ -117,6 +119,7 @@ class XMLHttpRequest extends EventTarget(...XHR_EVENTS) {
   status: number = 0;
   timeout: number = 0;
   responseURL: ?string;
+  withCredentials: boolean = true
 
   upload: XMLHttpRequestEventTarget = new XMLHttpRequestEventTarget();
 
@@ -391,7 +394,9 @@ class XMLHttpRequest extends EventTarget(...XHR_EVENTS) {
 
   _clearSubscriptions(): void {
     (this._subscriptions || []).forEach(sub => {
-      sub.remove();
+      if (sub) {
+        sub.remove();
+      }
     });
     this._subscriptions = [];
   }
@@ -499,6 +504,7 @@ class XMLHttpRequest extends EventTarget(...XHR_EVENTS) {
       incrementalEvents,
       this.timeout,
       this.__didCreateRequest.bind(this),
+      this.withCredentials
     );
   }
 

@@ -11,7 +11,6 @@ package com.facebook.react.uimanager;
 
 import android.view.MotionEvent;
 import android.view.ViewGroup;
-
 import com.facebook.common.logging.FLog;
 import com.facebook.infer.annotation.Assertions;
 import com.facebook.react.common.ReactConstants;
@@ -61,7 +60,6 @@ public class JSTouchDispatcher {
    * event (when the gesture starts).
    */
   public void handleTouchEvent(MotionEvent ev, EventDispatcher eventDispatcher) {
-//    Log.i("handleTouchEvent", "handleTouchEvent: mTargetTag:" + mTargetTag + " mTargetCoordinates:" + Arrays.toString(mTargetCoordinates) + " x:" + ev.getX() + " y:" + ev.getY() + " action:" + ev.getAction());
     int action = ev.getAction() & MotionEvent.ACTION_MASK;
     if (action == MotionEvent.ACTION_DOWN) {
       if (mTargetTag != -1) {
@@ -75,12 +73,7 @@ public class JSTouchDispatcher {
       // this gesture
       mChildIsHandlingNativeGesture = false;
       mGestureStartTime = ev.getEventTime();
-      mTargetTag = TouchTargetHelper.findTargetTagAndCoordinatesForTouch(
-        ev.getX(),
-        ev.getY(),
-        mRootViewGroup,
-        mTargetCoordinates,
-        null);
+      mTargetTag = findTargetTagAndSetCoordinates(ev);
       eventDispatcher.dispatchEvent(
         TouchEvent.obtain(
           mTargetTag,
@@ -104,6 +97,7 @@ public class JSTouchDispatcher {
     } else if (action == MotionEvent.ACTION_UP) {
       // End of the gesture. We reset target tag to -1 and expect no further event associated with
       // this gesture.
+      findTargetTagAndSetCoordinates(ev);
       eventDispatcher.dispatchEvent(
         TouchEvent.obtain(
           mTargetTag,
@@ -117,6 +111,7 @@ public class JSTouchDispatcher {
       mGestureStartTime = TouchEvent.UNSET;
     } else if (action == MotionEvent.ACTION_MOVE) {
       // Update pointer position for current gesture
+      findTargetTagAndSetCoordinates(ev);
       eventDispatcher.dispatchEvent(
         TouchEvent.obtain(
           mTargetTag,
@@ -164,6 +159,12 @@ public class JSTouchDispatcher {
         ReactConstants.TAG,
         "Warning : touch event was ignored. Action=" + action + " Target=" + mTargetTag);
     }
+  }
+
+  private int findTargetTagAndSetCoordinates(MotionEvent ev) {
+    // This method updates `mTargetCoordinates` with coordinates for the motion event.
+    return TouchTargetHelper.findTargetTagAndCoordinatesForTouch(
+        ev.getX(), ev.getY(), mRootViewGroup, mTargetCoordinates, null);
   }
 
   private void dispatchCancelEvent(MotionEvent androidEvent, EventDispatcher eventDispatcher) {

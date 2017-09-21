@@ -16,10 +16,12 @@ const EventEmitter = require('EventEmitter');
 const Platform = require('Platform');
 const React = require('React');
 const StyleSheet = require('StyleSheet');
+const RCTLog = require('RCTLog');
 
 const infoLog = require('infoLog');
 const openFileInEditor = require('openFileInEditor');
 const parseErrorStack = require('parseErrorStack');
+const stringifySafe = require('stringifySafe');
 const symbolicateStackTrace = require('symbolicateStackTrace');
 
 import type EmitterSubscription from 'EmitterSubscription';
@@ -33,6 +35,7 @@ type WarningInfo = {
 
 const _warningEmitter = new EventEmitter();
 const _warningMap: Map<string, WarningInfo> = new Map();
+const IGNORED_WARNINGS: Array<string> = [];
 
 /**
  * YellowBox renders warnings at the bottom of the app being developed.
@@ -47,7 +50,11 @@ const _warningMap: Map<string, WarningInfo> = new Map();
  *   console.disableYellowBox = true;
  *   console.warn('YellowBox is disabled.');
  *
- * Warnings can be ignored programmatically by setting the array:
+ * Ignore specific warnings by calling:
+ *
+ *   YellowBox.ignoreWarnings(['Warning: ...']);
+ *
+ * (DEPRECATED) Warnings can be ignored programmatically by setting the array:
  *
  *   console.ignoredYellowBox = ['Warning: ...'];
  *
@@ -69,18 +76,16 @@ if (__DEV__) {
 
   (console: any).warn = function() {
     warn.apply(console, arguments);
-
-    if (typeof arguments[0] === 'string' &&
-        arguments[0].startsWith('(ADVICE)')) {
-      return;
-    }
-
     updateWarningMap.apply(null, arguments);
   };
 
   if (Platform.isTesting) {
     (console: any).disableYellowBox = true;
   }
+
+  RCTLog.setWarningHandler((...args) => {
+    updateWarningMap.apply(null, args);
+  });
 }
 
 /**
@@ -101,7 +106,6 @@ function updateWarningMap(format, ...args): void {
   if (console.disableYellowBox) {
     return;
   }
-  const stringifySafe = require('stringifySafe');
 
   format = String(format);
   const argCount = (format.match(/%s/g) || []).length;
@@ -109,6 +113,10 @@ function updateWarningMap(format, ...args): void {
     sprintf(format, ...args.slice(0, argCount)),
     ...args.slice(argCount).map(stringifySafe),
   ].join(' ');
+
+  if (warning.startsWith('(ADVICE)')) {
+    return;
+  }
 
   const warningInfo = _warningMap.get(warning);
   if (warningInfo) {
@@ -153,6 +161,16 @@ function ensureSymbolicatedWarning(warning: string): void {
 }
 
 function isWarningIgnored(warning: string): boolean {
+  const isIgnored =
+    IGNORED_WARNINGS.some(
+      (ignoredWarning: string) => warning.startsWith(ignoredWarning)
+    );
+
+  if (isIgnored) {
+    return true;
+  }
+
+  // DEPRECATED
   return (
     Array.isArray(console.ignoredYellowBox) &&
     console.ignoredYellowBox.some(
@@ -191,8 +209,13 @@ const StackRow = ({frame}: StackRowProps) => {
   const Text = require('Text');
   const TouchableHighlight = require('TouchableHighlight');
   const {file, lineNumber} = frame;
-  const fileParts = file.split('/');
-  const fileName = fileParts[fileParts.length - 1];
+  let fileName;
+  if (file) {
+    const fileParts = file.split('/');
+    fileName = fileParts[fileParts.length - 1];
+  } else {
+    fileName = '<unknown file>';
+  }
 
   return (
     <TouchableHighlight
@@ -240,7 +263,7 @@ const WarningInspector = ({
         <Text style={styles.inspectorCountText}>{countSentence}</Text>
         <TouchableHighlight onPress={toggleStacktrace} underlayColor="transparent">
           <Text style={styles.inspectorButtonText}>
-            {stacktraceVisible ? '▼' : '▶' } Stacktrace
+            {stacktraceVisible ? '\u{25BC}' : '\u{25B6}'} Stacktrace
           </Text>
         </TouchableHighlight>
       </View>
@@ -281,12 +304,11 @@ const WarningInspector = ({
   );
 };
 
-class YellowBox extends React.Component {
-  state: {
-    stacktraceVisible: boolean,
-    inspecting: ?string,
-    warningMap: Map<any, any>,
-  };
+class YellowBox extends React.Component<mixed, {
+  stacktraceVisible: boolean,
+  inspecting: ?string,
+  warningMap: Map<any, any>,
+}> {
   _listener: ?EmitterSubscription;
   dismissWarning: (warning: ?string) => void;
 
@@ -309,6 +331,14 @@ class YellowBox extends React.Component {
         warningMap,
       });
     };
+  }
+
+  static ignoreWarnings(warnings: Array<string>): void {
+    warnings.forEach((warning: string) => {
+      if (IGNORED_WARNINGS.indexOf(warning) === -1) {
+        IGNORED_WARNINGS.push(warning);
+      }
+    });
   }
 
   componentDidMount() {
@@ -395,27 +425,23 @@ const rowGutter = 1;
 const rowHeight = 46;
 
 // For unknown reasons, setting elevation: Number.MAX_VALUE causes remote debugging to
-// hang on iOS (some sort of overflow maybe). Setting it to Number.MAX_SAFE_INTEGER fixes
-// the iOS issue, but since elevation is an Android-only style property we should only
-// use it on Android.
+// hang on iOS (some sort of overflow maybe). Setting it to Number.MAX_SAFE_INTEGER fixes the iOS issue, but since
+// elevation is an android-only style property we might as well remove it altogether for iOS.
 // See: https://github.com/facebook/react-native/issues/12223
 const elevation = Platform.OS === 'android' ? Number.MAX_SAFE_INTEGER : undefined;
 
 var styles = StyleSheet.create({
   fullScreen: {
-    backgroundColor: 'transparent',
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    top: 0,
-    bottom: 0,
+    height: '100%',
+    width: '100%',
     elevation: elevation,
+    position: 'absolute',
   },
   inspector: {
     backgroundColor: backgroundColor(0.95),
-    flex: 1,
+    height: '100%',
     paddingTop: 5,
-    elevation: elevation,
+    elevation:elevation
   },
   inspectorButtons: {
     flexDirection: 'row',
@@ -463,12 +489,10 @@ var styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    elevation: elevation,
+    elevation: elevation
   },
   listRow: {
-    position: 'relative',
     backgroundColor: backgroundColor(0.95),
-    flex: 1,
     height: rowHeight,
     marginTop: rowGutter,
   },

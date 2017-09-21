@@ -1,22 +1,10 @@
 /**
- * Copyright (c) 2013-present, Facebook, Inc.
+ * Copyright (c) 2015-present, Facebook, Inc.
  * All rights reserved.
  *
  * This source code is licensed under the BSD-style license found in the
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
- *
- * The examples provided by Facebook are for non-commercial testing and
- * evaluation purposes only.
- *
- * Facebook reserves all rights not expressly granted.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL
- * FACEBOOK BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN
- * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
- * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.  *
  *
  * @providesModule SwipeableRow
  * @flow
@@ -24,15 +12,15 @@
 'use strict';
 
 const Animated = require('Animated');
-const PanResponder = require('PanResponder');
 const I18nManager = require('I18nManager');
+const PanResponder = require('PanResponder');
 const React = require('React');
+const PropTypes = require('prop-types');
 const StyleSheet = require('StyleSheet');
 const TimerMixin = require('react-timer-mixin');
 const View = require('View');
 
-const {PropTypes} = React;
-
+const createReactClass = require('create-react-class');
 const emptyFunction = require('fbjs/lib/emptyFunction');
 
 const IS_RTL = I18nManager.isRTL;
@@ -74,7 +62,8 @@ const RIGHT_SWIPE_THRESHOLD = 30 * SLOW_SPEED_SWIPE_FACTOR;
  * used in a normal ListView. See the renderRow for SwipeableListView to see how
  * to use this component separately.
  */
-const SwipeableRow = React.createClass({
+const SwipeableRow = createReactClass({
+  displayName: 'SwipeableRow',
   _panResponder: {},
   _previousLeft: CLOSED_LEFT_POSITION,
 
@@ -83,6 +72,7 @@ const SwipeableRow = React.createClass({
   propTypes: {
     children: PropTypes.any,
     isOpen: PropTypes.bool,
+    preventSwipeRight: PropTypes.bool,
     maxSwipeDistance: PropTypes.number.isRequired,
     onOpen: PropTypes.func.isRequired,
     onClose: PropTypes.func.isRequired,
@@ -119,6 +109,7 @@ const SwipeableRow = React.createClass({
   getDefaultProps(): Object {
     return {
       isOpen: false,
+      preventSwipeRight: false,
       maxSwipeDistance: 0,
       onOpen: emptyFunction,
       onClose: emptyFunction,
@@ -174,7 +165,7 @@ const SwipeableRow = React.createClass({
   render(): React.Element<any> {
     // The view hidden behind the main view
     let slideOutView;
-    if (this.state.isSwipeableViewRendered) {
+    if (this.state.isSwipeableViewRendered && this.state.rowHeight) {
       slideOutView = (
         <View style={[
           styles.slideOutContainer,
@@ -189,12 +180,7 @@ const SwipeableRow = React.createClass({
     const swipeableView = (
       <Animated.View
         onLayout={this._onSwipeableViewLayout}
-        style={[
-          styles.swipeableContainer,
-          {
-            transform: [{translateX: this.state.currentLeft}],
-          },
-        ]}>
+        style={{transform: [{translateX: this.state.currentLeft}]}}>
         {this.props.children}
       </Animated.View>
     );
@@ -206,6 +192,11 @@ const SwipeableRow = React.createClass({
         {swipeableView}
       </View>
     );
+  },
+
+  close(): void {
+    this.props.onClose();
+    this._animateToClosedPosition();
   },
 
   _onSwipeableViewLayout(event: Object): void {
@@ -286,6 +277,7 @@ const SwipeableRow = React.createClass({
       {
         duration,
         toValue,
+        useNativeDriver: true,
       },
     ).start(() => {
       this._previousLeft = toValue;
@@ -345,6 +337,10 @@ const SwipeableRow = React.createClass({
 
   // Ignore swipes due to user's finger moving slightly when tapping
   _isValidSwipe(gestureState: Object): boolean {
+    if (this.props.preventSwipeRight && this._previousLeft === CLOSED_LEFT_POSITION && gestureState.dx > 0) {
+      return false;
+    }
+
     return Math.abs(gestureState.dx) > HORIZONTAL_SWIPE_DISTANCE_THRESHOLD;
   },
 
@@ -393,9 +389,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 0,
     top: 0,
-  },
-  swipeableContainer: {
-    flex: 1,
   },
 });
 

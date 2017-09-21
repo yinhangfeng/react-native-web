@@ -13,7 +13,7 @@
 
 var ReactNativeStyleAttributes = require('ReactNativeStyleAttributes');
 
-export type ComponentInterface = ReactClass<any> | {
+export type ComponentInterface = React$ComponentType<any> | {
   name?: string,
   displayName?: string,
   propTypes: Object,
@@ -32,22 +32,40 @@ function verifyPropTypes(
     componentInterface.name ||
     'unknown';
 
-  if (!componentInterface.propTypes) {
+  // ReactNative `View.propTypes` have been deprecated in favor of
+  // `ViewPropTypes`. In their place a temporary getter has been added with a
+  // deprecated warning message. Avoid triggering that warning here by using
+  // temporary workaround, __propTypesSecretDontUseThesePlease.
+  // TODO (bvaughn) Revert this particular change any time after April 1
+  var propTypes =
+    (componentInterface : any).__propTypesSecretDontUseThesePlease ||
+    componentInterface.propTypes;
+
+  if (!propTypes) {
     throw new Error(
+      /* $FlowFixMe(>=0.53.0 site=react_native_fb,react_native_oss) This
+       * comment suppresses an error when upgrading Flow's support for React.
+       * To see the error delete this comment and run Flow. */
       '`' + componentName + '` has no propTypes defined`'
     );
   }
 
   var nativeProps = viewConfig.NativeProps;
   for (var prop in nativeProps) {
-    if (!componentInterface.propTypes[prop] &&
+    if (!propTypes[prop] &&
         !ReactNativeStyleAttributes[prop] &&
         (!nativePropsToIgnore || !nativePropsToIgnore[prop])) {
       var message;
-      if (componentInterface.propTypes.hasOwnProperty(prop)) {
+      if (propTypes.hasOwnProperty(prop)) {
+        /* $FlowFixMe(>=0.53.0 site=react_native_fb,react_native_oss) This
+         * comment suppresses an error when upgrading Flow's support for React.
+         * To see the error delete this comment and run Flow. */
         message = '`' + componentName + '` has incorrectly defined propType for native prop `' +
         viewConfig.uiViewClassName + '.' + prop + '` of native type `' + nativeProps[prop];
       } else {
+        /* $FlowFixMe(>=0.53.0 site=react_native_fb,react_native_oss) This
+         * comment suppresses an error when upgrading Flow's support for React.
+         * To see the error delete this comment and run Flow. */
         message = '`' + componentName + '` has no propType for native prop `' +
         viewConfig.uiViewClassName + '.' + prop + '` of native type `' +
         nativeProps[prop] + '`';

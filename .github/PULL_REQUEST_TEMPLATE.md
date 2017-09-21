@@ -1,19 +1,16 @@
-Thanks for submitting a pull request! Please provide enough information so that others can review your pull request:
+<!--
+Thank you for sending the PR! We appreciate you spending the time to work on these changes. 
 
-> **Unless you are a React Native release maintainer and cherry-picking an *existing* commit into a current release, ensure your pull request is targeting the `master` React Native branch.**
+Help us understand your motivation by explaining why you decided to make this change.
 
-Explain the **motivation** for making this change. What existing problem does the pull request solve?
+You can learn more about contributing to React Native here: http://facebook.github.io/react-native/docs/contributing.html
 
-Prefer **small pull requests**. These are much easier to review and more likely to get merged. Make sure the PR does only one thing, otherwise please split it.
+Happy contributing!
 
-**Test plan (required)**
+-->
 
-Demonstrate the code is solid. Example: The exact commands you ran and their output, screenshots / videos if the pull request changes UI.
+(Write your motivation here.)
 
-Make sure tests pass on both Travis and Circle CI.
+## Test Plan
 
-**Code formatting**
-
-Look around. Match the style of the rest of the codebase. See also the simple [style guide](https://github.com/facebook/react-native/blob/master/CONTRIBUTING.md#style-guide).
-
-For more info, see the ["Pull Requests" section of our "Contributing" guidelines](https://github.com/facebook/react-native/blob/master/CONTRIBUTING.md#pull-requests).
+(Write your test plan here. If you changed any code, please provide us with clear instructions on how you verified your changes work. Bonus points for screenshots and videos!)

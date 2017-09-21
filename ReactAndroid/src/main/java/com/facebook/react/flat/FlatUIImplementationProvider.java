@@ -9,22 +9,38 @@
 
 package com.facebook.react.flat;
 
-import java.util.List;
-
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.uimanager.UIImplementationProvider;
 import com.facebook.react.uimanager.ViewManager;
 import com.facebook.react.uimanager.events.EventDispatcher;
+import java.util.List;
 
 /**
  * UIImplementationProvider that creates instances of {@link FlatUIImplementation}.
  */
 public final class FlatUIImplementationProvider extends UIImplementationProvider {
+
+  private final boolean mMemoryImprovementEnabled;
+
+  public FlatUIImplementationProvider() {
+    mMemoryImprovementEnabled = true;
+  }
+
+  public FlatUIImplementationProvider(boolean memoryImprovementEnabled) {
+    mMemoryImprovementEnabled = memoryImprovementEnabled;
+  }
+
   @Override
   public FlatUIImplementation createUIImplementation(
       ReactApplicationContext reactContext,
       List<ViewManager> viewManagers,
-      EventDispatcher eventDispatcher) {
-    return FlatUIImplementation.createInstance(reactContext, viewManagers, eventDispatcher);
+      EventDispatcher eventDispatcher,
+      int minTimeLeftInFrameForNonBatchedOperationMs) {
+    return FlatUIImplementation.createInstance(
+        reactContext,
+        viewManagers,
+        eventDispatcher,
+        mMemoryImprovementEnabled,
+        minTimeLeftInFrameForNonBatchedOperationMs);
   }
 }
