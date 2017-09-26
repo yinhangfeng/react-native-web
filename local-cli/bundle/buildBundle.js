@@ -63,6 +63,7 @@ function buildBundle(
     dev: args.dev,
     minify: !args.dev,
     platform: args.platform,
+    extraBuildOptions: args.extraBuildOptions,
   };
 
   // If a packager instance was not provided, then just create one for this
@@ -108,7 +109,7 @@ function buildBundle(
       transformModulePath: transformModulePath,
       watch: false,
       workerPath: config.getWorkerPath && config.getWorkerPath(),
-      // TODO plugins
+      plugins: config.plugins,
     };
 
     packagerInstance = new Server(options);

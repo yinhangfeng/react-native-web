@@ -25,5 +25,9 @@ git merge origin/lab-master 实现与lab-master 同步
 * 修改 local-cli/link/android/patches/makeSettingsPatch.js 应用0.40 的方式
 * 修改 local-cli/link/android/patches/makeImportPatch.js
 * bundleCommandLineArgs.js 增加 --extra-build-options 参数
+* rn-cli.config.js 增加 plugins 支持
 ### other
 * .gitignore 未忽略android maven目录，使得npm可直接依赖该git分支，在发布前运行./gradlew installArchives
+
+# TODO
+extraBuildOptions 的完整支持 目前只支持 bundle

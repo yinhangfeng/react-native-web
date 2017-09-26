@@ -174,7 +174,7 @@ function getPackagerServer(args, config) {
     verbose: args.verbose,
     watch: !args.nonPersistent,
     workerPath: config.getWorkerPath(),
-    // TODO plugins
+    plugins: config.plugins,
   });
 }
 

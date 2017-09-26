@@ -23,6 +23,8 @@ const RNTesterList = require('./RNTesterList.ios');
 const RNTesterNavigationReducer = require('./RNTesterNavigationReducer');
 const URIActionMap = require('./URIActionMap');
 
+const xxx = require('xxx');
+
 const {
   Button,
   AppRegistry,

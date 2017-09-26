@@ -15,6 +15,7 @@
 const AnimatedValue = require('../nodes/AnimatedValue');
 const AnimatedValueXY = require('../nodes/AnimatedValueXY');
 const Animation = require('./Animation');
+const invariant = require('fbjs/lib/invariant');
 
 const {shouldUseNativeDriver} = require('../NativeAnimatedHelper');
 
