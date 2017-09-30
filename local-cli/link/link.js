@@ -5,6 +5,8 @@
  * This source code is licensed under the BSD-style license found in the
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
+ *
+ * @flow
  */
 
 const log = require('npmlog');
@@ -28,6 +30,9 @@ const getDependencyConfig = require('./getDependencyConfig');
 const pollParams = require('./pollParams');
 const commandStub = require('./commandStub');
 const promisify = require('./promisify');
+const findReactNativeScripts = require('../util/findReactNativeScripts');
+
+import type {RNConfig} from '../core';
 
 log.heading = 'rnpm-link';
 
@@ -125,20 +130,32 @@ const linkAssets = (project, assets) => {
 };
 
 /**
- * Updates project and links all dependencies to it
+ * Updates project and links all dependencies to it.
  *
- * If optional argument [packageName] is provided, it's the only one that's checked
+ * @param args If optional argument [packageName] is provided,
+ *             only that package is processed.
+ * @param config CLI config, see local-cli/core/index.js
  */
-function link(args, config) {
+function link(args: Array<string>, config: RNConfig) {
   var project;
   try {
     project = config.getProjectConfig();
   } catch (err) {
     log.error(
       'ERRPACKAGEJSON',
-      'No package found. Are you sure it\'s a React Native project?'
+      'No package found. Are you sure this is a React Native project?'
     );
     return Promise.reject(err);
+  }
+
+  if (!project.android && !project.ios && !project.windows && findReactNativeScripts()) {
+    throw new Error(
+      '`react-native link` can not be used in Create React Native App projects. ' +
+      'If you need to include a library that relies on custom native code, ' +
+      'you might have to eject first. ' +
+      'See https://github.com/react-community/create-react-native-app/blob/master/EJECTING.md ' +
+      'for more information.'
+    );
   }
 
   let packageName = args[0];
@@ -169,8 +186,8 @@ function link(args, config) {
 
   return promiseWaterfall(tasks).catch(err => {
     log.error(
-      `It seems something went wrong while linking. Error: ${err.message} \n`
-      + 'Please file an issue here: https://github.com/facebook/react-native/issues'
+      `Something went wrong while linking. Error: ${err.message} \n` +
+      'Please file an issue here: https://github.com/facebook/react-native/issues'
     );
     throw err;
   });
@@ -178,6 +195,6 @@ function link(args, config) {
 
 module.exports = {
   func: link,
-  description: 'links all native dependencies',
+  description: 'links all native dependencies (updates native build files)',
   name: 'link [packageName]',
 };

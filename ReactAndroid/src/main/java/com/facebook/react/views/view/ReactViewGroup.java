@@ -18,7 +18,6 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Build;
-import android.util.Log;
 import android.view.animation.Animation;
 import android.view.MotionEvent;
 import android.view.View;
@@ -34,13 +33,17 @@ import com.facebook.react.uimanager.PointerEvents;
 import com.facebook.react.uimanager.ReactClippingViewGroup;
 import com.facebook.react.uimanager.ReactClippingViewGroupHelper;
 import com.facebook.react.uimanager.ReactPointerEventsView;
+import com.facebook.yoga.YogaConstants;
+import com.facebook.react.uimanager.ReactZIndexedViewGroup;
+import com.facebook.react.uimanager.ViewGroupDrawingOrderHelper;
 
 /**
  * Backing for a React View. Has support for borders, but since borders aren't common, lazy
  * initializes most of the storage needed for them.
  */
 public class ReactViewGroup extends ViewGroup implements
-    ReactInterceptingViewGroup, ReactClippingViewGroup, ReactPointerEventsView, ReactHitSlopView {
+    ReactInterceptingViewGroup, ReactClippingViewGroup, ReactPointerEventsView, ReactHitSlopView,
+    ReactZIndexedViewGroup {
 
   private static final int ARRAY_CAPACITY_INCREMENT = 12;
   private static final int DEFAULT_BACKGROUND_COLOR = Color.TRANSPARENT;
@@ -49,10 +52,11 @@ public class ReactViewGroup extends ViewGroup implements
   private static final Rect sHelperRect = new Rect();
 
   // LAB modify TouchableNativeFeedback
-  static class TNFHolder {
+  private static class TNFHolder {
     boolean isPressed;
     float lastX = Integer.MIN_VALUE;
     float lastY;
+    ReactViewCornerRippleDrawable mReactCornerRippleDrawable;
 
 //    @Override
 //    public String toString() {
@@ -60,26 +64,59 @@ public class ReactViewGroup extends ViewGroup implements
 //    }
   }
 
-  private TNFHolder tnfHolder;
+  private TNFHolder mTNFHolder;
 
-  public void createOrDestroyTNFHolder(boolean create) {
+  // LAB modify hotspot corner
+  public void setNativeDrawable(Drawable drawable, boolean foreground) {
     if (Build.VERSION.SDK_INT >= 21) {
-      if (create) {
-        if (tnfHolder == null) {
-          tnfHolder = new TNFHolder();
+      if (drawable != null) {
+        if (mTNFHolder == null) {
+          mTNFHolder = new TNFHolder();
+        }
+        if (drawable instanceof ReactViewCornerRippleDrawable) {
+          mTNFHolder.mReactCornerRippleDrawable = (ReactViewCornerRippleDrawable) drawable;
+          syncCornerRadius();
+        } else {
+          mTNFHolder.mReactCornerRippleDrawable = null;
         }
       } else {
-        tnfHolder = null;
+        mTNFHolder = null;
       }
+    }
+    if (foreground) {
+      setForeground(drawable);
+    } else {
+      setTranslucentBackgroundDrawable(drawable);
     }
   }
 
+  private void syncCornerRadius() {
+    ReactViewBackgroundDrawable reactBackgroundDrawable = mReactBackgroundDrawable;
+    if (reactBackgroundDrawable == null || mTNFHolder == null || mTNFHolder.mReactCornerRippleDrawable == null) {
+      return;
+    }
+    float defaultBorderRadius = reactBackgroundDrawable.mBorderRadius;
+    float[] borderCornerRadii = reactBackgroundDrawable.mBorderCornerRadii;
+    if (YogaConstants.isUndefined(defaultBorderRadius)) {
+      if (borderCornerRadii == null) {
+        return;
+      }
+      defaultBorderRadius = 0;
+    }
+
+    float topLeftRadius = borderCornerRadii != null && !YogaConstants.isUndefined(borderCornerRadii[0]) ? borderCornerRadii[0] : defaultBorderRadius;
+    float topRightRadius = borderCornerRadii != null && !YogaConstants.isUndefined(borderCornerRadii[1]) ? borderCornerRadii[1] : defaultBorderRadius;
+    float bottomRightRadius = borderCornerRadii != null && !YogaConstants.isUndefined(borderCornerRadii[2]) ? borderCornerRadii[2] : defaultBorderRadius;
+    float bottomLeftRadius = borderCornerRadii != null && !YogaConstants.isUndefined(borderCornerRadii[3]) ? borderCornerRadii[3] : defaultBorderRadius;
+    mTNFHolder.mReactCornerRippleDrawable.setCornerRadii(topLeftRadius, topRightRadius, bottomRightRadius, bottomLeftRadius);
+  }
+
   public void setTNFPressed(boolean pressed) {
-//    Log.i("ReactViewGroup", "setTNFPressed: " + pressed + " tnfHolder:" + tnfHolder);
-    if (Build.VERSION.SDK_INT >= 21 && tnfHolder != null) {
-      tnfHolder.isPressed = pressed;
-      if (pressed && tnfHolder.lastX != Integer.MIN_VALUE) {
-        drawableHotspotChanged(tnfHolder.lastX, tnfHolder.lastY);
+//    Log.i("ReactViewGroup", "setTNFPressed: " + pressed + " mTNFHolder:" + mTNFHolder);
+    if (Build.VERSION.SDK_INT >= 21 && mTNFHolder != null) {
+      mTNFHolder.isPressed = pressed;
+      if (pressed && mTNFHolder.lastX != Integer.MIN_VALUE) {
+        drawableHotspotChanged(mTNFHolder.lastX, mTNFHolder.lastY);
       }
     }
   }
@@ -135,9 +172,12 @@ public class ReactViewGroup extends ViewGroup implements
   private @Nullable ReactViewBackgroundDrawable mReactBackgroundDrawable;
   private @Nullable OnInterceptTouchEventListener mOnInterceptTouchEventListener;
   private boolean mNeedsOffscreenAlphaCompositing = false;
+  private final ViewGroupDrawingOrderHelper mDrawingOrderHelper;
 
   public ReactViewGroup(Context context) {
     super(context);
+
+    mDrawingOrderHelper = new ViewGroupDrawingOrderHelper(this);
   }
 
   @Override
@@ -198,14 +238,14 @@ public class ReactViewGroup extends ViewGroup implements
   @TargetApi(Build.VERSION_CODES.LOLLIPOP)
   @Override
   public boolean dispatchTouchEvent(MotionEvent ev) {
-//    Log.i("ReactViewGroup", "dispatchTouchEvent: " + getId() + " x:" + ev.getX() + " y:" + ev.getY() + " tnfHolder:" + tnfHolder + " action:" + ev.getAction());
+//    Log.i("ReactViewGroup", "dispatchTouchEvent: " + getId() + " x:" + ev.getX() + " y:" + ev.getY() + " mTNFHolder:" + mTNFHolder + " action:" + ev.getAction());
     int action = ev.getAction();
-    if (tnfHolder != null && (action == MotionEvent.ACTION_DOWN || action == MotionEvent.ACTION_MOVE || action == MotionEvent.ACTION_UP)) {
-      if (tnfHolder.isPressed) {
+    if (mTNFHolder != null && (action == MotionEvent.ACTION_DOWN || action == MotionEvent.ACTION_MOVE || action == MotionEvent.ACTION_UP)) {
+      if (mTNFHolder.isPressed) {
         drawableHotspotChanged(ev.getX(), ev.getY());
       } else {
-        tnfHolder.lastX = ev.getX();
-        tnfHolder.lastY = ev.getY();
+        mTNFHolder.lastX = ev.getX();
+        mTNFHolder.lastY = ev.getY();
       }
     }
     return super.dispatchTouchEvent(ev);
@@ -267,10 +307,12 @@ public class ReactViewGroup extends ViewGroup implements
 
   public void setBorderRadius(float borderRadius) {
     getOrCreateReactViewBackground().setRadius(borderRadius);
+    syncCornerRadius();
   }
 
   public void setBorderRadius(float borderRadius, int position) {
     getOrCreateReactViewBackground().setRadius(borderRadius, position);
+    syncCornerRadius();
   }
 
   public void setBorderStyle(@Nullable String style) {
@@ -430,6 +472,52 @@ public class ReactViewGroup extends ViewGroup implements
     if (mRemoveClippedSubviews) {
       updateClippingRect();
     }
+  }
+
+  @Override
+  public void addView(View child, int index, LayoutParams params) {
+    // This will get called for every overload of addView so there is not need to override every method.
+    mDrawingOrderHelper.handleAddView(child);
+    setChildrenDrawingOrderEnabled(mDrawingOrderHelper.shouldEnableCustomDrawingOrder());
+
+    super.addView(child, index, params);
+  }
+
+  @Override
+  public void removeView(View view) {
+    mDrawingOrderHelper.handleRemoveView(view);
+    setChildrenDrawingOrderEnabled(mDrawingOrderHelper.shouldEnableCustomDrawingOrder());
+
+    super.removeView(view);
+  }
+
+  @Override
+  public void removeViewAt(int index) {
+    mDrawingOrderHelper.handleRemoveView(getChildAt(index));
+    setChildrenDrawingOrderEnabled(mDrawingOrderHelper.shouldEnableCustomDrawingOrder());
+
+    super.removeViewAt(index);
+  }
+
+  @Override
+  protected int getChildDrawingOrder(int childCount, int index) {
+    return mDrawingOrderHelper.getChildDrawingOrder(childCount, index);
+  }
+
+  @Override
+  public int getZIndexMappedChildIndex(int index) {
+    if (mDrawingOrderHelper.shouldEnableCustomDrawingOrder()) {
+      return mDrawingOrderHelper.getChildDrawingOrder(getChildCount(), index);
+    } else {
+      return index;
+    }
+  }
+
+  @Override
+  public void updateDrawingOrder() {
+    mDrawingOrderHelper.update();
+    setChildrenDrawingOrderEnabled(mDrawingOrderHelper.shouldEnableCustomDrawingOrder());
+    invalidate();
   }
 
   @Override

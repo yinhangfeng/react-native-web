@@ -8,16 +8,6 @@
  *
  * @providesModule BatchedBridge
  */
-'use strict';
 
-module.exports = {
-
-  //RW 还不清楚BatchedBridge的具体机制 web环境先留空
-  registerCallableModule() {
-
-  },
-
-  getEventLoopRunningTime() {
-    return 1;
-  }
-};
+//RW 不需要
+module.exports = {};

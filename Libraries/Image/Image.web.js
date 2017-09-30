@@ -1,32 +1,40 @@
 /**
+ * RW SYNC react-native: 0.49 ios react-native-web: TODO
+ * Copyright (c) 2015-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree. An additional grant
+ * of patent rights can be found in the PATENTS file in the same directory.
+ *
  * @providesModule Image
+ * @flow
  */
-
 'use strict';
 
-const EdgeInsetsPropType = require('EdgeInsetsPropType');
+// const EdgeInsetsPropType = require('EdgeInsetsPropType');
 const ImageResizeMode = require('ImageResizeMode');
 const ImageSourcePropType = require('ImageSourcePropType');
 const ImageStylePropTypes = require('ImageStylePropTypes');
 const NativeMethodsMixin = require('NativeMethodsMixin');
-const PropTypes = require('react/lib/ReactPropTypes');
 const React = require('React');
-const ReactNativeViewAttributes = require('ReactNativeViewAttributes');
+const PropTypes = require('prop-types');
+// const ReactNativeViewAttributes = require('ReactNativeViewAttributes');
 const StyleSheet = require('StyleSheet');
 const StyleSheetPropType = require('StyleSheetPropType');
-const CSSClassNames = require('CSSClassNames');
-const classNames = require('classnames');
-const createWebCoreElement = require('createWebCoreElement');
-const View = require('View');
 
 const flattenStyle = require('flattenStyle');
 const resolveAssetSource = require('resolveAssetSource');
 
-const STATUS_ERRORED = 'ERRORED';
-const STATUS_LOADED = 'LOADED';
-const STATUS_LOADING = 'LOADING';
-const STATUS_PENDING = 'PENDING';
-const STATUS_IDLE = 'IDLE'; // 表示空闲状态 对于不需要加载事件的情况 始终为IDLE
+const CSSClassNames = require('CSSClassNames');
+const createWebCoreElement = require('createWebCoreElement');
+const View = require('View');
+
+const STATUS_ERRORED = 1;
+const STATUS_LOADED = 2;
+const STATUS_LOADING = 3;
+const STATUS_PENDING = 4;
+const STATUS_IDLE = 5; // 表示空闲状态 对于不需要加载事件的情况 始终为IDLE
 
 const EMPTY_SOURCE = {};
 
@@ -43,26 +51,52 @@ function needImageLoader(props) {
 // NOTE
 // 1. tintColor不支持
 // 2. responsive时不支持resizeMode
-const Image = React.createClass({
+const Image = createReactClass({
+  displayName: 'Image',
   propTypes: {
+    /**
+     * > `ImageResizeMode` is an `Enum` for different image resizing modes, set via the
+     * > `resizeMode` style property on `Image` components. The values are `contain`, `cover`,
+     * > `stretch`, `center`, `repeat`.
+     */
     style: StyleSheetPropType(ImageStylePropTypes),
     /**
-     * `uri` is a string representing the resource identifier for the image, which
-     * could be an http address, a local file path, or the name of a static image
-     * resource (which should be wrapped in the `require('./path/to/image.png')` function).
+     * The image source (either a remote URL or a local file resource).
+     *
+     * This prop can also contain several remote URLs, specified together with
+     * their width and height and potentially with scale/other URI arguments.
+     * The native side will then choose the best `uri` to display based on the
+     * measured size of the image container. A `cache` property can be added to
+     * control how networked request interacts with the local cache.
+     *
+     * The currently supported formats are `png`, `jpg`, `jpeg`, `bmp`, `gif`,
+     * `webp` (Android only), `psd` (iOS only).
      */
     source: ImageSourcePropType,
     /**
      * A static image to display while loading the image source.
-     * @platform ios TODO RW 在android平台实现之后需要
+     *
+     * - `uri` - a string representing the resource identifier for the image, which
+     * should be either a local file path or the name of a static image resource
+     * (which should be wrapped in the `require('./path/to/image.png')` function).
+     * - `width`, `height` - can be specified if known at build time, in which case
+     * these will be used to set the default `<Image/>` component dimensions.
+     * - `scale` - used to indicate the scale factor of the image. Defaults to 1.0 if
+     * unspecified, meaning that one image pixel equates to one display point / DIP.
+     * - `number` - Opaque type returned by something like `require('./image.jpg')`.
+     *
+     * @platform ios
      */
-    // defaultSource: PropTypes.oneOfType([
-    //   PropTypes.shape({
-    //     uri: PropTypes.string,
-    //   }),
-    //   // Opaque type returned by require('./image.jpg')
-    //   PropTypes.number,
-    // ]),
+    defaultSource: PropTypes.oneOfType([
+      // TODO: Tooling to support documenting these directly and having them display in the docs.
+      PropTypes.shape({
+        uri: PropTypes.string,
+        width: PropTypes.number,
+        height: PropTypes.number,
+        scale: PropTypes.number,
+      }),
+      PropTypes.number,
+    ]),
     /**
      * When true, indicates the image is an accessibility element.
      * @platform ios
@@ -73,35 +107,58 @@ const Image = React.createClass({
      * the image.
      * @platform ios
      */
-    accessibilityLabel: PropTypes.string,
+    // accessibilityLabel: PropTypes.node,
     /**
     * blurRadius: the blur radius of the blur filter added to the image
-    * @platform ios
     */
     blurRadius: PropTypes.number,
     /**
      * When the image is resized, the corners of the size specified
-     * by capInsets will stay a fixed size, but the center content and borders
+     * by `capInsets` will stay a fixed size, but the center content and borders
      * of the image will be stretched.  This is useful for creating resizable
-     * rounded buttons, shadows, and other resizable assets.  More info on
-     * [Apple documentation](https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIImage_Class/index.html#//apple_ref/occ/instm/UIImage/resizableImageWithCapInsets)
+     * rounded buttons, shadows, and other resizable assets.  More info in the
+     * [official Apple documentation](https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIImage_Class/index.html#//apple_ref/occ/instm/UIImage/resizableImageWithCapInsets).
+     *
      * @platform ios
      */
-    capInsets: EdgeInsetsPropType,
+    // capInsets: EdgeInsetsPropType,
+    /**
+     * The mechanism that should be used to resize the image when the image's dimensions
+     * differ from the image view's dimensions. Defaults to `auto`.
+     *
+     * - `auto`: Use heuristics to pick between `resize` and `scale`.
+     *
+     * - `resize`: A software operation which changes the encoded image in memory before it
+     * gets decoded. This should be used instead of `scale` when the image is much larger
+     * than the view.
+     *
+     * - `scale`: The image gets drawn downscaled or upscaled. Compared to `resize`, `scale` is
+     * faster (usually hardware accelerated) and produces higher quality images. This
+     * should be used if the image is smaller than the view. It should also be used if the
+     * image is slightly bigger than the view.
+     *
+     * More details about `resize` and `scale` can be found at http://frescolib.org/docs/resizing-rotating.html.
+     *
+     * @platform android
+     */
+    resizeMethod: PropTypes.oneOf(['auto', 'resize', 'scale']),
     /**
      * Determines how to resize the image when the frame doesn't match the raw
      * image dimensions.
      *
-     * 'cover': Scale the image uniformly (maintain the image's aspect ratio)
+     * - `cover`: Scale the image uniformly (maintain the image's aspect ratio)
      * so that both dimensions (width and height) of the image will be equal
      * to or larger than the corresponding dimension of the view (minus padding).
      *
-     * 'contain': Scale the image uniformly (maintain the image's aspect ratio)
+     * - `contain`: Scale the image uniformly (maintain the image's aspect ratio)
      * so that both dimensions (width and height) of the image will be equal to
      * or less than the corresponding dimension of the view (minus padding).
      *
-     * 'stretch': Scale width and height independently, This may change the
+     * - `stretch`: Scale width and height independently, This may change the
      * aspect ratio of the src.
+     *
+     * - `repeat`: Repeat the image to cover the frame of the view. The
+     * image will keep it's size and aspect ratio. (iOS only)
      * RW TODO repeat center
      */
     resizeMode: PropTypes.oneOf(['cover', 'contain', 'stretch', 'repeat', 'center']),
@@ -116,35 +173,35 @@ const Image = React.createClass({
      */
     onLayout: PropTypes.func,
     /**
-     * Invoked on load start
+     * Invoked on load start.
+     *
+     * e.g., `onLoadStart={(e) => this.setState({loading: true})}`
      */
     onLoadStart: PropTypes.func,
     /**
-     * Invoked on download progress with `{nativeEvent: {loaded, total}}`
+     * Invoked on download progress with `{nativeEvent: {loaded, total}}`.
      * @platform ios
      */
     onProgress: PropTypes.func,
     /**
-     * Invoked on load error with `{nativeEvent: {error}}`
-     * @platform ios
+     * Invoked on load error with `{nativeEvent: {error}}`.
      */
     onError: PropTypes.func,
     /**
-     * Invoked when load completes successfully
+     * Invoked when a partial load of the image is complete. The definition of
+     * what constitutes a "partial load" is loader specific though this is meant
+     * for progressive JPEG loads.
+     * @platform ios
+     */
+    onPartialLoad: PropTypes.func,
+    /**
+     * Invoked when load completes successfully.
      */
     onLoad: PropTypes.func,
     /**
-     * Invoked when load either succeeds or fails
+     * Invoked when load either succeeds or fails.
      */
     onLoadEnd: PropTypes.func,
-
-    //
-    // 扩展
-    //
-    /**
-     * 是否支持响应式
-     */
-    responsive: PropTypes.bool,
   },
 
   statics: {
@@ -160,8 +217,10 @@ const Image = React.createClass({
      * does not fully load/download the image data. A proper, supported way to
      * preload images will be provided as a separate API.
      *
+     * Does not work for static image resources.
+     *
      * @param uri The location of the image.
-     * @param success The function that will be called if the image was sucessfully found and width
+     * @param success The function that will be called if the image was successfully found and width
      * and height retrieved.
      * @param failure The function that will be called if there was an error, such as failing to
      * to retrieve the image.
@@ -173,7 +232,7 @@ const Image = React.createClass({
     getSize: function(
       uri: string,
       success: (width: number, height: number) => void,
-      failure: (error: any) => void,
+      failure?: (error: any) => void,
     ) {
       //RW TODO
     },
@@ -188,6 +247,12 @@ const Image = React.createClass({
     prefetch(url: string) {
       //RW TODO
     },
+    /**
+     * Resolves an asset reference into an object which has the properties `uri`, `width`,
+     * and `height`. The input may either be a number (opaque type returned by
+     * require('./foo.png')) or an `ImageSource` like { uri: '<http location || file path>' }
+     */
+    resolveAssetSource: resolveAssetSource,
   },
 
   mixins: [NativeMethodsMixin],
@@ -230,48 +295,42 @@ const Image = React.createClass({
   },
 
   render: function() {
-    const {
-      accessibilityLabel,
-      accessible,
-      children,
-      defaultSource,
-      onLayout,
-      source,
-      testID,
-    } = this.props;
+    const props = this.props;
 
     let displaySource;
     if (this._imageState === STATUS_LOADING || this._imageState === STATUS_ERRORED) {
-      displaySource = resolveAssetSource(defaultSource);
+      displaySource = resolveAssetSource(props.defaultSource);
     } else {
-      displaySource = this._source.uri ? this._source : resolveAssetSource(defaultSource);
+      displaySource = this._source.uri ? this._source : resolveAssetSource(props.defaultSource);
     }
     displaySource = displaySource || EMPTY_SOURCE;
     const {width, height, uri} = displaySource;
-    const backgroundImage = !this.props.responsive ? uri && `url(${uri})` : null;
-    const style = flattenStyle([{width, height}, this.props.style]);
+    const backgroundImage = !props.responsive ? uri && `url(${uri})` : null;
+    const style = flattenStyle([{width, height}, props.style]);
 
-    const resizeMode = this.props.resizeMode || style.resizeMode || ImageResizeMode.cover;
+    const resizeMode = props.resizeMode || style.resizeMode || ImageResizeMode.cover;
     delete style.resizeMode;
+
+    let className = CSSClassNames.IMAGE_CONTAINER;
+    if (props.className) {
+      className += ' ' + props.className;
+    }
 
     return (
       <View
-        accessibilityLabel={accessibilityLabel}
-        accessibilityRole='img'
-        accessible={accessible}
-        onLayout={onLayout}
-        className={CSSClassNames.IMAGE_CONTAINER}
+        {...props}
+        className={className}
         style={[
           style,
           backgroundImage && { backgroundImage },
           resizeModeStyles[resizeMode]
         ]}
-        testID={testID}>
-        {this.props.responsive && (
+      >
+        {props.responsive && (
           <img className="lrnw-responsive-image" src={uri}/>
         )}
-        {children && (
-          <View children={children} pointerEvents='box-none' style={StyleSheet.absoluteFill} />
+        {props.children && (
+          <View children={props.children} pointerEvents='box-none' style={StyleSheet.absoluteFill} />
         )}
       </View>
     );

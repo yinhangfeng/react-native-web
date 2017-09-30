@@ -22,7 +22,7 @@ const path = require('path');
 const pkg = require('../package.json');
 
 import type {CommandT} from './commands';
-import type {ConfigT} from './core';
+import type {RNConfig} from './core';
 
 commander.version(pkg.version);
 
@@ -91,7 +91,7 @@ function printUnknownCommand(cmdName) {
   ].join('\n'));
 }
 
-const addCommand = (command: CommandT, cfg: ConfigT) => {
+const addCommand = (command: CommandT, cfg: RNConfig) => {
   const options = command.options || [];
 
   const cmd = commander
@@ -134,9 +134,9 @@ function run() {
     : 'setup_env.sh';
   childProcess.execFileSync(path.join(__dirname, setupEnvScript));
 
-  // RW 增加lab-react-native-web 的extraNodeModules 配置  使得react-native 与 react renders native 中的依赖定位到lab-react-native-web
+  // RW 增加lab-react-native-web 的extraNodeModules 配置  使得react-native 中的依赖定位到lab-react-native-web
   config.extraNodeModules = Object.assign({}, config.extraNodeModules, {
-    'react-native': path.dirname(__dirname), //react-native 引用到当前库
+    'react-native': path.dirname(__dirname),
   });
 
   commands.forEach(cmd => addCommand(cmd, config));
@@ -159,7 +159,3 @@ module.exports = {
   run: run,
   init: init,
 };
-
-if (require.main === module) {
-  run();
-}

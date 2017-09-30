@@ -1,4 +1,12 @@
 /**
+ * RW SYNC react-native-web: 0.1.0
+ * Copyright (c) 2015-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree. An additional grant
+ * of patent rights can be found in the PATENTS file in the same directory.
+ *
  * @providesModule AppRegistry
  * @flow
  */
@@ -6,47 +14,59 @@
 
 const renderApplication = require('renderApplication');
 
-let runnables = {};
+const runnables = {};
 
-type ComponentProvider = () => ReactClass<any>;
+export type ComponentProvider = () => ReactClass<any>;
 
-type AppConfig = {
-  appKey: string;
-  component?: ComponentProvider;
-  run?: Function;
+export type AppConfig = {
+  appKey: string,
+  component?: ComponentProvider,
+  run?: Function
 };
 
-let AppRegistry = {
-  registerConfig: function(config: Array < AppConfig > ) {
-    for (let i = 0; i < config.length; ++i) {
-      let appConfig = config[i];
-      if (appConfig.run) {
-        AppRegistry.registerRunnable(appConfig.appKey, appConfig.run);
-      } else {
-        AppRegistry.registerComponent(appConfig.appKey, appConfig.component);
-      }
-    }
+const AppRegistry = {
+
+  getAppKeys(): Array < string > {
+    return Object.keys(runnables);
   },
 
-  registerComponent: function(appKey: string, getComponentFunc: ComponentProvider): string {
+  getApplication(appKey: string, appParameters?: Object): string {
+    // invariant(
+    //   runnables[appKey] && runnables[appKey].getApplication,
+    //   `Application ${appKey} has not been registered. ` +
+    //     'This is either due to an import error during initialization or failure to call AppRegistry.registerComponent.'
+    // );
+
+    return runnables[appKey].getApplication(appParameters);
+  },
+
+  registerComponent(appKey: string, getComponentFunc: ComponentProvider): string {
     runnables[appKey] = {
       run: (appParameters) =>
-        renderApplication(getComponentFunc(), appParameters.initialProps, appParameters.rootTag)
+        renderApplication(getComponentFunc(), appParameters.initialProps || {}, appParameters.rootTag)
     };
     return appKey;
   },
 
-  registerRunnable: function(appKey: string, func: Function): string {
-    runnables[appKey] = {run: func};
+  registerConfig(config: Array<AppConfig>) {
+    config.forEach(({ appKey, component, run }) => {
+      if (run) {
+        AppRegistry.registerRunnable(appKey, run);
+      } else {
+        invariant(component, 'No component provider passed in');
+        AppRegistry.registerComponent(appKey, component);
+      }
+    });
+
+  },
+
+  registerRunnable(appKey: string, run: Function): string {
+    runnables[appKey] = { run };
     return appKey;
   },
 
-  getAppKeys: function(): Array < string > {
-    return Object.keys(runnables);
-  },
-
   // 运行程序 默认rootTag为#react-root
-  runApplication: function(appKey: string, appParameters: any): void {
+  runApplication(appKey: string, appParameters: any): void {
     if(!appParameters) {
       appParameters = {
         rootTag: document.getElementById('react-root')
@@ -55,9 +75,8 @@ let AppRegistry = {
     runnables[appKey].run(appParameters);
   },
 
-  unmountApplicationComponentAtRootTag: function(rootTag : number) {
-    // RW TODO
-    //ReactNative.unmountComponentAtNodeAndRemoveContainer(rootTag);
+  unmountApplicationComponentAtRootTag(rootTag) {
+    // unmountComponentAtNode(rootTag);
   },
 };
 

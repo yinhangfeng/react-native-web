@@ -1,4 +1,5 @@
 /**
+ * RW SYNC react-native: 0.49
  * Copyright (c) 2015-present, Facebook, Inc.
  * All rights reserved.
  *
@@ -12,7 +13,6 @@
 
 /* eslint-disable strict */
 /* globals window: true */
-
 
 /**
  * Sets up global variables typical in most JavaScript environments.
@@ -41,25 +41,24 @@ const defineLazyObjectProperty = require('defineLazyObjectProperty');
 
 /**
  * Sets an object's property. If a property with the same name exists, this will
- * replace it but maintain its descriptor configuration. By default, the property
- * will replaced with a lazy getter.
+ * replace it but maintain its descriptor configuration. The property will be
+ * replaced with a lazy getter.
  *
- * The original property value will be preserved as `original[PropertyName]` so
- * that, if necessary, it can be restored. For example, if you want to route
+ * In DEV mode the original property value will be preserved as `original[PropertyName]`
+ * so that, if necessary, it can be restored. For example, if you want to route
  * network requests through DevTools (to trace them):
  *
  *   global.XMLHttpRequest = global.originalXMLHttpRequest;
  *
  * @see https://github.com/facebook/react-native/issues/934
  */
-function defineProperty<T>(
+function defineLazyProperty<T>(
   object: Object,
   name: string,
   getValue: () => T,
-  eager?: boolean
 ): void {
   const descriptor = Object.getOwnPropertyDescriptor(object, name);
-  if (descriptor) {
+  if (__DEV__ && descriptor) {
     const backupName = `original${name[0].toUpperCase()}${name.substr(1)}`;
     Object.defineProperty(object, backupName, {
       ...descriptor,
@@ -73,20 +72,15 @@ function defineProperty<T>(
     return;
   }
 
-  if (eager === true) {
-    Object.defineProperty(object, name, {
-      configurable: true,
-      enumerable: enumerable !== false,
-      writable: writable !== false,
-      value: getValue(),
-    });
-  } else {
-    defineLazyObjectProperty(object, name, {
-      get: getValue,
-      enumerable: enumerable !== false,
-      writable: writable !== false,
-    });
-  }
+  defineLazyObjectProperty(object, name, {
+    get: getValue,
+    enumerable: enumerable !== false,
+    writable: writable !== false,
+  });
+}
+
+function polyfillGlobal<T>(name: string, getValue: () => T): void {
+  defineLazyProperty(global, name, getValue);
 }
 
 // Set up process
@@ -96,18 +90,20 @@ if (!global.process.env.NODE_ENV) {
   global.process.env.NODE_ENV = __DEV__ ? 'development' : 'production';
 }
 
-// // Set up profile
-// const Systrace = require('Systrace');
-// Systrace.setEnabled(global.__RCTProfileIsProfiling || false);
+// Setup the Systrace profiling hooks if necessary
+// RW web 不需要
+// if (global.__RCTProfileIsProfiling) {
+//   const Systrace = require('Systrace');
+//   Systrace.setEnabled(true);
+// }
 
-// // Set up console
+// Set up console
+// RW web 不需要
 // const ExceptionsManager = require('ExceptionsManager');
 // ExceptionsManager.installConsoleErrorReporter();
 
-// // RCTLog needs to register with BatchedBridge
-// require('RCTLog');
-
-// // Set up error handler
+// Set up error handler
+// RW web 不需要
 // if (!global.__fbDisableExceptionsManager) {
 //   const handleError = (e, isFatal) => {
 //     try {
@@ -124,22 +120,51 @@ if (!global.process.env.NODE_ENV) {
 //   ErrorUtils.setGlobalHandler(handleError);
 // }
 
-// // Set up alert
-// if (!global.alert) {
-//   global.alert = function(text) {
-//     // Require Alert on demand. Requiring it too early can lead to issues
-//     // with things like Platform not being fully initialized.
-//     require('Alert').alert('Alert', '' + text);
-//   };
-// }
+// Set up collections
+// RW 没必要lazy
+const _shouldPolyfillCollection = require('_shouldPolyfillES6Collection');
+if (_shouldPolyfillCollection('Map')) {
+  // polyfillGlobal('Map', () => require('Map'));
+  global.Map = require('Map');
+}
+if (_shouldPolyfillCollection('Set')) {
+  // polyfillGlobal('Set', () => require('Set'));
+  global.Set = require('Set');
+}
+
+// Set up regenerator.
+// RW modify 使用rollup时 require 会替换为import 会被提前 所以加入判断
+if (!global.regeneratorRuntime) {
+  polyfillGlobal('regeneratorRuntime', () => {
+    // The require just sets up the global, so make sure when we first
+    // invoke it the global does not exist
+    delete global.regeneratorRuntime;
+    require('regenerator-runtime/runtime');
+    return global.regeneratorRuntime;
+  });
+}
+
+// Set up timers
+// const defineLazyTimer = name => {
+//   polyfillGlobal(name, () => require('JSTimers')[name]);
+// };
+// defineLazyTimer('setTimeout');
+// defineLazyTimer('setInterval');
+// defineLazyTimer('setImmediate');
+// defineLazyTimer('clearTimeout');
+// defineLazyTimer('clearInterval');
+// defineLazyTimer('clearImmediate');
+// defineLazyTimer('requestAnimationFrame');
+// defineLazyTimer('cancelAnimationFrame');
+// defineLazyTimer('requestIdleCallback');
+// defineLazyTimer('cancelIdleCallback');
 
 // Set up Promise
 // The native Promise implementation throws the following error:
 // ERROR: Event loop not supported.
-// defineProperty(global, 'Promise', () => require('Promise'));
+// 使用bluebird
 global.Promise = require('Promise');
 
-// Set up timers
 // 使用setTimeout 模拟setImmediate 放在Promise之后 不让其使用假的setImmediate
 if (!global.setImmediate) {
   global.setImmediate = function(func, ...args) {
@@ -148,67 +173,69 @@ if (!global.setImmediate) {
   global.clearImmediate = clearTimeout;
 }
 
-// Set up regenerator.
-// RW modify 使用rollup时 require 会替换为import 会被提前 所以加入判断
-if (!global.regeneratorRuntime) {
-  defineProperty(global, 'regeneratorRuntime', () => {
-  // The require just sets up the global, so make sure when we first
-  // invoke it the global does not exist
-  delete global.regeneratorRuntime;
-  require('regenerator-runtime/runtime');
-  return global.regeneratorRuntime;
-});
-}
-
-
 // Set up XHR
 // The native XMLHttpRequest in Chrome dev tools is CORS aware and won't
 // let you fetch anything from the internet
-// defineProperty(global, 'XMLHttpRequest', () => require('XMLHttpRequest'));
-// defineProperty(global, 'FormData', () => require('FormData'));
+// RW xhr 不需要
+// polyfillGlobal('XMLHttpRequest', () => require('XMLHttpRequest'));
+// polyfillGlobal('FormData', () => require('FormData'));
 
-defineProperty(global, 'fetch', () => require('fetch').fetch);
-defineProperty(global, 'Headers', () => require('fetch').Headers);
-defineProperty(global, 'Request', () => require('fetch').Request);
-defineProperty(global, 'Response', () => require('fetch').Response);
-// defineProperty(global, 'WebSocket', () => require('WebSocket'));
+// RW modify
+if (!global.fetch) {
+  polyfillGlobal('fetch', () => require('fetch').fetch);
+  polyfillGlobal('Headers', () => require('fetch').Headers);
+  polyfillGlobal('Request', () => require('fetch').Request);
+  polyfillGlobal('Response', () => require('fetch').Response);
+}
+// polyfillGlobal('WebSocket', () => require('WebSocket'));
+// polyfillGlobal('Blob', () => require('Blob'));
+// polyfillGlobal('URL', () => require('URL'));
 
-// // Set up Geolocation
+// Set up alert
+// RW web 不需要
+// if (!global.alert) {
+//   global.alert = function(text) {
+//     // Require Alert on demand. Requiring it too early can lead to issues
+//     // with things like Platform not being fully initialized.
+//     require('Alert').alert('Alert', '' + text);
+//   };
+// }
+
+// Set up Geolocation
 // let navigator = global.navigator;
 // if (navigator === undefined) {
 //   global.navigator = navigator = {};
 // }
 
-// // see https://github.com/facebook/react-native/issues/10881
-// defineProperty(navigator, 'product', () => 'ReactNative', true);
-// defineProperty(navigator, 'geolocation', () => require('Geolocation'));
+// see https://github.com/facebook/react-native/issues/10881
+// defineLazyProperty(navigator, 'product', () => 'ReactNative');
+// defineLazyProperty(navigator, 'geolocation', () => require('Geolocation'));
 
-// Set up collections
-// We can't make these lazy because `Map` checks for `global.Map` (which wouldc
-// not exist if it were lazily defined).
-defineProperty(global, 'Map', () => require('Map'), true);
-defineProperty(global, 'Set', () => require('Set'), true);
+// Just to make sure the JS gets packaged up. Wait until the JS environment has
+// been initialized before requiring them.
+// const BatchedBridge = require('BatchedBridge');
+// BatchedBridge.registerLazyCallableModule('Systrace', () => require('Systrace'));
+// BatchedBridge.registerLazyCallableModule('JSTimers', () => require('JSTimers'));
+// BatchedBridge.registerLazyCallableModule('HeapCapture', () => require('HeapCapture'));
+// BatchedBridge.registerLazyCallableModule('SamplingProfiler', () => require('SamplingProfiler'));
+// BatchedBridge.registerLazyCallableModule('RCTLog', () => require('RCTLog'));
+// BatchedBridge.registerLazyCallableModule('RCTDeviceEventEmitter', () => require('RCTDeviceEventEmitter'));
+// BatchedBridge.registerLazyCallableModule('RCTNativeAppEventEmitter', () => require('RCTNativeAppEventEmitter'));
+// BatchedBridge.registerLazyCallableModule('PerformanceLogger', () => require('PerformanceLogger'));
 
-// // Set up devtools
+// Set up devtools
 // if (__DEV__) {
-//   // not when debugging in chrome
-//   // TODO(t12832058) This check is broken
-//   if (!window.document) {
-//     const setupDevtools = require('setupDevtools');
-//     setupDevtools();
+//   if (!global.__RCTProfileIsProfiling) {
+//     BatchedBridge.registerCallableModule('HMRClient', require('HMRClient'));
+
+//     // not when debugging in chrome
+//     // TODO(t12832058) This check is broken
+//     if (!window.document) {
+//       require('setupDevtools');
+//     }
+
+//     // Set up inspector
+//     const JSInspector = require('JSInspector');
+//     JSInspector.registerAgent(require('NetworkAgent'));
 //   }
-
-//   require('RCTDebugComponentOwnership');
 // }
-
-// // Set up inspector
-// if (__DEV__) {
-//   const JSInspector = require('JSInspector');
-//   JSInspector.registerAgent(require('NetworkAgent'));
-// }
-
-// // Just to make sure the JS gets packaged up. Wait until the JS environment has
-// // been initialized before requiring them.
-// require('RCTDeviceEventEmitter');
-// require('RCTNativeAppEventEmitter');
-// require('PerformanceLogger');

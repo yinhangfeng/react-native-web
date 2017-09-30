@@ -1,4 +1,5 @@
 /**
+ * RW SYNC react-native: 0.49 react-native-web: 0.1.0
  * Copyright (c) 2015-present, Facebook, Inc.
  * All rights reserved.
  *
@@ -13,14 +14,16 @@
 
 // Note (avik): add @flow when Flow supports spread properties in propTypes
 
-//var Animated = require('Animated');
+// var Animated = require('Animated');
 var NativeMethodsMixin = require('NativeMethodsMixin');
 var React = require('React');
+var PropTypes = require('prop-types');
 var TimerMixin = require('react-timer-mixin');
 var Touchable = require('Touchable');
 var TouchableWithoutFeedback = require('TouchableWithoutFeedback');
 
-var ensurePositiveDelayProps = require('ensurePositiveDelayProps');
+var createReactClass = require('create-react-class');
+// var ensurePositiveDelayProps = require('ensurePositiveDelayProps');
 var flattenStyle = require('flattenStyle');
 
 var View = require('View');
@@ -39,8 +42,9 @@ var PRESS_RETENTION_OFFSET = {top: 20, left: 20, right: 20, bottom: 30};
 /**
  * A wrapper for making views respond properly to touches.
  * On press down, the opacity of the wrapped view is decreased, dimming it.
- * This is done without actually changing the view hierarchy, and in general is
- * easy to add to an app without weird side-effects.
+ *
+ * Opacity is controlled by wrapping the children in an Animated.View, which is
+ * added to the view hiearchy.  Be aware that this can affect layout.
  *
  * Example:
  *
@@ -50,59 +54,66 @@ var PRESS_RETENTION_OFFSET = {top: 20, left: 20, right: 20, bottom: 30};
  *     <TouchableOpacity onPress={this._onPressButton}>
  *       <Image
  *         style={styles.button}
- *         source={require('image!myButton')}
+ *         source={require('./myButton.png')}
  *       />
  *     </TouchableOpacity>
  *   );
  * },
  * ```
  */
-var TouchableOpacity = React.createClass({
+var TouchableOpacity = createReactClass({
+  displayName: 'TouchableOpacity',
   mixins: [TimerMixin, Touchable.Mixin, NativeMethodsMixin],
 
   propTypes: {
     ...TouchableWithoutFeedback.propTypes,
     /**
      * Determines what the opacity of the wrapped view should be when touch is
-     * active.
+     * active. Defaults to 0.2.
      */
-    activeOpacity: React.PropTypes.number,
+    activeOpacity: PropTypes.number,
+    /**
+     * Apple TV parallax effects
+     */
+    // tvParallaxProperties: PropTypes.object,
   },
 
   getDefaultProps: function() {
     return {
       activeOpacity: 0.2,
-      delayPressIn: 90, //在网页环境下设置延迟
+      delayPressIn: 90, //RW 在网页环境下设置延迟
     };
   },
 
   getInitialState: function() {
     return {
       ...this.touchableGetInitialState(),
-      //anim: 1,
+      // anim: new Animated.Value(this._getChildStyleOpacityWithDefault()),
     };
   },
 
-  componentDidMount: function() {
-    ensurePositiveDelayProps(this.props);
-  },
+  // RW 为了效率
+  // componentDidMount: function() {
+  //   ensurePositiveDelayProps(this.props);
+  // },
 
-  componentWillReceiveProps: function(nextProps) {
-    ensurePositiveDelayProps(nextProps);
-  },
+  // componentWillReceiveProps: function(nextProps) {
+  //   ensurePositiveDelayProps(nextProps);
+  // },
 
   /**
    * Animate the touchable to a new opacity.
    */
-  setOpacityTo: function(value: number) {
+  setOpacityTo: function(value: number, duration: number) {
     // Animated.timing(
     //   this.state.anim,
-    //   {toValue: value, duration: 150}
+    //   {
+    //     toValue: value,
+    //     duration: duration,
+    //     easing: Easing.inOut(Easing.quad),
+    //     useNativeDriver: true,
+    //   }
     // ).start();
-    // var touchableRef = this.refs["touchable"];
-    // setTimeout(() => {
-    //   ReactDOM.findDOMNode(touchableRef).className += " active";//style.opacity = value;
-    // });
   },
 
   /**
@@ -158,30 +169,23 @@ var TouchableOpacity = React.createClass({
     return this.props.delayPressOut;
   },
 
-  _opacityActive: function() {
-    //toggle class make active and inactive via css
-    //this.setOpacityTo(this.props.activeOpacity);
+  _opacityActive: function(duration: number) {
+    // this.setOpacityTo(this.props.activeOpacity, duration);
     if (showActive) {
       ReactDOM.findDOMNode(this.refs["touchable"]).classList.add("active");
     }
   },
 
-  _opacityInactive: function() {
+  _opacityInactive: function(duration: number) {
     if (showActive) {
       this.clearTimeout(this._hideTimeout);
       this._hideTimeout = null;
-      // var childStyle = flattenStyle(this.props.style) || {};
-      // this.setOpacityTo(
-      //   childStyle.opacity === undefined ? 1 : childStyle.opacity
-      // );
 
       ReactDOM.findDOMNode(this.refs["touchable"]).classList.remove("active");
     }
   },
 
   render: function() {
-    var className = CSSClassNames.TOUCHABLE;
-
     // let testProps = {
     //   onStartShouldSetResponderCapture: (e) => {
     //     console.log('TouchableOpacity onStartShouldSetResponderCapture ', e.type);
@@ -239,28 +243,27 @@ var TouchableOpacity = React.createClass({
     //     console.log('TouchableOpacity onTouchEnd ', e.type);
     //   },
     // };
+
+    const props = this.props;
+    let className = CSSClassNames.TOUCHABLE;
+    if (props.className) {
+      className += ' ' + props.className;
+    }
+
     return (
       <View
+        {...props}
         ref="touchable"
         className={className}
-        accessible={this.props.accessible !== false}
-        accessibilityLabel={this.props.accessibilityLabel}
-        accessibilityComponentType={this.props.accessibilityComponentType}
-        accessibilityTraits={this.props.accessibilityTraits}
-        style={this.props.style}
-        testID={this.props.testID}
-        onLayout={this.props.onLayout}
-        hitSlop={this.props.hitSlop}
         onStartShouldSetResponder={this.touchableHandleStartShouldSetResponder}
         onResponderTerminationRequest={this.touchableHandleResponderTerminationRequest}
         onResponderGrant={this.touchableHandleResponderGrant}
         onResponderMove={this.touchableHandleResponderMove}
         onResponderRelease={this.touchableHandleResponderRelease}
         onResponderTerminate={this.touchableHandleResponderTerminate}>
-        {this.props.children}
+        {props.children}
       </View>
     );
-    // {Touchable.renderDebugView({color: 'cyan', hitSlop: this.props.hitSlop})}
   },
 });
 

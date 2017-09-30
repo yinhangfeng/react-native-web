@@ -7,6 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @flow
+ * @providesModule AsyncStorageTest
  */
 'use strict';
 
@@ -167,7 +168,7 @@ function testOptimizedMultiGet() {
 }
 
 
-class AsyncStorageTest extends React.Component {
+class AsyncStorageTest extends React.Component<{}, $FlowFixMeState> {
   state = {
     messages: 'Initializing...',
     done: false,

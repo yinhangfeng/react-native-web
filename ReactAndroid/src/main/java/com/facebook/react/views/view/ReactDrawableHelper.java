@@ -32,8 +32,16 @@ public class ReactDrawableHelper {
   private static final TypedValue sResolveOutValue = new TypedValue();
 
   public static Drawable createDrawableFromJSDescription(
+    Context context,
+    ReadableMap drawableDescriptionDict
+  ) {
+    return createDrawableFromJSDescription(context, drawableDescriptionDict, false);
+  }
+
+  public static Drawable createDrawableFromJSDescription(
       Context context,
-      ReadableMap drawableDescriptionDict) {
+      ReadableMap drawableDescriptionDict,
+      boolean supportRoundCorner) {
     String type = drawableDescriptionDict.getString("type");
     if ("ThemeAttrAndroid".equals(type)) {
       String attr = drawableDescriptionDict.getString("attribute");
@@ -75,16 +83,21 @@ public class ReactDrawableHelper {
               "couldn't be resolved into a drawable");
         }
       }
-      Drawable mask = null;
-      if (!drawableDescriptionDict.hasKey("borderless") ||
-          drawableDescriptionDict.isNull("borderless") ||
-          !drawableDescriptionDict.getBoolean("borderless")) {
-        mask = new ColorDrawable(Color.WHITE);
-      }
+      // LAB modify hotspot round corner
       ColorStateList colorStateList = new ColorStateList(
           new int[][] {new int[]{}},
           new int[] {color});
-      return new RippleDrawable(colorStateList, null, mask);
+      if (!drawableDescriptionDict.hasKey("borderless") ||
+        drawableDescriptionDict.isNull("borderless") ||
+        !drawableDescriptionDict.getBoolean("borderless")) {
+        if (supportRoundCorner) {
+          return new ReactViewCornerRippleDrawable(colorStateList, null);
+        } else {
+          return new RippleDrawable(colorStateList, null, new ColorDrawable(Color.WHITE));
+        }
+      }
+      // borderless mask null
+      return new RippleDrawable(colorStateList, null, null);
     } else {
       throw new JSApplicationIllegalArgumentException(
           "Invalid type for android drawable: " + type);

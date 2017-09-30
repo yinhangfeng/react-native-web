@@ -1,4 +1,5 @@
 /**
+ * RW SYNC react-native: 0.49
  * Copyright (c) 2015-present, Facebook, Inc.
  * All rights reserved.
  *
@@ -11,68 +12,15 @@
  */
 'use strict';
 
-const React = require('React');
+const createReactClass = require('create-react-class');
 
-//const requireNativeComponent = require('requireNativeComponent');
+const RefreshLayoutConsts = {SIZE: {}};
 
-var RefreshLayoutConsts = {SIZE: {}};
-
-// RW web下RefreshControl无效果
-const RefreshControl = React.createClass({
+// RW web 下 RefreshControl 无效果
+const RefreshControl = createReactClass({
   statics: {
     SIZE: RefreshLayoutConsts.SIZE,
   },
-
-  // mixins: [NativeMethodsMixin],
-  //
-  // propTypes: {
-  //   ...View.propTypes,
-  //   /**
-  //    * Called when the view starts refreshing.
-  //    */
-  //   onRefresh: React.PropTypes.func,
-  //   /**
-  //    * Whether the view should be indicating an active refresh.
-  //    */
-  //   refreshing: React.PropTypes.bool,
-  //   /**
-  //    * The color of the refresh indicator.
-  //    * @platform ios
-  //    */
-  //   tintColor: ColorPropType,
-  //   /**
-  //    * Title color.
-  //    * @platform ios
-  //    */
-  //   titleColor: ColorPropType,
-  //   /**
-  //    * The title displayed under the refresh indicator.
-  //    * @platform ios
-  //    */
-  //   title: React.PropTypes.string,
-  //   /**
-  //    * Whether the pull to refresh functionality is enabled.
-  //    * @platform android
-  //    */
-  //   enabled: React.PropTypes.bool,
-  //   /**
-  //    * The colors (at least one) that will be used to draw the refresh indicator.
-  //    * @platform android
-  //    */
-  //   colors: React.PropTypes.arrayOf(ColorPropType),
-  //   /**
-  //    * The background color of the refresh indicator.
-  //    * @platform android
-  //    */
-  //   progressBackgroundColor: ColorPropType,
-  //   /**
-  //    * Size of the refresh indicator, see RefreshControl.SIZE.
-  //    * @platform android
-  //    */
-  //   size: React.PropTypes.oneOf(RefreshLayoutConsts.SIZE.DEFAULT, RefreshLayoutConsts.SIZE.LARGE),
-  // },
-
-  _nativeRef: {},
 
   render() {
     return null;

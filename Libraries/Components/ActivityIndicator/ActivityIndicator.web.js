@@ -1,27 +1,31 @@
 /**
+ * RW SYNC react-native: 0.49
  * @providesModule ActivityIndicator
  */
 'use strict';
 
+const ColorPropType = require('ColorPropType');
 const NativeMethodsMixin = require('NativeMethodsMixin');
 const React = require('React');
+const PropTypes = require('prop-types');
 const StyleSheet = require('StyleSheet');
 const View = require('View');
-const ColorPropType = require('ColorPropType');
+const ViewPropTypes = require('ViewPropTypes');
+
+const createReactClass = require('create-react-class');
+
 const CircularProgress = __requireDefault(require('material-ui/src/CircularProgress'));
 const Image = require('Image');
 const RWPerformance = require('RWPerformance');
 
-const PropTypes = React.PropTypes;
-
 /**
  * Displays a circular loading indicator.
  */
-const ActivityIndicator = React.createClass({
+const ActivityIndicator = createReactClass({
   mixins: [NativeMethodsMixin],
 
   propTypes: {
-    ...View.propTypes,
+    ...ViewPropTypes,
     /**
      * Whether to show the indicator (true, the default) or hide it (false).
      */
@@ -48,6 +52,8 @@ const ActivityIndicator = React.createClass({
 
   getDefaultProps(): DefaultProps {
     return {
+      animating: true,
+      hidesWhenStopped: true,
       size: 'small',
     };
   },
@@ -60,7 +66,7 @@ const ActivityIndicator = React.createClass({
         size = 20;
         break;
       case 'large':
-        size = 40;
+        size = 36;
         break;
     }
 
@@ -90,7 +96,7 @@ const ActivityIndicator = React.createClass({
   }
 });
 
-let styles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     justifyContent: 'center',

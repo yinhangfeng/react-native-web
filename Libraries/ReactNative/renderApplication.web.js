@@ -1,70 +1,34 @@
 /**
+ * RW SYNC react-native: 0.49 react-native-web: 0.1.0
+ * Copyright (c) 2015-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree. An additional grant
+ * of patent rights can be found in the PATENTS file in the same directory.
+ *
  * @providesModule renderApplication
+ * @format
+ * @flow
  */
+
 'use strict';
 
 const React = require('React');
-const ReactNative = require('ReactNative');
-//const StyleSheet = require('StyleSheet');
-//const View = require('View');
-const CSSClassNames = require('CSSClassNames');
-const RWConfig = require('RWConfig');
-// TODO material-ui 库需要, 暂时放在这里，应该由使用者提供
-const getMuiTheme = __requireDefault(require('material-ui/src/styles/getMuiTheme'));
+const AppContainer = require('./AppContainer');
 
-/**
- * 对未设置bodyScrollMode 的ROOT_CONTAINER样式设为overflow: 'hidden',
- * 否则在某些浏览器中会出现body滚动
- */
-class AppContainer extends React.Component {
-
-  static childContextTypes = {
-    muiTheme: React.PropTypes.object,
-  };
-
-  getChildContext() {
-    return {
-      muiTheme: getMuiTheme(),
-    };
-  }
-
-  render() {
-    return (
-      <div
-        className={CSSClassNames.ROOT_CONTAINER}
-        style={RWConfig.bodyScrollMode ? null : {overflow: 'hidden',}}>
-        <this.props.rootComponent
-          {...this.props.initialProps}
-          rootTag={this.props.rootTag}/>
-      </div>
-    );
-  }
-}
-
-function renderApplication<D, P, S>(
-  RootComponent: ReactClass<D, P, S>,
-  initialProps: P,
-  rootTag: any
+function renderApplication<Props: Object>(
+  RootComponent: React.ComponentType<Props>,
+  initialProps: Props,
+  rootTag: any,
+  WrapperComponent?: ?React.ComponentType<*>,
 ) {
   ReactNative.render(
-    <AppContainer
-      rootComponent={RootComponent}
-      initialProps={initialProps}
-      rootTag={rootTag} />,
-    rootTag
+    <AppContainer rootTag={rootTag} WrapperComponent={WrapperComponent}>
+      <RootComponent {...initialProps} rootTag={rootTag} />
+    </AppContainer>,
+    rootTag,
   );
 }
-
-// var styles = StyleSheet.create({
-//   // This is needed so the application covers the whole screen
-//   // and therefore the contents of the React are not clipped.
-//   appContainer: {
-//     position: 'absolute',
-//     left: 0,
-//     top: 0,
-//     right: 0,
-//     bottom: 0,
-//   },
-// });
 
 module.exports = renderApplication;

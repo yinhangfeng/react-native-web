@@ -1,4 +1,5 @@
 /**
+ * RW SYNC react-native: 0.49 react-native-web: 0.1.0
  * Copyright (c) 2013-present, Facebook, Inc.
  * All rights reserved.
  *
@@ -13,13 +14,13 @@
 
 const BoundingDimensions = require('BoundingDimensions');
 const Position = require('Position');
-const React = require('React'); // eslint-disable-line no-unused-vars
+const React = require('React');
 const TouchEventUtils = require('fbjs/lib/TouchEventUtils');
+const UIManager = require('UIManager');
 const View = require('View');
 
 const keyMirror = require('fbjs/lib/keyMirror');
 const normalizeColor = require('normalizeColor');
-const queryLayoutByID = require('queryLayoutByID');
 
 /**
  * `Touchable`: Taps done right.
@@ -347,7 +348,7 @@ var TouchableMixin = {
    * Must return true to start the process of `Touchable`.
    */
   touchableHandleStartShouldSetResponder: function(e) {
-    //TODO RW mousedown
+    // RW mousedown
     if (e.type === 'mousedown') {
       return false;
     }
@@ -578,14 +579,19 @@ var TouchableMixin = {
    * @private
    */
   _remeasureMetricsOnActivation: function() {
-    queryLayoutByID(
-      this.state.touchable.responderID,
-      null,
-      this._handleQueryLayout
-    );
+    const tag = this.state.touchable.responderID;
+    if (tag == null) {
+      return;
+    }
+
+    UIManager.measure(tag, this._handleQueryLayout);
   },
 
   _handleQueryLayout: function(l, t, w, h, globalX, globalY) {
+    //don't do anything UIManager failed to measure node
+    if (!l && !t && !w && !h && !globalX && !globalY) {
+      return;
+    }
     this.state.touchable.positionOnActivate &&
       Position.release(this.state.touchable.positionOnActivate);
     this.state.touchable.dimensionsOnActivate &&
@@ -702,16 +708,9 @@ var TouchableMixin = {
     }
 
     if (newIsHighlight && !curIsHighlight) {
-      this._savePressInLocation(e);
-      this.touchableHandleActivePressIn && this.touchableHandleActivePressIn(e);
-    } else if (!newIsHighlight && curIsHighlight && this.touchableHandleActivePressOut) {
-      if (this.touchableGetPressOutDelayMS && this.touchableGetPressOutDelayMS()) {
-        this.pressOutDelayTimeout = setTimeout(() => {
-          this.touchableHandleActivePressOut(e);
-        }, this.touchableGetPressOutDelayMS());
-      } else {
-        this.touchableHandleActivePressOut(e);
-      }
+      this._startHighlight(e);
+    } else if (!newIsHighlight && curIsHighlight) {
+      this._endHighlight(e);
     }
 
     if (IsPressingIn[curState] && signal === Signals.RESPONDER_RELEASE) {
@@ -730,9 +729,15 @@ var TouchableMixin = {
           _dy = Math.abs(e.nativeEvent.pageY - this._responderGrantLocation.y) || 0;
 
         if ((_dx < 6) && (_dy < 6)) {
-          // 对触发了Press的事件 阻止其默认行为
+          // RW 对触发了Press的事件 阻止其默认行为
           // 防止onPress之后又触发onClick 以及select等(或者其它不使用Responder事件机制的组件的事件)，引起的连点bug
           e.preventDefault();
+
+          if (!newIsHighlight && !curIsHighlight) {
+            // we never highlighted because of delay, but we should highlight now
+            this._startHighlight(e);
+            this._endHighlight(e);
+          }
           this.touchableHandlePress(e);
         }
       }
@@ -740,7 +745,24 @@ var TouchableMixin = {
 
     this.touchableDelayTimeout && clearTimeout(this.touchableDelayTimeout);
     this.touchableDelayTimeout = null;
-  }
+  },
+
+  _startHighlight: function(e) {
+    this._savePressInLocation(e);
+    this.touchableHandleActivePressIn && this.touchableHandleActivePressIn(e);
+  },
+
+  _endHighlight: function(e) {
+    if (this.touchableHandleActivePressOut) {
+      if (this.touchableGetPressOutDelayMS && this.touchableGetPressOutDelayMS()) {
+        this.pressOutDelayTimeout = setTimeout(() => {
+          this.touchableHandleActivePressOut(e);
+        }, this.touchableGetPressOutDelayMS());
+      } else {
+        this.touchableHandleActivePressOut(e);
+      }
+    }
+  },
 
 };
 

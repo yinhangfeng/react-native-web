@@ -1,4 +1,5 @@
 /**
+ * RW SYNC react-native: 0.49 react-native-web: 0.1.0
  * Copyright (c) 2015-present, Facebook, Inc.
  * All rights reserved.
  *
@@ -12,46 +13,182 @@
 'use strict';
 
 const ColorPropType = require('ColorPropType');
-const DocumentSelectionState = require('DocumentSelectionState');
-//const EventEmitter = require('EventEmitter');
+// const DocumentSelectionState = require('DocumentSelectionState');
+// const EventEmitter = require('EventEmitter');
 const NativeMethodsMixin = require('NativeMethodsMixin');
-const Platform = require('Platform');
+// const Platform = require('Platform');
 const React = require('React');
-const ReactNative = require('ReactNative');
-//const StyleSheet = require('StyleSheet');
-const Text = require('Text');
+const createReactClass = require('create-react-class');
+const PropTypes = require('prop-types');
+// const ReactNative = require('ReactNative');
+// const StyleSheet = require('StyleSheet');
+// const Text = require('Text');
 const TextInputState = require('TextInputState');
-//const TimerMixin = require('react-timer-mixin');
-//const TouchableWithoutFeedback = require('TouchableWithoutFeedback');
-//const UIManager = require('UIManager');
-const View = require('View');
+// const TimerMixin = require('react-timer-mixin');
+// const TouchableWithoutFeedback = require('TouchableWithoutFeedback');
+// const UIManager = require('UIManager');
+const ViewPropTypes = require('ViewPropTypes');
+
 const createWebCoreElement = require('createWebCoreElement');
 const CSSClassNames = require('CSSClassNames');
 
-const PropTypes = React.PropTypes;
-
-//const emptyFunction = require('fbjs/lib/emptyFunction');
-//const invariant = require('fbjs/lib/invariant');
-
 // const onlyMultiline = {
-//   onTextInput: true, // not supported in Open Source yet
+//   onTextInput: true,
 //   children: true,
 // };
 
-// const notMultiline = {
-//   // nothing yet
-// };
-
 type Event = Object;
+type Selection = {
+  start: number,
+  end?: number,
+};
 
-const TextInput = React.createClass({
+// const DataDetectorTypes = [
+//   'phoneNumber',
+//   'link',
+//   'address',
+//   'calendarEvent',
+//   'none',
+//   'all',
+// ];
+
+const emptyObject = {};
+
+/**
+ * Determines whether a 'selection' prop differs from a node's existing
+ * selection state.
+ */
+const isSelectionStale = (node, selection) => {
+  if (node && selection) {
+    const { selectionEnd, selectionStart } = node;
+    const { start, end } = selection;
+    return start !== selectionStart || end !== selectionEnd;
+  }
+  return false;
+};
+
+/**
+ * A foundational component for inputting text into the app via a
+ * keyboard. Props provide configurability for several features, such as
+ * auto-correction, auto-capitalization, placeholder text, and different keyboard
+ * types, such as a numeric keypad.
+ *
+ * The simplest use case is to plop down a `TextInput` and subscribe to the
+ * `onChangeText` events to read the user input. There are also other events,
+ * such as `onSubmitEditing` and `onFocus` that can be subscribed to. A simple
+ * example:
+ *
+ * ```ReactNativeWebPlayer
+ * import React, { Component } from 'react';
+ * import { AppRegistry, TextInput } from 'react-native';
+ *
+ * export default class UselessTextInput extends Component {
+ *   constructor(props) {
+ *     super(props);
+ *     this.state = { text: 'Useless Placeholder' };
+ *   }
+ *
+ *   render() {
+ *     return (
+ *       <TextInput
+ *         style={{height: 40, borderColor: 'gray', borderWidth: 1}}
+ *         onChangeText={(text) => this.setState({text})}
+ *         value={this.state.text}
+ *       />
+ *     );
+ *   }
+ * }
+ *
+ * // skip this line if using Create React Native App
+ * AppRegistry.registerComponent('AwesomeProject', () => UselessTextInput);
+ * ```
+ *
+ * Two methods exposed via the native element are .focus() and .blur() that
+ * will focus or blur the TextInput programmatically.
+ *
+ * Note that some props are only available with `multiline={true/false}`.
+ * Additionally, border styles that apply to only one side of the element
+ * (e.g., `borderBottomColor`, `borderLeftWidth`, etc.) will not be applied if
+ * `multiline=false`. To achieve the same effect, you can wrap your `TextInput`
+ * in a `View`:
+ *
+ * ```ReactNativeWebPlayer
+ * import React, { Component } from 'react';
+ * import { AppRegistry, View, TextInput } from 'react-native';
+ *
+ * class UselessTextInput extends Component {
+ *   render() {
+ *     return (
+ *       <TextInput
+ *         {...this.props} // Inherit any props passed to it; e.g., multiline, numberOfLines below
+ *         editable = {true}
+ *         maxLength = {40}
+ *       />
+ *     );
+ *   }
+ * }
+ *
+ * export default class UselessTextInputMultiline extends Component {
+ *   constructor(props) {
+ *     super(props);
+ *     this.state = {
+ *       text: 'Useless Multiline Placeholder',
+ *     };
+ *   }
+ *
+ *   // If you type something in the text box that is a color, the background will change to that
+ *   // color.
+ *   render() {
+ *     return (
+ *      <View style={{
+ *        backgroundColor: this.state.text,
+ *        borderBottomColor: '#000000',
+ *        borderBottomWidth: 1 }}
+ *      >
+ *        <UselessTextInput
+ *          multiline = {true}
+ *          numberOfLines = {4}
+ *          onChangeText={(text) => this.setState({text})}
+ *          value={this.state.text}
+ *        />
+ *      </View>
+ *     );
+ *   }
+ * }
+ *
+ * // skip these lines if using Create React Native App
+ * AppRegistry.registerComponent(
+ *  'AwesomeProject',
+ *  () => UselessTextInputMultiline
+ * );
+ * ```
+ *
+ * `TextInput` has by default a border at the bottom of its view. This border
+ * has its padding set by the background image provided by the system, and it
+ * cannot be changed. Solutions to avoid this is to either not set height
+ * explicitly, case in which the system will take care of displaying the border
+ * in the correct position, or to not display the border by setting
+ * `underlineColorAndroid` to transparent.
+ *
+ * Note that on Android performing text selection in input can change
+ * app's activity `windowSoftInputMode` param to `adjustResize`.
+ * This may cause issues with components that have position: 'absolute'
+ * while keyboard is active. To avoid this behavior either specify `windowSoftInputMode`
+ * in AndroidManifest.xml ( https://developer.android.com/guide/topics/manifest/activity-element.html )
+ * or control this param programmatically with native code.
+ *
+ */
+
+// $FlowFixMe(>=0.41.0)
+const TextInput = createReactClass({
+  displayName: 'TextInput',
   statics: {
     /* TODO(brentvatne) docs are needed for this */
     State: TextInputState,
   },
 
   propTypes: {
-    ...View.propTypes,
+    ...ViewPropTypes,
     /**
      * Can tell `TextInput` to automatically capitalize certain characters.
      *
@@ -75,12 +212,19 @@ const TextInput = React.createClass({
      * The default value is inherited from `autoCorrect`.
      * @platform ios
      */
-    spellCheck: PropTypes.bool,
+    // spellCheck: PropTypes.bool,
     /**
      * If `true`, focuses the input on `componentDidMount`.
      * The default value is `false`.
      */
     autoFocus: PropTypes.bool,
+    /**
+     * If true, will increase the height of the textbox if need be. If false,
+     * the textbox will become scrollable once the height is reached. The
+     * default value is false.
+     * @platform android
+     */
+    // autoGrow: PropTypes.bool,
     /**
      * If `false`, text is not editable. The default value is `true`.
      */
@@ -115,11 +259,11 @@ const TextInput = React.createClass({
      * Determines the color of the keyboard.
      * @platform ios
      */
-    keyboardAppearance: PropTypes.oneOf([
-      'default',
-      'light',
-      'dark',
-    ]),
+    // keyboardAppearance: PropTypes.oneOf([
+    //   'default',
+    //   'light',
+    //   'dark',
+    // ]),
     /**
      * Determines how the return key should look. On Android you can also use
      * `returnKeyLabel`.
@@ -174,12 +318,17 @@ const TextInput = React.createClass({
      * Sets the return key to the label. Use it instead of `returnKeyType`.
      * @platform android
      */
-    returnKeyLabel: PropTypes.string,
+    // returnKeyLabel: PropTypes.string,
     /**
      * Limits the maximum number of characters that can be entered. Use this
      * instead of implementing the logic in JS to avoid flicker.
      */
     maxLength: PropTypes.number,
+    /**
+     * If autogrow is `true`, limits the height that the TextInput box can grow
+     * to. Once it reaches this height, the TextInput becomes scrollable.
+     */
+    maxHeight: PropTypes.number,
     /**
      * Sets the number of lines for a `TextInput`. Use it with multiline set to
      * `true` to be able to fill the lines.
@@ -194,18 +343,24 @@ const TextInput = React.createClass({
      * Defaults to `false`.
      * @platform android
      */
-    disableFullscreenUI: PropTypes.bool,
+    // disableFullscreenUI: PropTypes.bool,
     /**
      * If `true`, the keyboard disables the return key when there is no text and
      * automatically enables it when there is text. The default value is `false`.
      * @platform ios
      */
-    enablesReturnKeyAutomatically: PropTypes.bool,
+    // enablesReturnKeyAutomatically: PropTypes.bool,
     /**
      * If `true`, the text input can be multiple lines.
      * The default value is `false`.
      */
     multiline: PropTypes.bool,
+    /**
+     * Set text break strategy on Android API Level 23+, possible values are `simple`, `highQuality`, `balanced`
+     * The default value is `simple`.
+     * @platform android
+     */
+    // textBreakStrategy: PropTypes.oneOf(['simple', 'highQuality', 'balanced']),
     /**
      * Callback that is called when the text input is blurred.
      */
@@ -237,6 +392,8 @@ const TextInput = React.createClass({
     onEndEditing: PropTypes.func,
     /**
      * Callback that is called when the text input selection is changed.
+     * This will be called with
+     * `{ nativeEvent: { selection: { start, end } } }`.
      */
     onSelectionChange: PropTypes.func,
     /**
@@ -246,7 +403,9 @@ const TextInput = React.createClass({
     onSubmitEditing: PropTypes.func,
     /**
      * Callback that is called when a key is pressed.
-     * Pressed key value is passed as an argument to the callback handler.
+     * This will be called with `{ nativeEvent: { key: keyValue } }`
+     * where `keyValue` is `'Enter'` or `'Backspace'` for respective keys and
+     * the typed-in character otherwise including `' '` for space.
      * Fires before `onChange` callbacks.
      * @platform ios
      */
@@ -268,14 +427,14 @@ const TextInput = React.createClass({
     /**
      * The text color of the placeholder string.
      */
-    placeholderTextColor: ColorPropType, //TODO
+    placeholderTextColor: ColorPropType, // RW TODO
     /**
      * If `true`, the text input obscures the text entered so that sensitive text
      * like passwords stay secure. The default value is `false`.
      */
     secureTextEntry: PropTypes.bool,
     /**
-    * The highlight (and cursor on iOS) color of the text input.
+    * The highlight and cursor color of the text input.
     */
     selectionColor: ColorPropType,
     /**
@@ -293,10 +452,11 @@ const TextInput = React.createClass({
      *
      * @platform ios
      */
-    selectionState: PropTypes.instanceOf(DocumentSelectionState),
+    // selectionState: PropTypes.instanceOf(DocumentSelectionState),
     /**
      * The start and end of the text input's selection. Set start and end to
      * the same value to position the cursor.
+     * RW TODO
      */
     selection: PropTypes.shape({
       start: PropTypes.number.isRequired,
@@ -317,17 +477,17 @@ const TextInput = React.createClass({
      * Useful for simple use-cases where you do not want to deal with listening
      * to events and updating the value prop to keep the controlled state in sync.
      */
-    defaultValue: PropTypes.node,
+    defaultValue: PropTypes.string,
     /**
      * When the clear button should appear on the right side of the text view.
      * @platform ios
      */
-    clearButtonMode: PropTypes.oneOf([
-      'never',
-      'while-editing',
-      'unless-editing',
-      'always',
-    ]),
+    // clearButtonMode: PropTypes.oneOf([
+    //   'never',
+    //   'while-editing',
+    //   'unless-editing',
+    //   'always',
+    // ]),
     /**
      * If `true`, clears the text field automatically when editing begins.
      * @platform ios
@@ -346,26 +506,37 @@ const TextInput = React.createClass({
      */
     blurOnSubmit: PropTypes.bool,
     /**
-     * [Styles](/react-native/docs/style.html)
+     * Note that not all Text styles are supported,
+     * see [Issue#7070](https://github.com/facebook/react-native/issues/7070)
+     * for more detail.
+     *
+     * [Styles](docs/style.html)
      */
     style: Text.propTypes.style,
     /**
      * The color of the `TextInput` underline.
      * @platform android
      */
-    underlineColorAndroid: ColorPropType,
+    // underlineColorAndroid: ColorPropType,
 
     /**
      * If defined, the provided image resource will be rendered on the left.
+     * The image resource must be inside `/android/app/src/main/res/drawable` and referenced
+     * like
+     * ```
+     * <TextInput
+     *  inlineImageLeft='search_icon'
+     * />
+     * ```
      * @platform android
      */
-    inlineImageLeft: PropTypes.string,
+    // inlineImageLeft: PropTypes.string,
 
     /**
      * Padding between the inline image, if any, and the text input itself.
      * @platform android
      */
-    inlineImagePadding: PropTypes.number,
+    // inlineImagePadding: PropTypes.number,
 
     /**
      * Determines the types of data converted to clickable URLs in the text input.
@@ -389,6 +560,10 @@ const TextInput = React.createClass({
     //   PropTypes.oneOf(DataDetectorTypes),
     //   PropTypes.arrayOf(PropTypes.oneOf(DataDetectorTypes)),
     // ]),
+    /**
+     * If `true`, caret is hidden. The default value is `false`.
+     */
+    caretHidden: PropTypes.bool,
   },
 
   /**
@@ -397,24 +572,32 @@ const TextInput = React.createClass({
    */
   mixins: [NativeMethodsMixin],
 
-  // viewConfig:
-  //   ((Platform.OS === 'ios' && RCTTextField ?
-  //     RCTTextField.viewConfig :
-  //     (Platform.OS === 'android' && AndroidTextInput ?
-  //       AndroidTextInput.viewConfig :
-  //       {})) : Object),
-
-  // contextTypes: {
-  //   onFocusRequested: React.PropTypes.func,
-  //   focusEmitter: React.PropTypes.instanceOf(EventEmitter), //TODO RW 兼容native focus机制? 或者用web自己的 document.activeElement?
+  // getInitialState: function() {
+  //   return {layoutHeight: this._layoutHeight};
   // },
 
-  //_focusSubscription: (undefined: ?Function),
+  /**
+   * Returns `true` if the input is currently focused; `false` otherwise.
+   */
+  isFocused: function(): boolean {
+    return TextInputState.currentlyFocusedField() === this._inputRef;
+  },
+
+  // contextTypes: {
+  //   onFocusRequested: PropTypes.func,
+  //   focusEmitter: PropTypes.instanceOf(EventEmitter),
+  // },
+
+  // _inputRef: (undefined: any),
+  // _focusSubscription: (undefined: ?Function),
+  // _lastNativeText: (undefined: ?string),
+  // _lastNativeSelection: (undefined: ?Selection),
+  // _layoutHeight: (-1: number),
 
   componentDidMount: function() {
     //TODO RW
     if (this.props.autoFocus) {
-      this._node.focus();
+      this._inputRef.focus();
     }
   },
 
@@ -430,105 +613,118 @@ const TextInput = React.createClass({
   },
 
   childContextTypes: {
-    isInAParentText: React.PropTypes.bool
+    isInAParentText: PropTypes.bool
   },
-
-  /**
-   * Returns `true` if the input is currently focused; `false` otherwise.
-   */
-  isFocused: function(): boolean {
-    return TextInputState.currentlyFocusedField() === this._node;
-  },
-
-  // 已在NativeMethodsMixin中定义
-  // focus: function() {
-  //   TextInputState.focusTextInput(this._node);
-  // },
-
-  // 已在NativeMethodsMixin中定义
-  // blur: function() {
-  //   TextInputState.blurTextInput(this._node);
-  // },
 
   /**
    * Removes all text from the `TextInput`.
    */
   clear: function() {
-    if(this._node) {
-      this._node.value = '';
+    if (this._inputRef) {
+      this._inputRef.value = '';
     }
   },
 
   render: function() {
-    const props = this.props;
+    const {
+      autoCorrect,
+      // editable,
+      keyboardType,
+      multiline,
+      numberOfLines,
+      secureTextEntry,
+      // style,
+      /* eslint-disable */
+      blurOnSubmit,
+      clearTextOnFocus,
+      // onChangeText,
+      // onSelectionChange,
+      onSubmitEditing,
+      selection,
+      selectTextOnFocus,
+      /* react-native compat */
+      caretHidden,
+      clearButtonMode,
+      dataDetectorTypes,
+      disableFullscreenUI,
+      enablesReturnKeyAutomatically,
+      inlineImageLeft,
+      inlineImagePadding,
+      keyboardAppearance,
+      onContentSizeChange,
+      onEndEditing,
+      onScroll,
+      placeholderTextColor,
+      returnKeyLabel,
+      returnKeyType,
+      selectionColor,
+      selectionState,
+      spellCheck,
+      textBreakStrategy,
+      underlineColorAndroid,
+      /* eslint-enable */
+      ...otherProps
+    } = this.props;
 
-    const propsCommon = {
-      ...props,
+    let type;
+
+    switch (keyboardType) {
+      case 'email-address':
+        type = 'email';
+        break;
+      case 'number-pad':
+      case 'numeric':
+        type = 'number';
+        break;
+      case 'phone-pad':
+        type = 'tel';
+        break;
+      case 'search':
+      case 'web-search':
+        type = 'search';
+        break;
+      case 'url':
+        type = 'url';
+        break;
+      default:
+        type = 'text';
+    }
+
+    if (secureTextEntry) {
+      type = 'password';
+    }
+
+    Object.assign(otherProps, {
       className: CSSClassNames.TEXT_INPUT,
-      ref: this._setNode,
-      autoCorrect: props.autoCorrect ? 'on' : 'off',
+      ref: this._setNativeRef,
+      autoCorrect: autoCorrect ? 'on' : 'off',
       dir: 'auto',
       onBlur: props.onBlur && this._onBlur,
       onChange: (props.onChange || props.onChangeText) && this._onChange,
       onFocus: this._onFocus,
-      onSelect: props.onSelectionChange && this._onSelectionChange,
+      onKeyDown: this._onKeyDown,
       onKeyPress: this._onKeyPress,
+      onSelect: props.onSelectionChange && this._onSelectionChange,
       readOnly: props.editable === false,
-      children: undefined, //TODO RW 暂时不支持children
-    };
+    });
 
-    let input;
-    if (props.multiline) {
-      propsCommon.maxRows = props.numberOfLines;
-      propsCommon.minRows = props.numberOfLines;
-
-      input = createWebCoreElement('textarea', propsCommon);
+    if (multiline) {
+      otherProps.rows = numberOfLines;
+      return createWebCoreElement('textarea', otherProps);
     } else {
-      let type;
-
-      switch (props.keyboardType) {
-        case 'email-address':
-          type = 'email';
-          break;
-        case 'number-pad':
-        case 'numeric':
-          type = 'number';
-          break;
-        case 'phone-pad':
-          type = 'tel';
-          break;
-        case 'search':
-        case 'web-search':
-          type = 'search';
-          break;
-        case 'url':
-          type = 'url';
-          break;
-        default:
-          type = 'text';
-      }
-
-      if (props.secureTextEntry) {
-        type = 'password';
-      }
-      propsCommon.type = type;
-      input = createWebCoreElement('input', propsCommon);
+      otherProps.type = type;
+      return createWebCoreElement('input', otherProps);
     }
-
-    //TODO RW children
-    return input;
   },
 
-  _onFocus: function(event: Event) {
-    const { clearTextOnFocus, onFocus, selectTextOnFocus } = this.props;
-    const node = this._node;
-    if (node) {
-      if (clearTextOnFocus) node.value = '';
-      if (selectTextOnFocus) node.select();
-    }
-    if (onFocus) {
+  _setNativeRef: function(ref) {
+    this._inputRef = ref;
+  },
+
+  _onBlur: function(event: Event) {
+    if (this.props.onBlur) {
       event.nativeEvent.text = event.target.value;
-      onFocus(event);
+      this.props.onBlur(event);
     }
   },
 
@@ -540,26 +736,24 @@ const TextInput = React.createClass({
     if (this.props.onChangeText) this.props.onChangeText(event.target.value);
   },
 
-  _onBlur: function(event: Event) {
-    if (this.props.onBlur) {
+  _onFocus: function(event: Event) {
+    const { clearTextOnFocus, onFocus, selectTextOnFocus } = this.props;
+    if (onFocus) {
       event.nativeEvent.text = event.target.value;
-      this.props.onBlur(event);
+      onFocus(event);
     }
+    const node = this._inputRef;
+    if (clearTextOnFocus) this.clear();
+    if (selectTextOnFocus) node && node.select();
   },
 
-  _onSelectionChange: function(e) {
-    const { onSelectionChange } = this.props;
+  _onKeyDown: function(e) {
+    // prevent key events bubbling (see #612)
+    e.stopPropagation();
 
-    if (onSelectionChange) {
-      const { selectionDirection, selectionEnd, selectionStart } = e.target;
-      e.nativeEvent.text = e.target.value;
-      const event = {
-        selectionDirection,
-        selectionEnd,
-        selectionStart,
-        nativeEvent: e.nativeEvent
-      };
-      onSelectionChange(event);
+    // Backspace, Tab, and Cmd+Enter only fire 'keydown' DOM events
+    if (e.which === 8 || e.which === 9 || (e.which === 13 && e.metaKey)) {
+      this._onKeyPress(e);
     }
   },
 
@@ -567,22 +761,81 @@ const TextInput = React.createClass({
     const { blurOnSubmit, multiline, onKeyPress, onSubmitEditing } = this.props;
     const blurOnSubmitDefault = !multiline;
     const shouldBlurOnSubmit = blurOnSubmit == null ? blurOnSubmitDefault : blurOnSubmit;
-    if (onKeyPress) { onKeyPress(e); }
-    if (!e.isDefaultPrevented() && e.which === 13) {
-      if (onSubmitEditing) { onSubmitEditing(e); }
-      if (shouldBlurOnSubmit) { this.blur(); }
+
+    if (onKeyPress) {
+      let keyValue;
+      switch (e.which) {
+        // backspace
+        case 8:
+          keyValue = 'Backspace';
+          break;
+        // tab
+        case 9:
+          keyValue = 'Tab';
+          break;
+        // enter
+        case 13:
+          keyValue = 'Enter';
+          break;
+        // spacebar
+        case 32:
+          keyValue = ' ';
+          break;
+        default: {
+          // we trim to only care about the keys that has a textual representation
+          if (e.shiftKey) {
+            keyValue = String.fromCharCode(e.which).trim();
+          } else {
+            keyValue = String.fromCharCode(e.which)
+              .toLowerCase()
+              .trim();
+          }
+        }
+      }
+
+      if (keyValue) {
+        e.nativeEvent = {
+          altKey: e.altKey,
+          ctrlKey: e.ctrlKey,
+          key: keyValue,
+          metaKey: e.metaKey,
+          shiftKey: e.shiftKey,
+          target: e.target
+        };
+        onKeyPress(e);
+      }
+    }
+
+    if (!e.isDefaultPrevented() && e.which === 13 && !e.shiftKey) {
+      if ((blurOnSubmit || !multiline) && onSubmitEditing) {
+        e.nativeEvent = { target: e.target, text: e.target.value };
+        onSubmitEditing(e);
+      }
+      if (shouldBlurOnSubmit) {
+        this.blur();
+      }
     }
   },
 
-  _setNode: function(ref) {
-    this._node = ref;
+  _onSelectionChange: function(e) {
+    const { onSelectionChange, selection = emptyObject } = this.props;
+    if (onSelectionChange) {
+      try {
+        const node = e.target;
+        if (isSelectionStale(node, selection)) {
+          const { selectionStart, selectionEnd } = node;
+          e.nativeEvent.selection = {
+            start: selectionStart,
+            end: selectionEnd
+          };
+          onSelectionChange(e);
+        }
+      } catch (e) {}
+    }
   },
 });
 
 // const styles = StyleSheet.create({
-//   input: {
-//     alignSelf: 'stretch',
-//   },
 // });
 
 module.exports = TextInput;

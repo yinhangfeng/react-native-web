@@ -14,7 +14,6 @@ const http = require('http');
 const optimist = require('optimist');
 const path = require('path');
 const reactMiddleware = require('react-page-middleware');
-const sassMiddleware = require('node-sass-middleware');
 
 const argv = optimist.argv;
 
@@ -43,19 +42,12 @@ const buildOptions = {
 };
 
 const app = connect()
-  .use(sassMiddleware({
-    /* Options */
-    src: path.join(PROJECT_ROOT,'styles'),
-    dest: path.join(FILE_SERVE_ROOT,'react-native','css'),
-    response: false,
-    outputStyle: 'extended',
-    prefix: '/react-native/css',
-  }))
   .use(function(req, res, next) {
     // convert all the md files on every request. This is not optimal
     // but fast enough that we don't really need to care right now.
     if (!server.noconvert && req.url.match(/\.html|\/$/)) {
-      convert();
+      var extractDocs = req.url.match(/\/docs/); // Lazily extract docs.
+      convert({extractDocs});
     }
     next();
   })

@@ -50,7 +50,11 @@ type NetworkRequestInfo = {
 /**
  * Show all the intercepted network requests over the InspectorPanel.
  */
-class NetworkOverlay extends React.Component {
+class NetworkOverlay extends React.Component<Object, {
+  dataSource: ListView.DataSource,
+  newDetailInfo: bool,
+  detailRowID: ?number,
+}> {
   _requests: Array<NetworkRequestInfo>;
   _listViewDataSource: ListView.DataSource;
   _listView: ?ListView;
@@ -67,18 +71,11 @@ class NetworkOverlay extends React.Component {
     rowID: number,
     highlightRow: (sectionID: number, rowID: number) => void,
   ) => React.Element<any>;
-  _renderScrollComponent: (props: Object) => React.Element<any>;
   _closeButtonClicked: () => void;
   // Map of `socketId` -> `index in `_requests``.
   _socketIdMap: Object;
   // Map of `xhr._index` -> `index in `_requests``.
   _xhrIdMap: {[key: number]: number};
-
-  state: {
-    dataSource: ListView.DataSource,
-    newDetailInfo: bool,
-    detailRowID: ?number,
-  };
 
   constructor(props: Object) {
     super(props);
@@ -97,7 +94,6 @@ class NetworkOverlay extends React.Component {
     this._captureDetailScrollView = this._captureDetailScrollView.bind(this);
     this._listViewOnLayout = this._listViewOnLayout.bind(this);
     this._renderRow = this._renderRow.bind(this);
-    this._renderScrollComponent = this._renderScrollComponent.bind(this);
     this._closeButtonClicked = this._closeButtonClicked.bind(this);
     this._socketIdMap = {};
     this._xhrIdMap = {};

@@ -9,11 +9,12 @@
  * @providesModule AssetSourceResolver
  * @flow
  */
+'use strict';
 
 export type ResolvedAssetSource = {
   __packager_asset: boolean,
-  width: number,
-  height: number,
+  width: ?number,
+  height: ?number,
   uri: string,
   scale: number,
 };
@@ -21,10 +22,10 @@ export type ResolvedAssetSource = {
 import type { PackagerAsset } from 'AssetRegistry';
 
 const PixelRatio = require('PixelRatio');
-const Platform = require('Platform');
+// const Platform = require('Platform');
 
 //const assetPathUtils = require('../../local-cli/bundle/assetPathUtils');
-const invariant = require('fbjs/lib/invariant');
+// const invariant = require('fbjs/lib/invariant');
 
 function assetPathUtilsGetBasePath(asset) {
   var basePath = asset.httpServerLocation;
@@ -40,7 +41,7 @@ function assetPathUtilsGetBasePath(asset) {
 function getScaledAssetPath(asset): string {
   var scale = AssetSourceResolver.pickScale(asset.scales, PixelRatio.get());
   var scaleSuffix = scale === 1 ? '' : '@' + scale + 'x';
-  var assetDir = assetPathUtilsGetBasePath(asset);//assetPathUtils.getBasePath(asset);
+  var assetDir = assetPathUtilsGetBasePath(asset);
   return assetDir + '/' + asset.name + scaleSuffix + '.' + asset.type;
 }
 
@@ -77,11 +78,9 @@ class AssetSourceResolver {
   }
 
   defaultAsset(): ResolvedAssetSource {
-    let url = this.serverUrl || this.devServerUrl;
+    const url = this.devServerUrl || this.serverUrl;
     return this.fromSource(
-      url + getScaledAssetPath(this.asset)
-      // XXX platform 和 hash 暂时不需要
-      //+ '?platform=' + Platform.OS + '&hash=' + this.asset.hash
+      url + getScaledAssetPath(this.asset) + '&hash=' + this.asset.hash
     );
   }
 

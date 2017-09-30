@@ -1,8 +1,6 @@
 const AppRegistry = require('AppRegistry');
 
-//require('./UIExplorer/UIExplorerApp');
-
-require('./UIExplorer/js/UIExplorerAppNoNav');
+require('../RNTester/js/UIExplorerAppNoNav');
 AppRegistry.runApplication('UIExplorerApp');
 
 // const NavigationExperimentalExample = require('./UIExplorer/NavigationExperimental/NavigationExperimentalExample');

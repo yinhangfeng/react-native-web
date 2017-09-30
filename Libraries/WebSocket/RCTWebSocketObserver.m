@@ -14,42 +14,42 @@
 #import <React/RCTLog.h>
 #import <React/RCTUtils.h>
 
-#import "RCTSRWebSocket.h"
+#import "RCTReconnectingWebSocket.h"
 
 #if RCT_DEV // Only supported in dev mode
 
-@interface RCTWebSocketObserver () <RCTSRWebSocketDelegate>
+@interface RCTWebSocketObserver () <RCTWebSocketProtocolDelegate>
 @end
 
 @implementation RCTWebSocketObserver {
-  NSURL *_url;
-  RCTSRWebSocket *_socket;
+  RCTReconnectingWebSocket *_socket;
 }
 
 @synthesize delegate = _delegate;
 
 - (instancetype)initWithURL:(NSURL *)url
 {
-  if ((self = [self init])) {
-    _url = url;
-}
+  if (self = [super init]) {
+    _socket = [[RCTReconnectingWebSocket alloc] initWithURL:url];
+    _socket.delegate = self;
+  }
   return self;
+}
+
+- (void)setDelegateDispatchQueue:(dispatch_queue_t)queue
+{
+  [_socket setDelegateDispatchQueue:queue];
 }
 
 - (void)start
 {
-  [self stop];
-  _socket = [[RCTSRWebSocket alloc] initWithURL:_url];
   _socket.delegate = self;
-
-  [_socket open];
+  [_socket start];
 }
 
 - (void)stop
 {
-  _socket.delegate = nil;
-  [_socket closeWithCode:1000 reason:@"Invalidated"];
-  _socket = nil;
+  [_socket stop];
 }
 
 - (void)webSocket:(RCTSRWebSocket *)webSocket didReceiveMessage:(id)message
@@ -66,25 +66,12 @@
   }
 }
 
-- (void)reconnect
+- (void)webSocketDidOpen:(RCTSRWebSocket *)webSocket
 {
-  __weak RCTSRWebSocket *socket = _socket;
-  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-    // Only reconnect if the observer wasn't stoppped while we were waiting
-    if (socket) {
-      [self start];
-    }
-  });
-}
-
-- (void)webSocket:(RCTSRWebSocket *)webSocket didFailWithError:(NSError *)error
-{
-  [self reconnect];
 }
 
 - (void)webSocket:(RCTSRWebSocket *)webSocket didCloseWithCode:(NSInteger)code reason:(NSString *)reason wasClean:(BOOL)wasClean
 {
-  [self reconnect];
 }
 
 @end

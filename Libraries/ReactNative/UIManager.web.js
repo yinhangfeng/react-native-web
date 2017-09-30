@@ -5,7 +5,7 @@
 const CSSPropertyOperations = require('react-dom/lib/CSSPropertyOperations');
 const createReactDOMStyleObject = require('../lrnw/createReactDOMStyleObject');
 
-const _measureLayout = (node, relativeToNativeNode, callback) => {
+const measureLayout = (node, relativeToNativeNode, callback) => {
   //RW TODO 检查是否正确
   const relativeNode = relativeToNativeNode || node.parentNode;
   const relativeRect = relativeNode.getBoundingClientRect();
@@ -16,9 +16,20 @@ const _measureLayout = (node, relativeToNativeNode, callback) => {
 }
 
 const UIManager = {
+  blur(node) {
+    try {
+      node.blur();
+    } catch (err) {}
+  },
+
+  focus(node) {
+    try {
+      node.focus();
+    } catch (err) {}
+  },
 
   measure(node, callback) {
-    _measureLayout(node, null, callback);
+    measureLayout(node, null, callback);
   },
 
   measureInWindow(node, callback) {
@@ -28,7 +39,7 @@ const UIManager = {
 
   measureLayout(node, relativeToNativeNode, onFail, onSuccess) {
     const relativeTo = relativeToNativeNode || node.parentNode;
-    _measureLayout(node, relativeTo, onSuccess);
+    measureLayout(node, relativeTo, onSuccess);
   },
 
   updateView(node, props, component) {
@@ -54,15 +65,7 @@ const UIManager = {
           break;
       }
     }
-  },
-
-  blur(node) {
-    try { node.blur(); } catch (err) {}
-  },
-
-  focus(node) {
-    try { node.focus(); } catch (err) {}
-  },
-}
+  }
+};
 
 module.exports = UIManager;

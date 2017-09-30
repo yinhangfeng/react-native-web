@@ -7,13 +7,34 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  */
 
-#import <React/RCTConvert.h>
-#include <folly/dynamic.h>
+#include <memory>
 
-id RCTConvertFollyDynamic(const folly::dynamic &dyn);
+#import <JavaScriptCore/JavaScriptCore.h>
 
-@interface RCTConvert (folly)
+#import <cxxreact/JSCExecutor.h>
+#import <jschelpers/JavaScriptCore.h>
 
-+ (folly::dynamic)folly_dynamic:(id)json;
+@class RCTBridge;
+@class RCTModuleData;
 
-@end
+namespace facebook {
+namespace react {
+
+class Instance;
+
+std::vector<std::unique_ptr<NativeModule>> createNativeModules(NSArray<RCTModuleData *> *modules, RCTBridge *bridge, const std::shared_ptr<Instance> &instance);
+
+JSContext *contextForGlobalContextRef(JSGlobalContextRef contextRef);
+
+template<>
+struct JSCValueEncoder<id> {
+  static Value toJSCValue(JSGlobalContextRef ctx, id obj) {
+    JSValue *value = [JSC_JSValue(ctx) valueWithObject:obj inContext:contextForGlobalContextRef(ctx)];
+    return {ctx, [value JSValueRef]};
+  }
+};
+
+NSError *tryAndReturnError(const std::function<void()>& func);
+NSString *deriveSourceURL(NSURL *url);
+
+} }

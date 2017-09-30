@@ -15,11 +15,14 @@ import java.util.Arrays;
 import java.util.ArrayList;
 
 import com.facebook.yoga.YogaAlign;
+import com.facebook.yoga.YogaConfig;
+import com.facebook.yoga.YogaDisplay;
 import com.facebook.yoga.YogaEdge;
 import com.facebook.yoga.YogaConstants;
 import com.facebook.yoga.YogaDirection;
 import com.facebook.yoga.YogaFlexDirection;
 import com.facebook.yoga.YogaJustify;
+import com.facebook.yoga.YogaBaselineFunction;
 import com.facebook.yoga.YogaMeasureFunction;
 import com.facebook.yoga.YogaNode;
 import com.facebook.yoga.YogaOverflow;
@@ -77,12 +80,18 @@ public class ReactShadowNode {
   private final float[] mPadding = new float[Spacing.ALL + 1];
   private final boolean[] mPaddingIsPercent = new boolean[Spacing.ALL + 1];
   private final YogaNode mYogaNode;
+  private static YogaConfig sYogaConfig;
 
   public ReactShadowNode() {
     if (!isVirtual()) {
       YogaNode node = YogaNodePool.get().acquire();
+      if (sYogaConfig == null) {
+        sYogaConfig = new YogaConfig();
+        sYogaConfig.setPointScaleFactor(0f);
+        sYogaConfig.setUseLegacyStretchBehaviour(true);
+      }
       if (node == null) {
-        node = new YogaNode();
+        node = new YogaNode(sYogaConfig);
       }
       mYogaNode = node;
       Arrays.fill(mPadding, YogaConstants.UNDEFINED);
@@ -367,11 +376,11 @@ public class ReactShadowNode {
   }
 
   public void calculateLayout() {
-    mYogaNode.calculateLayout();
+    mYogaNode.calculateLayout(YogaConstants.UNDEFINED, YogaConstants.UNDEFINED);
   }
 
   public final boolean hasNewLayout() {
-    return mYogaNode == null ? false : mYogaNode.hasNewLayout();
+    return mYogaNode != null && mYogaNode.hasNewLayout();
   }
 
   public final void markLayoutSeen() {
@@ -442,6 +451,23 @@ public class ReactShadowNode {
 
   public final int getTotalNativeChildren() {
     return mTotalNativeChildren;
+  }
+
+  public boolean isDescendantOf(ReactShadowNode ancestorNode) {
+    ReactShadowNode parentNode = getParent();
+
+    boolean isDescendant = false;
+
+    while (parentNode != null) {
+      if (parentNode == ancestorNode) {
+        isDescendant = true;
+        break;
+      } else {
+        parentNode = parentNode.getParent();
+      }
+    }
+
+    return isDescendant;
   }
 
   /**
@@ -554,6 +580,10 @@ public class ReactShadowNode {
     mYogaNode.setWidthPercent(percent);
   }
 
+  public void setStyleWidthAuto() {
+    mYogaNode.setWidthAuto();
+  }
+
   public void setStyleMinWidth(float widthPx) {
     mYogaNode.setMinWidth(widthPx);
   }
@@ -580,6 +610,10 @@ public class ReactShadowNode {
 
   public void setStyleHeightPercent(float percent) {
     mYogaNode.setHeightPercent(percent);
+  }
+
+  public void setStyleHeightAuto() {
+    mYogaNode.setHeightAuto();
   }
 
   public void setStyleMinHeight(float widthPx) {
@@ -614,6 +648,10 @@ public class ReactShadowNode {
     mYogaNode.setFlexBasis(flexBasis);
   }
 
+  public void setFlexBasisAuto() {
+    mYogaNode.setFlexBasisAuto();
+  }
+
   public void setFlexBasisPercent(float percent) {
     mYogaNode.setFlexBasisPercent(percent);
   }
@@ -638,6 +676,10 @@ public class ReactShadowNode {
     mYogaNode.setAlignItems(alignItems);
   }
 
+  public void setAlignContent(YogaAlign alignContent) {
+    mYogaNode.setAlignContent(alignContent);
+  }
+
   public void setJustifyContent(YogaJustify justifyContent) {
     mYogaNode.setJustifyContent(justifyContent);
   }
@@ -646,12 +688,20 @@ public class ReactShadowNode {
     mYogaNode.setOverflow(overflow);
   }
 
+  public void setDisplay(YogaDisplay display) {
+    mYogaNode.setDisplay(display);
+  }
+
   public void setMargin(int spacingType, float margin) {
     mYogaNode.setMargin(YogaEdge.fromInt(spacingType), margin);
   }
 
   public void setMarginPercent(int spacingType, float percent) {
     mYogaNode.setMarginPercent(YogaEdge.fromInt(spacingType), percent);
+  }
+
+  public void setMarginAuto(int spacingType) {
+    mYogaNode.setMarginAuto(YogaEdge.fromInt(spacingType));
   }
 
   public final float getPadding(int spacingType) {
@@ -733,6 +783,10 @@ public class ReactShadowNode {
     mShouldNotifyOnLayout = shouldNotifyOnLayout;
   }
 
+  public void setBaselineFunction(YogaBaselineFunction baselineFunction) {
+    mYogaNode.setBaselineFunction(baselineFunction);
+  }
+
   public void setMeasureFunction(YogaMeasureFunction measureFunction) {
     if ((measureFunction == null ^ mYogaNode.isMeasureDefined()) &&
         getChildCount() != 0) {
@@ -745,7 +799,37 @@ public class ReactShadowNode {
 
   @Override
   public String toString() {
-    return mYogaNode.toString();
+    StringBuilder sb = new StringBuilder();
+    toStringWithIndentation(sb, 0);
+    return sb.toString();
+  }
+
+  private void toStringWithIndentation(StringBuilder result, int level) {
+    // Spaces and tabs are dropped by IntelliJ logcat integration, so rely on __ instead.
+    for (int i = 0; i < level; ++i) {
+      result.append("__");
+    }
+
+    result
+      .append(getClass().getSimpleName())
+      .append(" ");
+    if (mYogaNode != null) {
+      result
+        .append(getLayoutWidth())
+        .append(",")
+        .append(getLayoutHeight());
+    } else {
+      result.append("(virtual node)");
+    }
+    result.append("\n");
+
+    if (getChildCount() == 0) {
+      return;
+    }
+
+    for (int i = 0; i < getChildCount(); i++) {
+      getChildAt(i).toStringWithIndentation(result, level + 1);
+    }
   }
 
   public void dispose() {

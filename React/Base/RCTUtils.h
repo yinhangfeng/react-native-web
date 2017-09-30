@@ -96,10 +96,14 @@ RCT_EXTERN NSError *RCTErrorWithMessage(NSString *message);
 
 // Convert nil values to NSNull, and vice-versa
 #define RCTNullIfNil(value) (value ?: (id)kCFNull)
-#define RCTNilIfNull(value) (value == (id)kCFNull ? nil : value)
+#define RCTNilIfNull(value) \
+  ({ __typeof__(value) t = (value); (id)t == (id)kCFNull ? (__typeof(value))nil : t; })
 
 // Convert NaN or infinite values to zero, as these aren't JSON-safe
 RCT_EXTERN double RCTZeroIfNaN(double value);
+
+// Returns `0` and log special warning if value is NaN or INF.
+RCT_EXTERN double RCTSanitizeNaNValue(double value, NSString *property);
 
 // Convert data to a Base64-encoded data URL
 RCT_EXTERN NSURL *RCTDataURL(NSString *mimeType, NSData *data);
@@ -113,6 +117,10 @@ RCT_EXTERN NSString *__nullable RCTBundlePathForURL(NSURL *__nullable URL);
 
 // Determines if a given image URL refers to a local image
 RCT_EXTERN BOOL RCTIsLocalAssetURL(NSURL *__nullable imageURL);
+
+// Returns an UIImage for a local image asset. Returns nil if the URL
+// does not correspond to a local asset.
+RCT_EXTERN UIImage *__nullable RCTImageFromLocalAssetURL(NSURL *imageURL);
 
 // Creates a new, unique temporary file path with the specified extension
 RCT_EXTERN NSString *__nullable RCTTempFilePath(NSString *__nullable extension, NSError **error);
