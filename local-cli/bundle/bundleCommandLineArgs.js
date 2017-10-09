@@ -59,6 +59,7 @@ module.exports = [
     description: 'Removes cached files',
     default: false,
   }, {
+    // RW modify
     command: '--css-dest [string]',
     description: 'Directory name where to store lrnw css',
   }, {

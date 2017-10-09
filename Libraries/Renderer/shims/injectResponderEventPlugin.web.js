@@ -1,16 +1,16 @@
-//兼容react native 的touch机制  代码参考react-native-web
-//https://github.com/necolas/react-native-web/blob/master/src/modules/injectResponderEventPlugin.js
-
+/**
+ * RW SYNC react-native-web: 0.1.0
+ * 兼容react native 的touch机制  代码参考react-native-web
+ * https://github.com/necolas/react-native-web/blob/master/src/modules/injectResponderEventPlugin/index.js
+ */
 'use strict';
 
-// const EventConstants = require('react-dom/lib/EventConstants');
-const EventPluginRegistry = require('react-dom/lib/EventPluginRegistry');
-const ResponderEventPlugin = require('react-dom/lib/ResponderEventPlugin');
-const ResponderTouchHistoryStore = require('react-dom/lib/ResponderTouchHistoryStore');
+const ReactDOM = require('react-dom');
+const ReactDOMUnstableNativeDependencies = requiire('react-dom/unstable-native-dependencies');
+const { EventPluginHub } = ReactDOM.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
+const { ResponderEventPlugin, ResponderTouchHistoryStore } = ReactDOMUnstableNativeDependencies;
 
 const normalizeResponderNativeEvent = require('./normalizeResponderNativeEvent');
-
-// const supportsTouch = 'ontouchstart' in window || window.DocumentTouch && document instanceof window.DocumentTouch;
 
 const responderDependencies = {
   topMouseDown: 'topMouseDown',
@@ -46,7 +46,7 @@ REPEventTypes.selectionChangeShouldSetResponder.dependencies = [ responderDepend
 REPEventTypes.scrollShouldSetResponder.dependencies = [ responderDependencies.topScroll ];
 REPEventTypes.startShouldSetResponder.dependencies = startDependencies;
 
-const originalExtractEvents = ResponderEventPlugin.extractEvents;
+const originalExtractEvents = ResponderEventPlugin.extractEvents.bind(ResponderEventPlugin);
 ResponderEventPlugin.extractEvents = function(
   topLevelType,
   targetInst,
@@ -66,7 +66,7 @@ ResponderEventPlugin.extractEvents = function(
           return null;
         }
       default:
-        // TODO nativeEvent 重用
+        // RW TODO nativeEvent 重用
         nativeEvent = normalizeResponderNativeEvent(nativeEvent);
     }
     return originalExtractEvents(topLevelType, targetInst, nativeEvent, nativeEventTarget);
@@ -74,6 +74,6 @@ ResponderEventPlugin.extractEvents = function(
   return null;
 };
 
-EventPluginRegistry.injectEventPluginsByName({
-  ResponderEventPlugin,
+EventPluginHub.injection.injectEventPluginsByName({
+  ResponderEventPlugin
 });

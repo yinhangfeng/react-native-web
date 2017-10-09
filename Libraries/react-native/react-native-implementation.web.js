@@ -11,6 +11,10 @@
  */
 'use strict';
 
+const {
+  findNodeHandle,
+} = require('ReactNative');
+
 // Export React, plus some native additions.
 const ReactNative = {
   // react web 扩展
@@ -81,7 +85,7 @@ const ReactNative = {
   // get DatePickerAndroid() { return require('DatePickerAndroid'); },
   get Dimensions() { return require('Dimensions'); },
   get Easing() { return require('Easing'); },
-  findNodeHandle: require('ReactNative').findNodeHandle,
+  findNodeHandle,
   // get ImagePickerIOS() { return require('ImagePickerIOS'); },
   // get IntentAndroid() { return require('IntentAndroid'); },
   get InteractionManager() { return require('InteractionManager'); },

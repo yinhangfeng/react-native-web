@@ -1,41 +1,49 @@
+/**
+ * RW SYNC react-native-web: 0.1.0
+ * https://github.com/necolas/react-native-web/blob/master/src/modules/normalizeNativeEvent/index.js
+ */
 'use strict';
-const normalizeTouches = function(touches, timestamp) {
+
+function normalizeTouches(touches, timestamp) {
   const newTouches = [];
-  let touch;
-  for (let i = 0; i < touches.length; ++i) {
-    touch = touches[i];
-
-    // Mobile Safari re-uses touch objects, so we copy the properties we want and normalize the identifier
-    const identifier = touch.identifier > 20 ? touch.identifier % 20 : touch.identifier;
-
-    let locationX;
-    let locationY;
-    if (touch.target) {
-      const rect = touch.target.getBoundingClientRect();
-      locationX = touch.pageX - rect.left;
-      locationY = touch.pageY - rect.top;
-    } else {
-      locationX = 0;
-      locationY = 0;
+  if (touches) {
+    let touch;
+    for (let i = 0; i < touches.length; ++i) {
+      touch = touches[i];
+  
+      // Mobile Safari re-uses touch objects, so we copy the properties we want and normalize the identifier
+      const identifier = touch.identifier > 20 ? touch.identifier % 20 : touch.identifier;
+  
+      let locationX;
+      let locationY;
+      const target = touch.target;
+      if (target && target.nodeType === 1 /* Node.ELEMENT_NODE */ ) {
+        const rect = target.getBoundingClientRect();
+        locationX = touch.pageX - rect.left;
+        locationY = touch.pageY - rect.top;
+      } else {
+        locationX = 0;
+        locationY = 0;
+      }
+  
+      newTouches.push({
+        clientX: touch.clientX,
+        clientY: touch.clientY,
+        force: touch.force,
+        locationX,
+        locationY,
+        identifier,
+        pageX: touch.pageX,
+        pageY: touch.pageY,
+        radiusX: touch.radiusX,
+        radiusY: touch.radiusY,
+        rotationAngle: touch.rotationAngle,
+        screenX: touch.screenX,
+        screenY: touch.screenY,
+        target,
+        timestamp,
+      });
     }
-
-    newTouches.push({
-      clientX: touch.clientX,
-      clientY: touch.clientY,
-      force: touch.force,
-      locationX: locationX,
-      locationY: locationY,
-      identifier: touch.identifier,
-      pageX: touch.pageX,
-      pageY: touch.pageY,
-      radiusX: touch.radiusX,
-      radiusY: touch.radiusY,
-      rotationAngle: touch.rotationAngle,
-      screenX: touch.screenX,
-      screenY: touch.screenY,
-      target: touch.target,
-      timestamp: touch.timestamp || timestamp,
-    });
   }
   return newTouches;
 };
@@ -53,7 +61,7 @@ function stopPropagation() {
 }
 
 function normalizeTouchEvent(nativeEvent) {
-  // normalize the timestamp TODO
+  // normalize the timestamp
   // https://stackoverflow.com/questions/26177087/ios-8-mobile-safari-wrong-timestamp-on-touch-events
   const timestamp = nativeEvent.timestamp || Date.now();
   const changedTouches = normalizeTouches(nativeEvent.changedTouches, timestamp);

@@ -618,7 +618,6 @@ exports.examples = [
     render: function() {
       return <ImageSizeExample source={fullImage} />;
     },
-    platform: 'android',
   },
   {
     title: 'MultipleSourcesExample',

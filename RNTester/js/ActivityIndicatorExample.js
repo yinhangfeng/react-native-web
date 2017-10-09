@@ -58,18 +58,17 @@ class ToggleAnimatingActivityIndicator extends Component<$FlowFixMeProps, State>
 
 
 
-export var displayName = (undefined: ?string);
-export var framework = 'React';
-export var title = '<ActivityIndicator>';
-export var description = 'Animated loading indicators.';
+exports.displayName = (undefined: ?string);
+exports.framework = 'React';
+exports.title = '<ActivityIndicator>';
+exports.description = 'Animated loading indicators.';
 
-export var examples = [
+exports.examples = [
   {
     title: 'Default (small, white)',
     render() {
       return (
         <ActivityIndicator
-          size="large"
           style={[styles.centering, styles.gray]}
           color="white"
         />
@@ -110,6 +109,7 @@ export var examples = [
       return (
         <ActivityIndicator
           style={[styles.centering, styles.gray]}
+          size="large"
           color="white"
         />
       );

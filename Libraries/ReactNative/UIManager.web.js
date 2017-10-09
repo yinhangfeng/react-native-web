@@ -5,6 +5,8 @@
 const CSSPropertyOperations = require('react-dom/lib/CSSPropertyOperations');
 const createReactDOMStyleObject = require('../lrnw/createReactDOMStyleObject');
 
+const hasOwnProperty = Object.prototype.hasOwnProperty;
+
 const measureLayout = (node, relativeToNativeNode, callback) => {
   //RW TODO 检查是否正确
   const relativeNode = relativeToNativeNode || node.parentNode;
@@ -44,22 +46,23 @@ const UIManager = {
 
   updateView(node, props, component) {
     for (const prop in props) {
+      if (!hasOwnProperty.call(props, prop)) {
+        continue;
+      }
       const value = props[prop];
       switch (prop) {
         case 'style':
+        // RW TODO 从react 复制CSSPropertyOperations.setValueForStyles 的实现
           CSSPropertyOperations.setValueForStyles(node, createReactDOMStyleObject(value), component._reactInternalInstance);
           break;
         case 'className':
-          // prevent class names managed by React Native from being replaced
-          //node.classList.add(value); //RW html5 兼容性 https://developer.mozilla.org/en-US/docs/Web/API/Element/classList  XXX 带空格的不行
-          node.setAttribute('class', node.getAttribute('class') + ' ' + value);
+          node.setAttribute('class', value);
           break;
         case 'text':
         case 'value':
           // native platforms use `text` prop to replace text input value
-          // TODO RW 可能需要判断一下node的类型 不然不是很合理
           node.value = value
-          break
+          break;
         default:
           node.setAttribute(prop, value);
           break;
