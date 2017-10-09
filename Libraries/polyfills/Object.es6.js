@@ -84,7 +84,8 @@ if (!Object.is) {
   };
 }
 
-// LAB modify 获取require得到的esModule的default导出
+// LAB modify 获取 require 得到的 esModule 的 default 导出
+// XXX 放在这里不是很合适
 global.__requireDefault = function (obj) {
   return obj && obj.__esModule ? obj.default : obj;
 };
