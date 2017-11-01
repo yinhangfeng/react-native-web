@@ -82,7 +82,7 @@
       "sinon"
     ]
   },
-  "main": "Libraries/react-native/react-native-implementation.js",
+  "main": "Libraries/react-native/react-native-implementation",
   "files": [
     ".flowconfig",
     "cli.js",
@@ -189,6 +189,7 @@
     "rollup-plugin-json": "^2.1.1"
   },
   "devDependencies": {
+    "metro-bundler": "file:../metro-bundler",
     "babel-eslint": "^7.2.3",
     "eslint": "^3.19.0",
     "eslint-config-fb-strict": "^20.0.3",

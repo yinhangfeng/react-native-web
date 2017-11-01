@@ -23,6 +23,7 @@ const PropTypes = require('prop-types');
 const StyleSheet = require('StyleSheet');
 const StyleSheetPropType = require('StyleSheetPropType');
 
+const createReactClass = require('create-react-class');
 const flattenStyle = require('flattenStyle');
 const resolveAssetSource = require('resolveAssetSource');
 
@@ -246,6 +247,7 @@ const Image = createReactClass({
      */
     prefetch(url: string) {
       //RW TODO
+      return Promise.resolve();
     },
     /**
      * Resolves an asset reference into an object which has the properties `uri`, `width`,

@@ -33,6 +33,8 @@ const processDecelerationRate = require('processDecelerationRate');
 const requireNativeComponent = require('requireNativeComponent');
 const warning = require('fbjs/lib/warning');
 
+const CSSClassNames = require('CSSClassNames');
+
 import type {NativeMethodsMixinType} from 'ReactNativeTypes';
 
 const normalizeScrollEvent = e => {

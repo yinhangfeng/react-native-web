@@ -1,6 +1,5 @@
 /**
  * @providesModule RWServerUrl
- * 资源文件url管理
  */
 'use strict';
 

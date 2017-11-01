@@ -19,6 +19,7 @@ const CSSClassNames = require('CSSClassNames');
 const RWConfig = require('RWConfig');
 // TODO material-ui 库需要, 暂时放在这里，应该由使用者提供
 const getMuiTheme = __requireDefault(require('material-ui/src/styles/getMuiTheme'));
+const PropTypes = require('prop-types');
 
 /**
  * 对未设置bodyScrollMode 的ROOT_CONTAINER样式设为overflow: 'hidden',
@@ -27,7 +28,7 @@ const getMuiTheme = __requireDefault(require('material-ui/src/styles/getMuiTheme
 class AppContainer extends React.Component {
   
   static childContextTypes = {
-    muiTheme: React.PropTypes.object,
+    muiTheme: PropTypes.object,
   };
 
   getChildContext() {
@@ -46,3 +47,5 @@ class AppContainer extends React.Component {
     );
   }
 }
+
+module.exports = AppContainer;

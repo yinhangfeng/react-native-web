@@ -6,7 +6,7 @@
 'use strict';
 
 const ReactDOM = require('react-dom');
-const ReactDOMUnstableNativeDependencies = requiire('react-dom/unstable-native-dependencies');
+const ReactDOMUnstableNativeDependencies = require('react-dom/unstable-native-dependencies');
 const { EventPluginHub } = ReactDOM.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
 const { ResponderEventPlugin, ResponderTouchHistoryStore } = ReactDOMUnstableNativeDependencies;
 

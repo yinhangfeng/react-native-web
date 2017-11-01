@@ -2,7 +2,7 @@
  * @providesModule UIManager
  */
 
-const CSSPropertyOperations = require('react-dom/lib/CSSPropertyOperations');
+const CSSPropertyOperations = require('../Renderer/react-dom/CSSPropertyOperations');
 const createReactDOMStyleObject = require('../lrnw/createReactDOMStyleObject');
 
 const hasOwnProperty = Object.prototype.hasOwnProperty;
@@ -52,14 +52,13 @@ const UIManager = {
       const value = props[prop];
       switch (prop) {
         case 'style':
-        // RW TODO 从react 复制CSSPropertyOperations.setValueForStyles 的实现
           CSSPropertyOperations.setValueForStyles(node, createReactDOMStyleObject(value), component._reactInternalInstance);
           break;
         case 'className':
           node.setAttribute('class', value);
           break;
         case 'text':
-        case 'value':
+        // case 'value':
           // native platforms use `text` prop to replace text input value
           node.value = value
           break;

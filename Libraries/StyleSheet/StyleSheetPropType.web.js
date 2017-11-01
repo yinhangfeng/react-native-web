@@ -11,7 +11,7 @@
  */
 'use strict';
 
-const PropTypes = require('react/lib/ReactPropTypes');
+var PropTypes = require('prop-types');
 
 function StyleSheetPropType(
   shape: {[key: string]: ReactPropsCheckType}

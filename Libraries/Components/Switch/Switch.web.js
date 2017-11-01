@@ -10,7 +10,8 @@ const React = require('React');
 const PropTypes = require('prop-types');
 const StyleSheet = require('StyleSheet');
 const ViewPropTypes = require('ViewPropTypes');
-var createReactClass = require('create-react-class');
+const View = require('View');
+const createReactClass = require('create-react-class');
 
 const Toggle = __requireDefault(require('material-ui/src/Toggle'));
 

@@ -98,7 +98,7 @@ const NativeMethodsMixin = {
    */
   setNativeProps(nativeProps: Object) {
     // // Copy of existing DOM state
-    // const node = findNodeHandle(this);
+    const node = findNodeHandle(this);
     // const nodeStyle = node.style;
     // const classList = Array.prototype.slice.call(node.classList);
     // const style = {};
@@ -118,7 +118,7 @@ const NativeMethodsMixin = {
     // const domProps = createDOMProps(null, i18nStyle(nativeProps), style =>
     //   StyleRegistry.resolveStateful(style, domStyleProps, { i18n: false })
     // );
-    UIManager.updateView(node, domProps, this);
+    UIManager.updateView(node, nativeProps, this);
   }
 };
 

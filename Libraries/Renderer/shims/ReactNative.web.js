@@ -3,7 +3,7 @@
  */
 'use strict';
 
-const ReactNativeDefaultInjection = require('./ReactNativeDefaultInjection');
+const ReactNativeInjection = require('./ReactNativeInjection');
 const ReactDOM = require('react-dom');
 
 const ReactNative = {

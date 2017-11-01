@@ -22,12 +22,13 @@ var {
   Text,
   View,
 } = ReactNative;
-var Button = require('./UIExplorerButton');
+var Button = require('./RNTesterButton');
+var createReactClass = require('create-react-class');
 
 var STORAGE_KEY = '@AsyncStorageExample:key';
 var COLORS = ['red', 'orange', 'yellow', 'green', 'blue'];
 
-var BasicStorageExample = React.createClass({
+var BasicStorageExample = createReactClass({
   componentDidMount() {
     this._loadInitialState().done();
   },

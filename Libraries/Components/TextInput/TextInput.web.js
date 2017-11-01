@@ -22,7 +22,7 @@ const createReactClass = require('create-react-class');
 const PropTypes = require('prop-types');
 // const ReactNative = require('ReactNative');
 // const StyleSheet = require('StyleSheet');
-// const Text = require('Text');
+const Text = require('Text');
 const TextInputState = require('TextInputState');
 // const TimerMixin = require('react-timer-mixin');
 // const TouchableWithoutFeedback = require('TouchableWithoutFeedback');
@@ -699,13 +699,13 @@ const TextInput = createReactClass({
       ref: this._setNativeRef,
       autoCorrect: autoCorrect ? 'on' : 'off',
       dir: 'auto',
-      onBlur: props.onBlur && this._onBlur,
-      onChange: (props.onChange || props.onChangeText) && this._onChange,
+      onBlur: otherProps.onBlur && this._onBlur,
+      onChange: (otherProps.onChange || otherProps.onChangeText) && this._onChange,
       onFocus: this._onFocus,
       onKeyDown: this._onKeyDown,
       onKeyPress: this._onKeyPress,
-      onSelect: props.onSelectionChange && this._onSelectionChange,
-      readOnly: props.editable === false,
+      onSelect: otherProps.onSelectionChange && this._onSelectionChange,
+      readOnly: otherProps.editable === false,
     });
 
     if (multiline) {

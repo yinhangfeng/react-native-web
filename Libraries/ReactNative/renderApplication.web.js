@@ -16,6 +16,7 @@
 
 const React = require('React');
 const AppContainer = require('./AppContainer');
+const ReactNative = require('ReactNative');
 
 function renderApplication<Props: Object>(
   RootComponent: React.ComponentType<Props>,
