@@ -188,7 +188,6 @@
     "yargs": "^6.4.0"
   },
   "devDependencies": {
-    "metro-bundler": "file:../metro-bundler",
     "babel-eslint": "^7.2.3",
     "eslint": "^3.19.0",
     "eslint-config-fb-strict": "^20.0.3",
@@ -199,6 +198,7 @@
     "eslint-plugin-react": "^7.2.1",
     "flow-bin": "^0.53.0",
     "jest": "20.1.0-echo.1",
+    "metro-bundler": "file:../metro-bundler",
     "mock-fs": "^4.4.1",
     "prettier": "1.5.2",
     "react": "16.0.0-beta.5",
