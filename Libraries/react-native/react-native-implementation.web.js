@@ -121,4 +121,22 @@ const ReactNative = {
   get ViewPropTypes() { return require('ViewPropTypes'); },
 };
 
+if (__DEV__) {
+  ReactNative.disableWarnUnknownProperties = function disableWarnUnknownProperties() {
+    if (console.lrnwOriError) {
+      return;
+    }
+    const oriError = console.lrnwOriError = console.error;
+    console.error = function(message) {
+      // warnUnknownProperties 不同react 版本 warning 不同
+      if ((typeof message === 'string')
+      && (message.indexOf('For details, see https://fb.me/react-attribute-behavior') > 0
+        || message.indexOf('For details, see https://fb.me/react-unknown-prop') > 0)) {
+        return;
+      }
+      oriError.apply(console, arguments);
+    };
+  }
+}
+
 module.exports = ReactNative;

@@ -22,7 +22,8 @@ const LayoutMixin = {
   componentDidMount: function() {
     if (this.props.onLayout) {
       requestAnimationFrame(() => {
-        if (this.isMounted()) {
+        // __isMounted 变量来自 create-react-class@15.6 IsMountedPreMixin IsMountedPostMixin
+        if (this.__isMounted) {
           layoutHandle.call(this);
         }
       });
