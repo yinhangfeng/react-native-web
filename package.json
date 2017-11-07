@@ -1,6 +1,6 @@
 {
   "name": "lab-react-native-web",
-  "version": "0.49.10",
+  "version": "0.49.15",
   "description": "A framework for building native apps using React",
   "license": "BSD-3-Clause",
   "repository": {
@@ -200,6 +200,7 @@
     "eslint-plugin-react": "^7.2.1",
     "flow-bin": "^0.53.0",
     "jest": "20.1.0-echo.1",
+    "metro-bundler": "file:../metro-bundler",
     "mock-fs": "^4.4.1",
     "prettier": "1.5.2",
     "react": "16.0.0-beta.5",
