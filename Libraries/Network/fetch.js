@@ -14,6 +14,10 @@
 
 'use strict';
 
-require('whatwg-fetch');
+const whatwg = require('whatwg-fetch');
 
-module.exports = {fetch, Headers, Request, Response};
+if (whatwg && whatwg.fetch) {
+  module.exports = whatwg;
+} else {
+  module.exports = {fetch, Headers, Request, Response};
+}

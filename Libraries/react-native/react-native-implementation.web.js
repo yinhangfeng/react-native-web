@@ -122,21 +122,26 @@ const ReactNative = {
 };
 
 if (__DEV__) {
-  ReactNative.disableWarnUnknownProperties = function disableWarnUnknownProperties() {
+  ReactNative.disableReactWarnUnknownProperties = function disableReactWarnUnknownProperties() {
     if (console.lrnwOriError) {
       return;
     }
-    const oriError = console.lrnwOriError = console.error;
+    const oriError = (console.lrnwOriError = console.error);
     console.error = function(message) {
       // warnUnknownProperties 不同react 版本 warning 不同
-      if ((typeof message === 'string')
-      && (message.indexOf('For details, see https://fb.me/react-attribute-behavior') > 0
-        || message.indexOf('For details, see https://fb.me/react-unknown-prop') > 0)) {
+      if (typeof message === 'string'
+        && (
+          message.indexOf('For details, see https://fb.me/react-attribute-behavior') > 0
+          || message.indexOf('Unknown event handler property ') > 0
+          || message.indexOf('React does not recognize the ') > 0
+          || message.indexOf(' non-boolean attribute ') > 0
+        )
+      ) {
         return;
       }
       oriError.apply(console, arguments);
     };
-  }
+  };
 }
 
 module.exports = ReactNative;

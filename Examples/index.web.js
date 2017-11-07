@@ -1,7 +1,7 @@
 const ReactNative = require('react-native');
 const AppRegistry = require('AppRegistry');
 
-ReactNative.disableWarnUnknownProperties && ReactNative.disableWarnUnknownProperties();
+ReactNative.disableReactWarnUnknownProperties && ReactNative.disableReactWarnUnknownProperties();
 
 require('../RNTester/js/RNTesterApp');
 AppRegistry.runApplication('RNTesterApp');

@@ -11,40 +11,47 @@
  */
 'use strict';
 
-/*
-const Promise = require('fbjs/lib/Promise.native');
+/* $FlowFixMe(>=0.54.0 site=react_native_oss) This comment suppresses an error
+ * found when Flow v0.54 was deployed. To see the error delete this comment and
+ * run Flow. */
+// const Promise = require('fbjs/lib/Promise.native');
 
-if (__DEV__) {
-  require('promise/setimmediate/rejection-tracking').enable({
-    allRejections: true,
-    onUnhandled: (id, error = {}) => {
-      let message: string;
-      let stack: ?string;
+// if (__DEV__) {
+//   /* $FlowFixMe(>=0.54.0 site=react_native_oss) This comment suppresses an
+//    * error found when Flow v0.54 was deployed. To see the error delete this
+//    * comment and run Flow. */
+//   require('promise/setimmediate/rejection-tracking').enable({
+//     allRejections: true,
+//     onUnhandled: (id, error = {}) => {
+//       let message: string;
+//       let stack: ?string;
 
-      const stringValue = Object.prototype.toString.call(error);
-      if (stringValue === '[object Error]') {
-        message = Error.prototype.toString.call(error);
-        stack = error.stack;
-      } else {
-        message = require('pretty-format')(error);
-      }
+//       const stringValue = Object.prototype.toString.call(error);
+//       if (stringValue === '[object Error]') {
+//         message = Error.prototype.toString.call(error);
+//         stack = error.stack;
+//       } else {
+//         /* $FlowFixMe(>=0.54.0 site=react_native_oss) This comment suppresses
+//          * an error found when Flow v0.54 was deployed. To see the error delete
+//          * this comment and run Flow. */
+//         message = require('pretty-format')(error);
+//       }
 
-      const warning =
-        `Possible Unhandled Promise Rejection (id: ${id}):\n` +
-        `${message}\n` +
-        (stack == null ? '' : stack);
-      console.warn(warning);
-    },
-    onHandled: (id) => {
-      const warning =
-        `Promise Rejection Handled (id: ${id})\n` +
-        'This means you can ignore any previous messages of the form ' +
-        `"Possible Unhandled Promise Rejection (id: ${id}):"`;
-      console.warn(warning);
-    },
-  });
-}
-*/
+//       const warning =
+//         `Possible Unhandled Promise Rejection (id: ${id}):\n` +
+//         `${message}\n` +
+//         (stack == null ? '' : stack);
+//       console.warn(warning);
+//     },
+//     onHandled: (id) => {
+//       const warning =
+//         `Promise Rejection Handled (id: ${id})\n` +
+//         'This means you can ignore any previous messages of the form ' +
+//         `"Possible Unhandled Promise Rejection (id: ${id}):"`;
+//       console.warn(warning);
+//     },
+//   });
+// }
 
 // 使用bluebird TODO Global rejection events
 const Promise = require('bluebird/js/release/bluebird');

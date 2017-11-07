@@ -412,10 +412,10 @@ const Text = createReactClass({
   },
   getDefaultProps(): Object {
     return {
-      accessible: true,
-      allowFontScaling: true,
-      ellipsizeMode: 'tail',
-      disabled: false,
+      // accessible: true,
+      // allowFontScaling: true,
+      // ellipsizeMode: 'tail',
+      // disabled: false,
     };
   },
   getInitialState: function(): Object {

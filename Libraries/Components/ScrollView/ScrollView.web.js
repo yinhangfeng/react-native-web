@@ -612,6 +612,7 @@ const ScrollView = createReactClass({
 
     let containerProps = {
       ...props,
+      horizontal: undefined,
       ref: this._setScrollViewRef,
       className,
       style,

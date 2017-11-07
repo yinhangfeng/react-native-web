@@ -9,33 +9,34 @@
 
 package com.facebook.react.views.view;
 
-import javax.annotation.Nullable;
-
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Path;
 import android.graphics.Rect;
+import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Build;
-import android.view.animation.Animation;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-
+import android.view.animation.Animation;
 import com.facebook.infer.annotation.Assertions;
 import com.facebook.react.common.annotations.VisibleForTesting;
+import com.facebook.react.touch.OnInterceptTouchEventListener;
 import com.facebook.react.touch.ReactHitSlopView;
 import com.facebook.react.touch.ReactInterceptingViewGroup;
-import com.facebook.react.touch.OnInterceptTouchEventListener;
 import com.facebook.react.uimanager.MeasureSpecAssertions;
 import com.facebook.react.uimanager.PointerEvents;
 import com.facebook.react.uimanager.ReactClippingViewGroup;
 import com.facebook.react.uimanager.ReactClippingViewGroupHelper;
 import com.facebook.react.uimanager.ReactPointerEventsView;
-import com.facebook.yoga.YogaConstants;
 import com.facebook.react.uimanager.ReactZIndexedViewGroup;
 import com.facebook.react.uimanager.ViewGroupDrawingOrderHelper;
+import com.facebook.yoga.YogaConstants;
+import javax.annotation.Nullable;
 
 /**
  * Backing for a React View. Has support for borders, but since borders aren't common, lazy
@@ -167,12 +168,14 @@ public class ReactViewGroup extends ViewGroup implements
   private int mAllChildrenCount;
   private @Nullable Rect mClippingRect;
   private @Nullable Rect mHitSlopRect;
+  private @Nullable String mOverflow;
   private PointerEvents mPointerEvents = PointerEvents.AUTO;
   private @Nullable ChildrenLayoutChangeListener mChildrenLayoutChangeListener;
   private @Nullable ReactViewBackgroundDrawable mReactBackgroundDrawable;
   private @Nullable OnInterceptTouchEventListener mOnInterceptTouchEventListener;
   private boolean mNeedsOffscreenAlphaCompositing = false;
   private final ViewGroupDrawingOrderHelper mDrawingOrderHelper;
+  private @Nullable Path mPath;
 
   public ReactViewGroup(Context context) {
     super(context);
@@ -220,13 +223,13 @@ public class ReactViewGroup extends ViewGroup implements
     // background to be a layer drawable that contains a drawable that has been previously setup
     // as a background previously. This will not work correctly as the drawable callback logic is
     // messed up in AOSP
-    super.setBackground(null);
+    updateBackgroundDrawable(null);
     if (mReactBackgroundDrawable != null && background != null) {
       LayerDrawable layerDrawable =
           new LayerDrawable(new Drawable[] {mReactBackgroundDrawable, background});
-      super.setBackground(layerDrawable);
+      updateBackgroundDrawable(layerDrawable);
     } else if (background != null) {
-      super.setBackground(background);
+      updateBackgroundDrawable(background);
     }
   }
 
@@ -254,7 +257,7 @@ public class ReactViewGroup extends ViewGroup implements
   @Override
   public boolean onInterceptTouchEvent(MotionEvent ev) {
     if (mOnInterceptTouchEventListener != null &&
-        mOnInterceptTouchEventListener.onInterceptTouchEvent(this, ev)) {
+      mOnInterceptTouchEventListener.onInterceptTouchEvent(this, ev)) {
 //      Log.i("ReactViewGroup", "onInterceptTouchEvent: mOnInterceptTouchEventListener " + getId() + " x:" + ev.getX() + " y:" + ev.getY());
       return true;
     }
@@ -268,7 +271,7 @@ public class ReactViewGroup extends ViewGroup implements
 
   @Override
   public boolean onTouchEvent(MotionEvent ev) {
-//    Log.i("ReactViewGroup", "onTouchEvent: " + getId() + " x:" + ev.getX() + " y:" + ev.getY());
+    //    Log.i("ReactViewGroup", "onTouchEvent: " + getId() + " x:" + ev.getX() + " y:" + ev.getY());
     // We do not accept the touch event if this view is not supposed to receive it.
     if (mPointerEvents == PointerEvents.NONE || mPointerEvents == PointerEvents.BOX_NONE) {
       return false;
@@ -307,12 +310,10 @@ public class ReactViewGroup extends ViewGroup implements
 
   public void setBorderRadius(float borderRadius) {
     getOrCreateReactViewBackground().setRadius(borderRadius);
-    syncCornerRadius();
   }
 
   public void setBorderRadius(float borderRadius, int position) {
     getOrCreateReactViewBackground().setRadius(borderRadius, position);
-    syncCornerRadius();
   }
 
   public void setBorderStyle(@Nullable String style) {
@@ -656,14 +657,15 @@ public class ReactViewGroup extends ViewGroup implements
     if (mReactBackgroundDrawable == null) {
       mReactBackgroundDrawable = new ReactViewBackgroundDrawable();
       Drawable backgroundDrawable = getBackground();
-      super.setBackground(null);  // required so that drawable callback is cleared before we add the
+      updateBackgroundDrawable(
+          null); // required so that drawable callback is cleared before we add the
                                   // drawable back as a part of LayerDrawable
       if (backgroundDrawable == null) {
-        super.setBackground(mReactBackgroundDrawable);
+        updateBackgroundDrawable(mReactBackgroundDrawable);
       } else {
         LayerDrawable layerDrawable =
             new LayerDrawable(new Drawable[] {mReactBackgroundDrawable, backgroundDrawable});
-        super.setBackground(layerDrawable);
+        updateBackgroundDrawable(layerDrawable);
       }
     }
     return mReactBackgroundDrawable;
@@ -678,4 +680,65 @@ public class ReactViewGroup extends ViewGroup implements
     mHitSlopRect = rect;
   }
 
+  public void setOverflow(String overflow) {
+    mOverflow = overflow;
+    invalidate();
+  }
+
+  /**
+   * Set the background for the view or remove the background. It calls {@link
+   * #setBackground(Drawable)} or {@link #setBackgroundDrawable(Drawable)} based on the sdk version.
+   *
+   * @param drawable {@link Drawable} The Drawable to use as the background, or null to remove the
+   *     background
+   */
+  private void updateBackgroundDrawable(Drawable drawable) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+      super.setBackground(drawable);
+    } else {
+      super.setBackgroundDrawable(drawable);
+    }
+  }
+
+  @Override
+  protected void dispatchDraw(Canvas canvas) {
+    if (mOverflow != null) {
+      switch (mOverflow) {
+        case "visible":
+          if (mPath != null) {
+            mPath.rewind();
+          }
+          break;
+        case "hidden":
+          if (mReactBackgroundDrawable != null) {
+            float left = 0f;
+            float top = 0f;
+            float right = getWidth();
+            float bottom = getHeight();
+            if (mReactBackgroundDrawable.getFullBorderWidth() != 0f) {
+              float borderWidth = mReactBackgroundDrawable.getFullBorderWidth();
+              left += borderWidth;
+              top += borderWidth;
+              right -= borderWidth;
+              bottom -= borderWidth;
+            }
+            float radius = mReactBackgroundDrawable.getRadius();
+
+            if (!YogaConstants.isUndefined(radius) && radius > 0.5f) {
+              if (mPath == null) {
+                mPath = new Path();
+              }
+              mPath.rewind();
+              mPath.addRoundRect(
+                  new RectF(left, top, right, bottom), radius, radius, Path.Direction.CW);
+              canvas.clipPath(mPath);
+            }
+          }
+          break;
+        default:
+          break;
+      }
+    }
+    super.dispatchDraw(canvas);
+  }
 }

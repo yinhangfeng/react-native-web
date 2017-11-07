@@ -1,5 +1,6 @@
 'use strict';
 
+// 对 metro-bundler/src/blacklist 的增强 使lab-react-native-web 可与react-native 共存
 const blacklist = require('metro-bundler/src/blacklist');
 
 const lrnwSharedBlacklist = [
