@@ -99,6 +99,7 @@ exports.examples = [
                   borderless: Math.random() > 0.5,
                   borderRadius: Math.random() > 0.3 ? Math.random() * 50 : 0,
                   borderTopLeftRadius: Math.random() > 0.5 ? Math.random() * 50 : undefined,
+                  overflow: Math.random() > 0.6 ? 'hidden' : 'visible',
                 });
               }, 1500);
               
@@ -107,13 +108,13 @@ exports.examples = [
             background={TouchableNativeFeedback.Ripple('#0000001F', this.state.borderless)}>
             <View style={{
               width: 250,
-              height: 150,
               backgroundColor: '#4db6ac',
               justifyContent: 'center',
               alignItems: 'center',
               marginTop: 30,
               borderRadius: this.state.borderRadius,
               borderTopLeftRadius: this.state.borderTopLeftRadius,
+              overflow: this.state.overflow,
             }}>
               <Text style={{fontSize: 16}}>random {JSON.stringify(this.state)}</Text>
             </View>
