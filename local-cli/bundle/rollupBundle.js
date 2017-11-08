@@ -1,8 +1,3 @@
-/**
- * 使用rollup bundle
- * uglifyjs压缩
- * 并保存
- */
 'use strict';
 
 const fs = require('fs');
@@ -10,99 +5,110 @@ const path = require('path');
 const rollup = require('rollup');
 const json = require('rollup-plugin-json');
 const babel = require('rollup-plugin-babel');
-// const babelrc = require('babelrc-rollup');
 const commonjs = require('rollup-plugin-commonjs');
-const _ = require('lodash');
 const LABRNPlugin = require('./LABRNRollupPlugin');
-const transformer = require('../../packager/transformer');
+const Server = require('metro-bundler/src/Server')
 
-const prelude = require.resolve('../../packager/react-packager/src/Resolver/polyfills/prelude.js');
-const prelude_dev = require.resolve('../../packager/react-packager/src/Resolver/polyfills/prelude_dev.js');
+const prelude = require.resolve('../../Libraries/polyfills/prelude.js');
+const prelude_dev = require.resolve('../Libraries/polyfills/prelude_dev.js');
 
+// react-native/rn-get-polyfills.js
 const polyfills = [
-  require.resolve('../../packager/react-packager/src/Resolver/polyfills/polyfills.js'),
-  require.resolve('../../packager/react-packager/src/Resolver/polyfills/error-guard.js'),
-  require.resolve('../../packager/react-packager/src/Resolver/polyfills/Number.es6.js'),
-  require.resolve('../../packager/react-packager/src/Resolver/polyfills/String.prototype.es6.js'),
-  require.resolve('../../packager/react-packager/src/Resolver/polyfills/Array.prototype.es6.js'),
-  require.resolve('../../packager/react-packager/src/Resolver/polyfills/Array.es6.js'),
-  require.resolve('../../packager/react-packager/src/Resolver/polyfills/Object.es7.js'),
-  require.resolve('../../packager/react-packager/src/Resolver/polyfills/babelHelpers.js'),
+  require.resolve('../../packager/Libraries/polyfills/error-guard.js'),
+  require.resolve('../../packager/Libraries/polyfills/Number.es6.js'),
+  require.resolve('../../packager/Libraries/polyfills/String.prototype.es6.js'),
+  require.resolve('../../packager/Libraries/polyfills/Array.prototype.es6.js'),
+  require.resolve('../../packager/Libraries/polyfills/Array.es6.js'),
+  require.resolve('../../packager/Libraries/polyfills/Object.es6.js'),
+  require.resolve('../../packager/Libraries/polyfills/Object.es7.js'),
+  require.resolve('../../packager/Libraries/polyfills/babelHelpers.js'),
 
   // 把InitializeCore 当做polyfill
   require.resolve('../../Libraries/Core/InitializeCore.web.js'),
 ];
 
-function getRollupConfig(requestOptions, rnConfig, labRnPlugin) {
+function createLABRNPlugin(packagerInstance, requestOptions, assetsOutput) {
+  return packagerInstance.newBundleSession({
+    // 参数参考 metro-bundler/src/shared/bundle buildBundle
+    ...Server.DEFAULT_BUNDLE_OPTIONS,
+    ...requestOptions,
+    isolateModuleIDs: true,
+  }).then((bundleSession) => {
+    let pfs = dev ? [prelude_dev] : [prelude];
+    pfs = pfs.concat(polyfills);
+    return LABRNPlugin({
+      bundleSession,
+      dev,
+      assetsOutput,
+      platform: requestOptions.platform,
+      polyfills: pfs,
+    });
+  });
+}
 
-  let rollupConfig;
+function createRollupConfig(requestOptions, rnConfig, labRnPlugin) {
+  let rollupConfig = {
+    // 将entry 转换为绝对路径 方便labRnPlugin处理
+    entry: path.resolve(requestOptions.entryFile),
+    // 去除每个模块的 'use strict' 会在bundle外部拼接
+    useStrict: false,
+    plugins: [
+      labRnPlugin,
+      createJsonPlugin(rnConfig),
+      createBabelPlugin(rnConfig),
+      createCommonjsPlugin(rnConfig),
+    ],
+  };
 
-  const projectRoots = rnConfig.getProjectRoots();
-  let projectRollupConfigPath;
-  if (projectRoots && projectRoots.length > 0) {
-    projectRollupConfigPath = path.resolve(projectRoots[0], 'lab-rollup.config.js');
+  if (rnConfig.rollupProcessConfig) {
+    rollupConfig = rnConfig.rollupProcessConfig(rollupConfig);
   }
-
-  let pluginsConfig = {};
-  if (projectRollupConfigPath && fs.existsSync(projectRollupConfigPath)) {
-    rollupConfig = Object.assign({}, require(projectRollupConfigPath));
-    if (rollupConfig.pluginsConfig) {
-      pluginsConfig = rollupConfig.pluginsConfig;
-      delete rollupConfig.pluginsConfig;
-    }
-  } else {
-    rollupConfig = {};
-  }
-
-  // 将entry 转换为绝对路径 方便labRnPlugin处理
-  rollupConfig.entry = path.resolve(requestOptions.entryFile);
-  // 'use strict' 会在bundle外部拼接
-  rollupConfig.useStrict = false;
-
-  // const babelConfig = buildBabelConfig(projectRoots);
-  const babelConfig = require('./rollupBabelConfig');
-
-  const innerPlugins = [
-    labRnPlugin,
-    json(pluginsConfig.json),
-    babel(Object.assign(
-      {},
-      babelConfig,
-      {
-        comments: false,
-        exclude: ['**/react-packager/src/Resolver/polyfills/babelHelpers*'],
-        externalHelpers: true,
-      })),
-    commonjs(_.merge({
-      ignoreGlobal: true,
-      namedExports: {
-        'node_modules/react/react.js': [
-          'Children', 'Component', 'PureComponent', 'createElement', 'cloneElement', 'isValidElement', 'PropTypes', 'createClass', 'createFactory', 'createMixin', 'DOM', 'version',
-        ],
-      },
-    }, pluginsConfig.commonjs)),
-  ];
-
-  // TODO 支持plugin 排序配置?
-  let plugins = innerPlugins;
-  if (rollupConfig.plugins) {
-    plugins = innerPlugins.concat(rollupConfig.plugins);
-  }
-  rollupConfig.plugins = plugins;
 
   return rollupConfig;
 }
 
-function buildBabelConfig(projectRoots) {
-  let projectBabelRCPath;
-  if (projectRoots && projectRoots.length > 0) {
-    projectBabelRCPath = path.resolve(projectRoots[0], 'lab-rollup.config.js');
+// https://github.com/rollup/rollup-plugin-json
+function createJsonPlugin(rnConfig) {
+  let config;
+  if (rnConfig.rollupProcessJsonPluginConfig) {
+    config = rnConfig.rollupProcessJsonPluginConfig(config);
   }
-  if (!projectBabelRCPath || !fs.existsSync(projectBabelRCPath)) {
-    projectBabelRCPath = path.resolve(__dirname, '../../packager/react-packager/rn-babelrc.rollup.json');
-  }
+  return json(config);
+}
 
-  return JSON.parse(fs.readFileSync(projectBabelRCPath, { encoding: 'utf8' }));
+// https://github.com/rollup/rollup-plugin-babel
+function createBabelPlugin(rnConfig) {
+  const babelConfig = require('./rollupBabelConfig');
+
+  let config = Object.assign(
+    {},
+    babelConfig,
+    {
+      exclude: ['**/Libraries/polyfills/babelHelpers*'],
+      externalHelpers: true,
+    }
+  );
+
+  if (rnConfig.rollupProcessBabelPluginConfig) {
+    config = rnConfig.rollupProcessBabelPluginConfig(config);
+  }
+  return babel(config);
+}
+
+// https://github.com/rollup/rollup-plugin-commonjs
+function createCommonjsPlugin(rnConfig) {
+  let config = {
+    ignoreGlobal: true,
+    // namedExports: {
+    //   'node_modules/react/react.js': [
+    //     'Children', 'Component', 'PureComponent', 'createElement', 'cloneElement', 'isValidElement', 'PropTypes', 'createClass', 'createFactory', 'createMixin', 'DOM', 'version',
+    //   ],
+    // },
+  };
+  if (rnConfig.rollupProcessCommonjsPluginConfig) {
+    config = rnConfig.rollupProcessCommonjsPluginConfig(config);
+  }
+  return commonjs(config);
 }
 
 /**
@@ -111,57 +117,35 @@ function buildBabelConfig(projectRoots) {
  * @param {any} shouldClosePackager
  * @param {Object} outputOptions
  * 
- * @return bundle 假的Bundle对象 只有getAssets函数以便之后saveAssets使用
+ * @return bundle 假的Bundle对象 包括 saveBundle getAssets
  */
-function bundle(packagerInstance, requestOptions, outputOptions, config, shouldClosePackager) {
+function bundle(packagerInstance, requestOptions, outputOptions, config) {
   const {
     bundleOutput,
-    // bundleEncoding,
     dev,
     sourcemapOutput
   } = outputOptions;
   const assetsOutput = [];
 
-  let a = {
-    ...requestOptions,
-    isolateModuleIDs: true,
-  };
+  return createLABRNPlugin(createLABRNPlugin, requestOptions, assetsOutput)
+    .then((labRnPlugin) => {
+      const rollupConfig = createRollupConfig(requestOptions, config, labRnPlugin);
+      return rollup.rollup(rollupConfig);
+    }).then((bundle) => {
+      return {
+        saveBundle() {
+          return bundle.write({
+            format: 'cjs',
+            dest: bundleOutput,
+            sourceMap: false,
+          }).then(() => this);
+        },
 
-  return packagerInstance.newResolutionRequest({
-    ...requestOptions,
-    isolateModuleIDs: true,
-  }).then((resolutionRequest) => {
-    let pfs = dev ? [prelude_dev] : [prelude];
-    pfs = pfs.concat(polyfills);
-    const labRnPlugin = LABRNPlugin({
-      resolutionRequest,
-      bundler: packagerInstance.getBundler(),
-      dev,
-      assetsOutput,
-      platform: requestOptions.platform,
-      polyfills: pfs,
+        getAssets() {
+          return assetsOutput;
+        },
+      };
     });
-    const rollupConfig = getRollupConfig(requestOptions, config, labRnPlugin);
-    return rollup.rollup(rollupConfig);
-  }).then((bundle) => {
-    if (shouldClosePackager) {
-      packagerInstance.end();
-    }
-
-    // const result = bundle.generate({
-    //   format: 'cjs',
-    // });
-
-    return bundle.write({
-      format: 'cjs',
-      dest: bundleOutput,
-      sourceMap: false,
-    });
-  }).then(() => {
-    return {
-      getAssets() { return assetsOutput; },
-    };
-  });
 }
 
 module.exports = bundle;

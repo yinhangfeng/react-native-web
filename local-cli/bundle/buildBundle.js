@@ -148,7 +148,13 @@ function buildBundle(
   // LAB modify 处理rollup
   let bundlePromise;
   if (args.rollup) {
-    bundlePromise = require('./rollupBundle')(packagerInstance, requestOpts, args, config, shouldClosePackager);
+    bundlePromise = require('./rollupBundle')(packagerInstance, requestOpts, args, config)
+      .then(bundle => {
+        if (shouldClosePackager) {
+          packagerInstance.end();
+        }
+        return bundle.saveBundle();
+      });
   } else {
     bundlePromise = output.build(packagerInstance, requestOpts)
     .then(bundle => {

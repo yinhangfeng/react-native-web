@@ -10,21 +10,25 @@ function isPluginsHelpers(id) {
 /**
  * config:
  * {
- *   resolutionRequest,
- *   bundler,
+ *   bundleSession,
  *   dev,
+ *   platform,
  *   assetsOutput,
  *   polyfills,
  * }
  */
-module.exports = function LABRN(config) {
-  const resolutionRequest = config.resolutionRequest;
-  const moduleCache = resolutionRequest.getModuleCache();
-  const bundler = config.bundler;
-  const dev = config.dev;
-  const assetsOutput = config.assetsOutput;
-  const platform = config.platform;
-  const polyfills = config.polyfills;
+module.exports = function LABRN({
+  bundleSession,
+  dev,
+  platform,
+  assetsOutput,
+  polyfills,
+}) {
+  const {
+    resolutionRequest,
+    moduleCache,
+    generateAssetObjAndCode,
+  } = bundleSession;
 
   let entry;
   let entryModule;
@@ -60,7 +64,7 @@ module.exports = function LABRN(config) {
         return;
       }
 
-      const importerModule = moduleCache._moduleCache[importer];
+      const importerModule = moduleCache.getAllModules()[importer];
       if (importerModule) {
         // 如果importerModule 是asset 则表示importee是 AssetRegistry
         // 因为rn packager对asset的deps是直接设置的(在Bundler/index.js)， 通过resolutionRequest无法获取，所以需要设置fromeMoudle为entryModule
@@ -70,7 +74,7 @@ module.exports = function LABRN(config) {
             if (module.isAsset()) {
               // 修改asset module 路径的扩展名 使其能被其他插件处理
               let assetJsName = module.path.slice(0, module.path.lastIndexOf('.')) + '.js';
-              moduleCache._moduleCache[assetJsName] = module;
+              moduleCache.getAllModules()[assetJsName] = module;
               return assetJsName;
             }
             return module.path;
@@ -92,10 +96,10 @@ module.exports = function LABRN(config) {
         return codeArr.join('\n');
       }
 
-      const module = moduleCache._moduleCache[id];
+      const module = moduleCache.getAllModules()[id];
       if (module && module.isAsset()) {
         if (!module.generateAssetObjAndCodePromise) {
-          module.generateAssetObjAndCodePromise = bundler.generateAssetObjAndCode(module, [] /* assetPlugins */, platform)
+          module.generateAssetObjAndCodePromise = generateAssetObjAndCode(module, platform)
             .then(({asset, code, meta}) => {
               assetsOutput.push(asset);
               return code;
@@ -111,7 +115,7 @@ module.exports = function LABRN(config) {
 
     transformBundle(source, options) {
       // console.log('transformBundle', source.slice(0, 20), options);
-      return `(function(global) { var babelHelpers; ${source} })(window);`;
+      return `(function(global) { ${source} })(window);`;
     },
   };
 }

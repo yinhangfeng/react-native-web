@@ -185,10 +185,10 @@
     "xcode": "^0.9.1",
     "xmldoc": "^0.4.0",
     "yargs": "^9.0.0",
-    "rollup": "^0.41.6",
-    "rollup-plugin-babel": "^2.7.1",
-    "rollup-plugin-commonjs": "^8.0.2",
-    "rollup-plugin-json": "^2.1.1"
+    "rollup": "~0.50.0",
+    "rollup-plugin-babel": "~3.0.2",
+    "rollup-plugin-commonjs": "~8.2.6",
+    "rollup-plugin-json": "~2.3.0"
   },
   "devDependencies": {
     "metro-bundler": "file:../metro-bundler",
