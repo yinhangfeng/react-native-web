@@ -47,7 +47,7 @@ module.exports = {
         // return moduleResolver._options.moduleCache.getModule(filePath);
 
         const filePath = '/lab-virtual/xxx.js';
-        return moduleResolver._options.moduleCache.getMemoryModule(filePath, 'console.log("virtual xxx")');
+        return moduleResolver._options.moduleCache.getMemoryModule(filePath, 'console.log("virtual xxx"); module.exports = "xxx";');
       }
     },
   }],

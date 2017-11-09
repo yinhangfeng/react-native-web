@@ -120,7 +120,8 @@
     "bundle-test": "node local-cli/cli.js bundle --platform web --dev true --entry-file Libraries/react-native/react-native.web.js --bundle-output react-web/test/bundletest/test.bundle --assets-dest react-web/test/bundletest --css-dest react-web/test/bundletest/css",
     "bundle-uiexplorer": "node local-cli/cli.js bundle --platform web --dev true --entry-file Examples/index.web.js --bundle-output react-web/test/bundletest/uiexplorer/uiexplorer.bundle --assets-dest react-web/test/bundletest/uiexplorer/",
     "packager": "node local-cli/cli.js start --port 9080",
-    "lrnw": "node local-cli/cli.js start --port 9080"
+    "lrnw": "node local-cli/cli.js start --port 9080",
+    "bundle-rollup": "node local-cli/cli.js bundle --rollup --platform web --dev true --entry-file Examples/index.web.js --bundle-output build/rntester/bundle.rollup.js --assets-dest build/rntester/"
   },
   "bin": {
     "lab-react-native-web": "local-cli/wrong-react-native.js"
@@ -157,9 +158,9 @@
     "glob": "^7.1.1",
     "graceful-fs": "^4.1.3",
     "http-proxy": "^1.16.2",
-    "material-ui": "git+ssh://git@git.dev.backustech.com:lab4/material-ui.git#0.17-stable",
     "inquirer": "^3.0.6",
     "lodash": "^4.16.6",
+    "material-ui": "git+ssh://git@git.dev.backustech.com:lab4/material-ui.git#0.17-stable",
     "mime": "^1.3.4",
     "minimist": "^1.2.0",
     "mkdirp": "^0.5.1",
@@ -177,6 +178,10 @@
     "react-timer-mixin": "^0.13.2",
     "regenerator-runtime": "^0.9.5",
     "rimraf": "^2.5.4",
+    "rollup": "^0.51.1",
+    "rollup-plugin-babel": "~3.0.2",
+    "rollup-plugin-commonjs": "~8.2.6",
+    "rollup-plugin-json": "~2.3.0",
     "semver": "^5.0.3",
     "shell-quote": "1.6.1",
     "stacktrace-parser": "^0.1.3",
@@ -184,15 +189,11 @@
     "ws": "^1.1.0",
     "xcode": "^0.9.1",
     "xmldoc": "^0.4.0",
-    "yargs": "^9.0.0",
-    "rollup": "~0.50.0",
-    "rollup-plugin-babel": "~3.0.2",
-    "rollup-plugin-commonjs": "~8.2.6",
-    "rollup-plugin-json": "~2.3.0"
+    "yargs": "^9.0.0"
   },
   "devDependencies": {
-    "metro-bundler": "file:../metro-bundler",
     "babel-eslint": "^7.2.3",
+    "babel-preset-react-native": "^4.0.0",
     "eslint": "^3.19.0",
     "eslint-config-fb-strict": "^20.0.3",
     "eslint-config-fbjs": "^1.1.1",
@@ -202,6 +203,7 @@
     "eslint-plugin-react": "^7.2.1",
     "flow-bin": "^0.56.0",
     "jest": "^21",
+    "metro-bundler": "file:../metro-bundler",
     "prettier": "1.7.0",
     "react": "16.0.0",
     "react-dom": "16.0.0",

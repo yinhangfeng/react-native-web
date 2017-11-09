@@ -9,25 +9,28 @@ const commonjs = require('rollup-plugin-commonjs');
 const LABRNPlugin = require('./LABRNRollupPlugin');
 const Server = require('metro-bundler/src/Server')
 
-const prelude = require.resolve('../../Libraries/polyfills/prelude.js');
-const prelude_dev = require.resolve('../Libraries/polyfills/prelude_dev.js');
+const prelude = require.resolve('metro-bundler/src/Resolver/polyfills/prelude.js');
+const prelude_dev = require.resolve('metro-bundler/src/Resolver/polyfills/prelude_dev.js');
 
 // react-native/rn-get-polyfills.js
 const polyfills = [
-  require.resolve('../../packager/Libraries/polyfills/error-guard.js'),
-  require.resolve('../../packager/Libraries/polyfills/Number.es6.js'),
-  require.resolve('../../packager/Libraries/polyfills/String.prototype.es6.js'),
-  require.resolve('../../packager/Libraries/polyfills/Array.prototype.es6.js'),
-  require.resolve('../../packager/Libraries/polyfills/Array.es6.js'),
-  require.resolve('../../packager/Libraries/polyfills/Object.es6.js'),
-  require.resolve('../../packager/Libraries/polyfills/Object.es7.js'),
-  require.resolve('../../packager/Libraries/polyfills/babelHelpers.js'),
+  require.resolve('../../Libraries/polyfills/error-guard.js'),
+  require.resolve('../../Libraries/polyfills/Number.es6.js'),
+  require.resolve('../../Libraries/polyfills/String.prototype.es6.js'),
+  require.resolve('../../Libraries/polyfills/Array.prototype.es6.js'),
+  require.resolve('../../Libraries/polyfills/Array.es6.js'),
+  require.resolve('../../Libraries/polyfills/Object.es6.js'),
+  require.resolve('../../Libraries/polyfills/Object.es7.js'),
+  require.resolve('../../Libraries/polyfills/babelHelpers.js'),
 
   // 把InitializeCore 当做polyfill
   require.resolve('../../Libraries/Core/InitializeCore.web.js'),
 ];
 
-function createLABRNPlugin(packagerInstance, requestOptions, assetsOutput) {
+function createLABRNPlugin(packagerInstance, requestOptions, outputOptions, assetsOutput) {
+  const {
+    dev,
+  } = outputOptions;
   return packagerInstance.newBundleSession({
     // 参数参考 metro-bundler/src/shared/bundle buildBundle
     ...Server.DEFAULT_BUNDLE_OPTIONS,
@@ -48,10 +51,10 @@ function createLABRNPlugin(packagerInstance, requestOptions, assetsOutput) {
 
 function createRollupConfig(requestOptions, rnConfig, labRnPlugin) {
   let rollupConfig = {
-    // 将entry 转换为绝对路径 方便labRnPlugin处理
-    entry: path.resolve(requestOptions.entryFile),
+    // 将input 转换为绝对路径 方便labRnPlugin处理
+    input: path.resolve(requestOptions.entryFile),
     // 去除每个模块的 'use strict' 会在bundle外部拼接
-    useStrict: false,
+    strict: false,
     plugins: [
       labRnPlugin,
       createJsonPlugin(rnConfig),
@@ -112,11 +115,6 @@ function createCommonjsPlugin(rnConfig) {
 }
 
 /**
- * @param {any} packagerInstance 
- * @param {any} requestOpts 
- * @param {any} shouldClosePackager
- * @param {Object} outputOptions
- * 
  * @return bundle 假的Bundle对象 包括 saveBundle getAssets
  */
 function bundle(packagerInstance, requestOptions, outputOptions, config) {
@@ -127,7 +125,7 @@ function bundle(packagerInstance, requestOptions, outputOptions, config) {
   } = outputOptions;
   const assetsOutput = [];
 
-  return createLABRNPlugin(createLABRNPlugin, requestOptions, assetsOutput)
+  return createLABRNPlugin(packagerInstance, requestOptions, outputOptions, assetsOutput)
     .then((labRnPlugin) => {
       const rollupConfig = createRollupConfig(requestOptions, config, labRnPlugin);
       return rollup.rollup(rollupConfig);
