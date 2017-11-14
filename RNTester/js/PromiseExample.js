@@ -129,10 +129,10 @@ class Example extends React.Component {
   }
 }
 
-exports.framework = 'React';
-exports.title = 'Promise';
-exports.description = 'Promise';
-exports.examples = [{
+export const framework = 'React';
+export const title = 'Promise';
+export const description = 'Promise';
+export const examples = [{
   title: 'Promise Example',
   render() {
     return <Example/>;

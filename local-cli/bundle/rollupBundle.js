@@ -22,8 +22,9 @@ const polyfills = [
   require.resolve('../../Libraries/polyfills/Object.es6.js'),
   require.resolve('../../Libraries/polyfills/Object.es7.js'),
   require.resolve('../../Libraries/polyfills/babelHelpers.js'),
+];
 
-  // 把InitializeCore 当做polyfill
+const runBeforeMainModule = [
   require.resolve('../../Libraries/Core/InitializeCore.web.js'),
 ];
 
@@ -45,6 +46,7 @@ function createLABRNPlugin(packagerInstance, requestOptions, outputOptions, asse
       assetsOutput,
       platform: requestOptions.platform,
       polyfills: pfs,
+      runBeforeMainModule,
     });
   });
 }
@@ -102,11 +104,11 @@ function createBabelPlugin(rnConfig) {
 function createCommonjsPlugin(rnConfig) {
   let config = {
     ignoreGlobal: true,
-    // namedExports: {
-    //   'node_modules/react/react.js': [
-    //     'Children', 'Component', 'PureComponent', 'createElement', 'cloneElement', 'isValidElement', 'PropTypes', 'createClass', 'createFactory', 'createMixin', 'DOM', 'version',
-    //   ],
-    // },
+    namedExports: {
+      'node_modules/react/index.js': [
+        'Children', 'Component', 'PureComponent', 'unstable_AsyncComponent', 'createElement', 'cloneElement', 'isValidElement', 'createFactory', 'version', '__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED',
+      ],
+    },
   };
   if (rnConfig.rollupProcessCommonjsPluginConfig) {
     config = rnConfig.rollupProcessCommonjsPluginConfig(config);
@@ -134,8 +136,8 @@ function bundle(packagerInstance, requestOptions, outputOptions, config) {
         saveBundle() {
           return bundle.write({
             format: 'cjs',
-            dest: bundleOutput,
-            sourceMap: false,
+            file: bundleOutput,
+            sourcemap: false,
           }).then(() => this);
         },
 

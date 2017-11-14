@@ -2,6 +2,8 @@
 
 const VIRTUAL_INPUT = 'lab-rollup-virtual-input';
 
+const isWin = process.platform === 'win32';
+
 function isPluginsHelpers(id) {
   // plugins helpers 比如 rollup-plugin-commonjs
   return id[0] === '\0';
@@ -15,6 +17,7 @@ function isPluginsHelpers(id) {
  *   platform,
  *   assetsOutput,
  *   polyfills,
+ *   runBeforeMainModule,
  * }
  */
 module.exports = function LABRN({
@@ -23,6 +26,7 @@ module.exports = function LABRN({
   platform,
   assetsOutput,
   polyfills,
+  runBeforeMainModule = [],
 }) {
   const {
     resolutionRequest,
@@ -32,6 +36,7 @@ module.exports = function LABRN({
 
   let input;
   let inputModule;
+  runBeforeMainModule.forEach((modulePath) => moduleCache.getModule(modulePath));
 
   return {
     name: 'LABRN',
@@ -39,6 +44,8 @@ module.exports = function LABRN({
     options(options) {
       input = options.input;
       options.input = VIRTUAL_INPUT;
+
+      inputModule = moduleCache.getModule(input);
     },
     
     resolveId(importee, importer) {
@@ -54,11 +61,10 @@ module.exports = function LABRN({
       if (importer === VIRTUAL_INPUT) {
         if (importee === input) {
           // input
-          inputModule = moduleCache.getModule(importee);
         } else {
-          // polyfills
+          // polyfills runBeforeMainModule
         }
-        return importee;
+        return;
       }
       if (importer === importee) {
         // XXX rollup-plugin-commonjs 引起 如果处理会导致问题
@@ -94,10 +100,14 @@ module.exports = function LABRN({
         return;
       }
       if (id === VIRTUAL_INPUT) {
-        // 优先导入polyfills
-        const codeArr = polyfills.map((polyfillPath) => `import '${polyfillPath}';`);
+        // 导入polyfills
+        const codeArr = polyfills.map((polyfillPath) => `import '${isWin ? polyfillPath.replace(/\\/g, '\\\\') : polyfillPath}';`);
+        // 导入runBeforeMainModule
+        runBeforeMainModule.forEach((modulePath) => {
+          codeArr.push(`import '${isWin ? modulePath.replace(/\\/g, '\\\\') : modulePath}';`);
+        });
         // input
-        codeArr.push(`import '${input}';`);
+        codeArr.push(`import '${isWin ? input.replace(/\\/g, '\\\\') : input}';`);
         return codeArr.join('\n');
       }
 

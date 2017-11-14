@@ -93,10 +93,10 @@ const styles = StyleSheet.create({
   },
 });
 
-exports.framework = 'React';
-exports.title = 'XXX';
-exports.description = 'XXX';
-exports.examples = [{
+export const framework = 'React';
+export const title = 'XXX';
+export const description = 'XXX';
+export const examples = [{
   title: 'Error',
   render() {
     return (
