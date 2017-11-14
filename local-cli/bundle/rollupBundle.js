@@ -134,11 +134,16 @@ function bundle(packagerInstance, requestOptions, outputOptions, config) {
     }).then((bundle) => {
       return {
         saveBundle() {
-          return bundle.write({
+          let bundleOutputOptions = {
             format: 'cjs',
             file: bundleOutput,
             sourcemap: false,
-          }).then(() => this);
+            interop: false,
+          };
+          if (config.rollupProcessOutputConfig) {
+            bundleOutputOptions = config.rollupProcessOutputConfig(bundleOutputOptions);
+          }
+          return bundle.write(bundleOutputOptions).then(() => this);
         },
 
         getAssets() {
