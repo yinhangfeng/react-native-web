@@ -73,7 +73,8 @@ const Config = {
     getProjectRoots,
     getPolyfills,
     runBeforeMainModule: [
-      require.resolve('../../Libraries/Core/InitializeCore'),
+      // RW modify 使用InitializeCore.web
+      require.resolve('../../Libraries/Core/InitializeCore.web'),
     ],
   }: ConfigT),
 

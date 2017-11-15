@@ -101,7 +101,8 @@
     "LICENSE",
     "local-cli",
     "PATENTS",
-    "README.md"
+    "README.md",
+    "react-web"
   ],
   "scripts": {
     "test": "jest",
