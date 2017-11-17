@@ -72,6 +72,11 @@ module.exports = [
     description: 'use rollup bundle',
     default: false,
   }, {
+    // LAB modify
+    command: '--rollup-minify-engine [string]',
+    description: 'uglify-js or closure',
+    default: 'uglify',
+  }, {
     command: '--read-global-cache',
     description: 'Try to fetch transformed JS code from the global cache, if configured.',
     default: false,

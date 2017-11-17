@@ -6,6 +6,8 @@ const rollup = require('rollup');
 const json = require('rollup-plugin-json');
 const babel = require('rollup-plugin-babel');
 const commonjs = require('rollup-plugin-commonjs');
+const replace = require('rollup-plugin-replace');
+const uglify = require('rollup-plugin-uglify');
 const LABRNPlugin = require('./LABRNRollupPlugin');
 const Server = require('metro-bundler/src/Server')
 
@@ -51,7 +53,7 @@ function createLABRNPlugin(packagerInstance, requestOptions, outputOptions, asse
   });
 }
 
-function createRollupConfig(requestOptions, rnConfig, labRnPlugin) {
+function createRollupConfig(requestOptions, outputOptions, rnConfig, labRnPlugin) {
   let rollupConfig = {
     // 将input 转换为绝对路径 方便labRnPlugin处理
     input: path.resolve(requestOptions.entryFile),
@@ -61,7 +63,10 @@ function createRollupConfig(requestOptions, rnConfig, labRnPlugin) {
       labRnPlugin,
       createJsonPlugin(rnConfig),
       createBabelPlugin(rnConfig),
+      // TODO metro-bundler inline constantFolding JSTransformer/worker/index transformCode
+      !outputOptions.dev && createReplacePlugin(rnConfig),
       createCommonjsPlugin(rnConfig),
+      !outputOptions.dev && (outputOptions.rollupMinifyEngine == 'uglify' ? createUglifyPlugin(rnConfig) : createClosurePlugin(rnConfig)),
     ],
   };
 
@@ -100,6 +105,18 @@ function createBabelPlugin(rnConfig) {
   return babel(config);
 }
 
+// https://github.com/rollup/rollup-plugin-replace
+function createReplacePlugin(rnConfig) {
+  let config = {
+    __DEV__: 'false',
+    'process.env.NODE_ENV': "'production'",
+  };
+  if (rnConfig.rollupProcessReplacePluginConfig) {
+    config = rnConfig.rollupProcessReplacePluginConfig(config);
+  }
+  return replace(config);
+}
+
 // https://github.com/rollup/rollup-plugin-commonjs
 function createCommonjsPlugin(rnConfig) {
   let config = {
@@ -116,6 +133,44 @@ function createCommonjsPlugin(rnConfig) {
   return commonjs(config);
 }
 
+// https://github.com/camelaissani/rollup-plugin-closure-compiler-js
+function createClosurePlugin(rnConfig) {
+  const closure = require('rollup-plugin-closure-compiler-js');
+  // 配置来自react https://github.com/facebook/react/blob/master/scripts/rollup/build.js
+  let config = {
+    compilationLevel: 'SIMPLE',
+    languageIn: 'ECMASCRIPT5_STRICT',
+    languageOut: 'ECMASCRIPT5_STRICT',
+    env: 'CUSTOM',
+    warningLevel: 'QUIET',
+    applyInputSourceMaps: false,
+    useTypesForOptimization: false,
+    processCommonJsModules: false,
+    assumeFunctionWrapper: true,
+    // renaming: false,
+  };
+  if (rnConfig.rollupProcessClosurePluginConfig) {
+    config = rnConfig.rollupProcessClosurePluginConfig(config);
+  }
+  return closure(config);
+}
+
+// https://github.com/TrySound/rollup-plugin-uglify
+function createUglifyPlugin(rnConfig) {
+  // 配置来自react https://github.com/facebook/react/blob/master/scripts/rollup/build.js
+  let config = {
+    toplevel: true,
+    mangle: {
+      eval: true,
+      toplevel: true,
+    },
+  };
+  if (rnConfig.rollupProcessUglifyPluginConfig) {
+    config = rnConfig.rollupProcessUglifyPluginConfig(config);
+  }
+  return uglify(config);
+}
+
 /**
  * @return bundle 假的Bundle对象 包括 saveBundle getAssets
  */
@@ -129,7 +184,7 @@ function bundle(packagerInstance, requestOptions, outputOptions, config) {
 
   return createLABRNPlugin(packagerInstance, requestOptions, outputOptions, assetsOutput)
     .then((labRnPlugin) => {
-      const rollupConfig = createRollupConfig(requestOptions, config, labRnPlugin);
+      const rollupConfig = createRollupConfig(requestOptions, outputOptions, config, labRnPlugin);
       return rollup.rollup(rollupConfig);
     }).then((bundle) => {
       return {

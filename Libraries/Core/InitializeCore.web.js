@@ -85,9 +85,9 @@ function polyfillGlobal<T>(name: string, getValue: () => T): void {
 
 // Set up process
 global.process = global.process || {};
-global.process.env = global.process.env || {};
-if (!global.process.env.NODE_ENV) {
-  global.process.env.NODE_ENV = __DEV__ ? 'development' : 'production';
+const env = global.process.env = global.process.env || {};
+if (env == null) {
+  env.NODE_ENV = __DEV__ ? 'development' : 'production';
 }
 
 // Setup the Systrace profiling hooks if necessary
