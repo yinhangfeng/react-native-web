@@ -74,13 +74,14 @@ module.exports = function LABRN({
 
       let module = moduleCache.getAllModules()[importee];
       if (!module) {
-        const importerModule = moduleCache.getAllModules()[importer];
-        if (importerModule) {
-          // 如果importerModule 是asset 则表示importee是 AssetRegistry
-          // 因为rn packager对asset的deps是直接设置的(在Bundler/index.js)， 通过resolutionRequest无法获取，所以需要设置fromeMoudle为entryModule
-          module = resolutionRequest.resolveDependency(importerModule.isAsset() ? inputModule : importerModule, importee)
-          console.log('resolveId resolveDependency path:', module.path);
+        let fromModule = moduleCache.getAllModules()[importer];
+        // 如果importerModule 是asset 则表示importee是 AssetRegistry
+        // 因为metro-bundler 对 asset 的 deps 是直接设置的(在Bundler/index.js)， 通过resolutionRequest无法获取，所以需要设置 fromModule 为 inputModule
+        if (!fromModule || fromModule.isAsset()) {
+          fromModule = inputModule;
         }
+        module = resolutionRequest.resolveDependency(fromModule, importee)
+        console.log('resolveId resolveDependency path:', module.path);
       }
       if (module) {
         if (module.isAsset()) {

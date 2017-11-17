@@ -3,7 +3,7 @@
  */
 'use strict';
 
-var resolvePlugins = require('../../babel-preset/lib/resolvePlugins');
+var resolvePlugins = require('babel-preset-react-native/lib/resolvePlugins');
 
 module.exports = {
   comments: false,
