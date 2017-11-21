@@ -393,13 +393,13 @@ var ListView = createReactClass({
       if (rowIDs.length === 0 && __DEV__) {
         if (enableEmptySections === undefined) {
           // const warning = require('fbjs/lib/warning');
-          console.warning(
+          if (__DEV__) console.warning(
             'In next release empty section headers will be rendered.' +
             " In this release you can use 'enableEmptySections' flag to render empty section headers."
           );
           continue;
         } else {
-          invariant(
+          if (__DEV__) invariant(
             enableEmptySections,
             "In next release 'enableEmptySections' flag will be deprecated, empty section headers will always be rendered." +
             ' If empty section headers are not desirable their indices should be excluded from sectionIDs object.' +
