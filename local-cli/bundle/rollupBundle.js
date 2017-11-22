@@ -9,7 +9,8 @@ const commonjs = require('rollup-plugin-commonjs');
 const replace = require('rollup-plugin-replace');
 const uglify = require('rollup-plugin-uglify');
 const LABRNPlugin = require('./LABRNRollupPlugin');
-const Server = require('metro-bundler/src/Server')
+const Server = require('metro-bundler/src/Server');
+const merge = require('lodash/merge');
 
 const prelude = require.resolve('metro-bundler/src/Resolver/polyfills/prelude.js');
 const prelude_dev = require.resolve('metro-bundler/src/Resolver/polyfills/prelude_dev.js');
@@ -90,12 +91,12 @@ function createJsonPlugin(rnConfig) {
 function createBabelPlugin(rnConfig) {
   const babelConfig = require('./rollupBabelConfig');
 
-  let config = Object.assign(
+  let config = merge(
     {},
     babelConfig,
     {
       exclude: ['**/Libraries/polyfills/babelHelpers*'],
-      externalHelpers: true,
+      babelrc: false,
     }
   );
 

@@ -135,7 +135,7 @@ module.exports = function LABRN({
 
     transformBundle(source, options) {
       // console.log('transformBundle', source.slice(0, 20), options);
-      return `(function(global) { ${source} })(window);`;
+      return `(function(global) { var babelHelpers = {}; ${source} })(window);`;
     },
   };
 }

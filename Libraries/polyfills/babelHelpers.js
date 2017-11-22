@@ -19,15 +19,21 @@
 //
 // actually, that's a lie, because babel6 omits _extends and createRawReactElement
 
-var babelHelpers = global.babelHelpers = {};
+// RW modify rollup 打包时 babelHelpers 定义在顶层闭包内 使得可以被压缩
+var helpers;
+if (typeof babelHelpers === 'object') {
+  helpers = babelHelpers;
+} else {
+  helpers = global.babelHelpers = {};
+}
 
-babelHelpers.typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
+helpers.typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
   return typeof obj;
 } : function (obj) {
   return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
 };
 
-babelHelpers.createRawReactElement = (function () {
+helpers.createRawReactElement = (function () {
   var REACT_ELEMENT_TYPE = typeof Symbol === "function" && Symbol.for && Symbol.for("react.element") || 0xeac7;
   return function createRawReactElement(type, key, props) {
     return {
@@ -41,13 +47,13 @@ babelHelpers.createRawReactElement = (function () {
   };
 })();
 
-babelHelpers.classCallCheck = function (instance, Constructor) {
+helpers.classCallCheck = function (instance, Constructor) {
   if (!(instance instanceof Constructor)) {
     throw new TypeError("Cannot call a class as a function");
   }
 };
 
-babelHelpers.createClass = (function () {
+helpers.createClass = (function () {
   function defineProperties(target, props) {
     for (var i = 0; i < props.length; i++) {
       var descriptor = props[i];
@@ -65,7 +71,7 @@ babelHelpers.createClass = (function () {
   };
 })();
 
-babelHelpers.defineEnumerableProperties = function(obj, descs) {
+helpers.defineEnumerableProperties = function(obj, descs) {
   for (var key in descs) {
     var desc = descs[key];
     desc.configurable = (desc.enumerable = true);
@@ -75,7 +81,7 @@ babelHelpers.defineEnumerableProperties = function(obj, descs) {
   return obj;
 };
 
-babelHelpers.defineProperty = function (obj, key, value) {
+helpers.defineProperty = function (obj, key, value) {
   if (key in obj) {
     Object.defineProperty(obj, key, {
       value: value,
@@ -90,7 +96,7 @@ babelHelpers.defineProperty = function (obj, key, value) {
   return obj;
 };
 
-babelHelpers._extends = babelHelpers.extends = Object.assign || function (target) {
+helpers._extends = helpers.extends = Object.assign || function (target) {
   for (var i = 1; i < arguments.length; i++) {
     var source = arguments[i];
 
@@ -104,7 +110,7 @@ babelHelpers._extends = babelHelpers.extends = Object.assign || function (target
   return target;
 };
 
-babelHelpers.get = function get(object, property, receiver) {
+helpers.get = function get(object, property, receiver) {
   if (object === null) object = Function.prototype;
   var desc = Object.getOwnPropertyDescriptor(object, property);
 
@@ -129,7 +135,7 @@ babelHelpers.get = function get(object, property, receiver) {
   }
 };
 
-babelHelpers.inherits = function (subClass, superClass) {
+helpers.inherits = function (subClass, superClass) {
   if (typeof superClass !== "function" && superClass !== null) {
     throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
   }
@@ -145,13 +151,13 @@ babelHelpers.inherits = function (subClass, superClass) {
   if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
 };
 
-babelHelpers.interopRequireDefault = function (obj) {
+helpers.interopRequireDefault = function (obj) {
   return obj && obj.__esModule ? obj : {
     default: obj
   };
 };
 
-babelHelpers.interopRequireWildcard = function (obj) {
+helpers.interopRequireWildcard = function (obj) {
   if (obj && obj.__esModule) {
     return obj;
   } else {
@@ -168,7 +174,7 @@ babelHelpers.interopRequireWildcard = function (obj) {
   }
 };
 
-babelHelpers.objectWithoutProperties = function (obj, keys) {
+helpers.objectWithoutProperties = function (obj, keys) {
   var target = {};
 
   for (var i in obj) {
@@ -180,7 +186,7 @@ babelHelpers.objectWithoutProperties = function (obj, keys) {
   return target;
 };
 
-babelHelpers.possibleConstructorReturn = function (self, call) {
+helpers.possibleConstructorReturn = function (self, call) {
   if (!self) {
     throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
   }
@@ -188,7 +194,7 @@ babelHelpers.possibleConstructorReturn = function (self, call) {
   return call && (typeof call === "object" || typeof call === "function") ? call : self;
 };
 
-babelHelpers.slicedToArray = (function () {
+helpers.slicedToArray = (function () {
   function sliceIterator(arr, i) {
     var _arr = [];
     var _n = true;
@@ -226,7 +232,7 @@ babelHelpers.slicedToArray = (function () {
   };
 })();
 
-babelHelpers.taggedTemplateLiteral = function (strings, raw) {
+helpers.taggedTemplateLiteral = function (strings, raw) {
   return Object.freeze(Object.defineProperties(strings, {
     raw: {
       value: Object.freeze(raw)
@@ -234,11 +240,11 @@ babelHelpers.taggedTemplateLiteral = function (strings, raw) {
   }));
 };
 
-babelHelpers.toArray = function (arr) {
+helpers.toArray = function (arr) {
   return Array.isArray(arr) ? arr : Array.from(arr);
 };
 
-babelHelpers.toConsumableArray = function (arr) {
+helpers.toConsumableArray = function (arr) {
   if (Array.isArray(arr)) {
     for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i];
 
@@ -251,11 +257,11 @@ babelHelpers.toConsumableArray = function (arr) {
 
 //
 // RW modify
-// 扩展 有些库需要其它babelHelpers 功能(如inline-style-prefixer) 使用 react-web/scripts/_babel.js生成
-// 需要研究一下babel配置相关，react-native 使用babel编译但是相关polyfills 的添加没用通过babel(Resolver/index.js _getPolyfillDependencies),所以可能是不标准的
+// 扩展 有些库需要其它 babelHelpers 功能(如inline-style-prefixer) 使用 react-web/scripts/_babel.js生成
+// 需要研究一下babel配置相关，react-native 使用babel编译但是相关 polyfills 的添加没用通过babel(Resolver/index.js _getPolyfillDependencies),所以可能是不标准的
 //
 
-babelHelpers.typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
+helpers.typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
     return typeof obj;
   } : function (obj) {
     return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;

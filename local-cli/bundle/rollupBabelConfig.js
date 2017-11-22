@@ -40,12 +40,13 @@ module.exports = {
     // require('../transforms/transform-symbol-member'),
     'transform-react-display-name',
     // require('../transforms/transform-dynamic-import'),
+    'external-helpers',
   ]),
   env: {
     development: {
       plugins: resolvePlugins(['transform-react-jsx-source']),
     },
   },
-  retainLines: true,
-  // sourceMaps: false,
+  // retainLines: true,
+  externalHelpers: true,
 };
