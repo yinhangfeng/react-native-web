@@ -48,6 +48,7 @@ module.exports = function LABRN({
       inputModule = moduleCache.getModule(input);
     },
     
+    // TODO 对外部package 使用 module 代替main
     resolveId(importee, importer) {
       console.log('resolveId', importee, importer);
 

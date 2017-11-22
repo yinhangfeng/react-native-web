@@ -9,6 +9,7 @@ const commonjs = require('rollup-plugin-commonjs');
 const replace = require('rollup-plugin-replace');
 const uglify = require('rollup-plugin-uglify');
 const LABRNPlugin = require('./LABRNRollupPlugin');
+const RNInlinePlugin = require('./RNInlineRollupPlugin');
 const Server = require('metro-bundler/src/Server');
 const merge = require('lodash/merge');
 
@@ -55,6 +56,7 @@ function createLABRNPlugin(packagerInstance, requestOptions, outputOptions, asse
 }
 
 function createRollupConfig(requestOptions, outputOptions, rnConfig, labRnPlugin) {
+  const pluginOptions = requestOptions;
   let rollupConfig = {
     // 将input 转换为绝对路径 方便labRnPlugin处理
     input: path.resolve(requestOptions.entryFile),
@@ -62,12 +64,13 @@ function createRollupConfig(requestOptions, outputOptions, rnConfig, labRnPlugin
     strict: false,
     plugins: [
       labRnPlugin,
-      createJsonPlugin(rnConfig),
-      createBabelPlugin(rnConfig),
+      createJsonPlugin(rnConfig, pluginOptions),
+      createBabelPlugin(rnConfig, pluginOptions),
+      !outputOptions.dev && createRNInlinePlugin(rnConfig, pluginOptions),
       // TODO metro-bundler inline constantFolding JSTransformer/worker/index transformCode
-      !outputOptions.dev && createReplacePlugin(rnConfig),
-      createCommonjsPlugin(rnConfig),
-      !outputOptions.dev && (outputOptions.rollupMinifyEngine == 'uglify' ? createUglifyPlugin(rnConfig) : createClosurePlugin(rnConfig)),
+      !outputOptions.dev && createReplacePlugin(rnConfig, pluginOptions),
+      createCommonjsPlugin(rnConfig, pluginOptions),
+      !outputOptions.dev && (outputOptions.rollupMinifyEngine == 'uglify' ? createUglifyPlugin(rnConfig, pluginOptions) : createClosurePlugin(rnConfig, pluginOptions)),
     ],
   };
 
@@ -104,6 +107,17 @@ function createBabelPlugin(rnConfig) {
     config = rnConfig.rollupProcessBabelPluginConfig(config);
   }
   return babel(config);
+}
+
+function createRNInlinePlugin(rnConfig, options) {
+  let config = {
+    dev: options.dev,
+    platform: options.platform,
+  };
+  if (rnConfig.rollupProcessRNInlinePluginConfig) {
+    config = rnConfig.rollupProcessRNInlinePluginConfig(config);
+  }
+  return RNInlinePlugin(config);
 }
 
 // https://github.com/rollup/rollup-plugin-replace
