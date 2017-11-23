@@ -78,9 +78,12 @@ class AssetSourceResolver {
   }
 
   defaultAsset(): ResolvedAssetSource {
-    const url = this.devServerUrl || this.serverUrl;
+    let url = this.devServerUrl;
+    if (url == null) {
+      url = this.serverUrl;
+    }
     return this.fromSource(
-      url + getScaledAssetPath(this.asset) + '&hash=' + this.asset.hash
+      url + '/' + getScaledAssetPath(this.asset) + '?hash=' + this.asset.hash
     );
   }
 
