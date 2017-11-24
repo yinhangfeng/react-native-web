@@ -9,6 +9,9 @@
 
 package com.facebook.react.modules.fresco;
 
+import java.util.HashSet;
+
+import android.content.Context;
 import android.support.annotation.Nullable;
 
 import com.facebook.common.logging.FLog;
@@ -28,8 +31,6 @@ import com.facebook.react.modules.network.CookieJarContainer;
 import com.facebook.react.modules.network.ForwardingCookieHandler;
 import com.facebook.react.modules.network.OkHttpClientProvider;
 import com.facebook.soloader.SoLoader;
-
-import java.util.HashSet;
 
 import okhttp3.JavaNetCookieJar;
 import okhttp3.OkHttpClient;

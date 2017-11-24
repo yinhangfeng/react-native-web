@@ -266,9 +266,4 @@ public class ReactViewManager extends ViewGroupManager<ReactViewGroup> {
       parent.removeAllViews();
     }
   }
-
-  @Override
-  public void onDropViewInstance(ReactViewGroup view) {
-    super.onDropViewInstance(view);
-  }
 }
