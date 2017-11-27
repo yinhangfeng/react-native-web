@@ -196,7 +196,8 @@
     "ws": "^1.1.0",
     "xcode": "^0.9.1",
     "xmldoc": "^0.4.0",
-    "yargs": "^9.0.0"
+    "yargs": "^9.0.0",
+    "metro-bundler": "git+ssh://git@git.dev.backustech.com:lab4/metro-bundler.git#0.20-stable"
   },
   "devDependencies": {
     "babel-eslint": "^7.2.3",
@@ -210,7 +211,6 @@
     "eslint-plugin-react": "^7.2.1",
     "flow-bin": "^0.56.0",
     "jest": "^21",
-    "metro-bundler": "file:../metro-bundler",
     "prettier": "1.7.0",
     "react": "16.0.0",
     "react-dom": "16.0.0",
