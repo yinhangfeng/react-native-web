@@ -59,7 +59,7 @@ class TimingAnimation extends Animation {
   constructor(config: TimingAnimationConfigSingle) {
     super();
     this._toValue = config.toValue;
-    invariant(typeof this._toValue === 'number', 'toValue must be number');
+    invariant(this._toValue > -Infinity && this._toValue < Infinity, 'toValue must be a valid number ' + JSON.stringify(config));
     this._easing = config.easing !== undefined ? config.easing : easeInOut();
     this._duration = config.duration !== undefined ? config.duration : 500;
     this._delay = config.delay !== undefined ? config.delay : 0;
