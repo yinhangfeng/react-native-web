@@ -136,7 +136,7 @@ module.exports = function LABRN({
 
     transformBundle(source, options) {
       // console.log('transformBundle', source.slice(0, 20), options);
-      return `(function(global) { var babelHelpers = {}; ${source} })(window);`;
+      return `(function(global) { 'use strict'; var babelHelpers = {}; ${source.startsWith("'use strict';") ? source.slice(13) : source} })(window);`;
     },
   };
 }
