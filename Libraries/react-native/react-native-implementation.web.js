@@ -23,7 +23,7 @@ exports.Image = require('Image');
 exports.ImageBackground = require('ImageBackground');
 exports.ImageEditor = null; //require('ImageEditor');
 exports.ImageStore = null; //require('ImageStore');
-exports.KeyboardAvoidingView
+exports.KeyboardAvoidingView = null;
 exports.ListView = require('ListView');
 exports.MaskedViewIOS = null;
 exports.Modal = null; //require('Modal');
@@ -37,7 +37,7 @@ exports.ScrollView = require('ScrollView');
 exports.SectionList = null;
 exports.SegmentedControlIOS = null; //require('SegmentedControlIOS');
 exports.Slider = null; //require('Slider');
-exports.SnapshotViewIOS
+exports.SnapshotViewIOS = null;
 exports.Switch = require('Switch');
 exports.RefreshControl = require('RefreshControl');
 exports.StatusBar = null; //require('StatusBar');
@@ -81,7 +81,7 @@ exports.InteractionManager = require('InteractionManager');
 exports.Keyboard = null;
 exports.LayoutAnimation = null; //require('LayoutAnimation');
 exports.Linking = require('Linking');
-exports.NativeEventEmitter
+exports.NativeEventEmitter = null;
 exports.NetInfo = null; //require('NetInfo');
 exports.PanResponder = require('PanResponder');
 exports.PermissionsAndroid = null;
