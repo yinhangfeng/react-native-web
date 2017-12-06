@@ -54,6 +54,8 @@ import com.facebook.react.uimanager.events.RCTEventEmitter;
     WritableMap eventData = Arguments.createMap();
     eventData.putInt("position", mPosition);
     eventData.putDouble("offset", mOffset);
+    // LAB Modify 增加scroll value
+    eventData.putDouble("value", mPosition + mOffset);
     return eventData;
   }
 }
