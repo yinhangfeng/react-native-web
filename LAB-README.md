@@ -15,9 +15,9 @@ git merge origin/lab-master 实现与lab-master 同步
 * Resolver/polyfills/polyfills.js Object.is
 ### Android
 * 修改android TextInput 减少在 oppo 上无法弹出键盘的问题(还是有问题) ReactAndroid/src/**/ReactEditText.java
-* ReactViewPager.java 修复ViewPagerAndroid 在父View为removeClippedSubviews时 无法populate的BUG
-* ViewPagerAndroid 
-* UIImplementation 对外暴露resolveShadowNode resolveView
+* ReactViewPager.java 修复ViewPagerAndroid 在父View 为removeClippedSubviews 时 无法populate 的BUG
+* PageScrollEvent.java 增加scroll value 为 mPosition + mOffset
+* UIImplementation 对外暴露resolveShadowNode resolveView dispatchViewUpdatesIfNeeded
 * TouchableNativeFeedback ReactViewGroup TNFHolder ReactViewCornerRippleDrawable (TODO flat/RCTView)
 ### cli
 * react-native link 支持配置忽略某个平台 local-cli/core/config.index.js

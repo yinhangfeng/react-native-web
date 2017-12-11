@@ -663,7 +663,11 @@ public class UIImplementation {
     }
   }
 
-  private void dispatchViewUpdatesIfNeeded() {
+  /**
+   * LAB modify 改为public
+   * 必须在NativeModulesQueueThread 执行
+   */
+  public void dispatchViewUpdatesIfNeeded() {
     // If we are in the middle of a batch update, any additional changes
     // will automatically be dispatched at the end of the batch.
     // If we are not, we have to initiate new batch update.
