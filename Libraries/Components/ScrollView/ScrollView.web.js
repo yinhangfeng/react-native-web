@@ -586,7 +586,7 @@ const ScrollView = createReactClass({
         ref={this._setInnerViewRef}
         className={props.horizontal ? (CSSClassNames.SCROLL_VIEW_CONTENT + ' ' + CSSClassNames.SCROLL_VIEW_CONTENT_H) : CSSClassNames.SCROLL_VIEW_CONTENT}
         style={props.contentContainerStyle}
-        removeClippedSubviews={props.removeClippedSubviews}
+        // removeClippedSubviews={props.removeClippedSubviews}
         // collapsable={false}
         onLayout={props.onContentSizeChange && this._handleContentOnLayout}>
         {props.children}
@@ -604,13 +604,17 @@ const ScrollView = createReactClass({
       className += ' ' + props.className;
     }
 
-    const style = flattenStyle([styles.base, props.style]);
+    // const style = flattenStyle([styles.base, props.style]);
+    const style = flattenStyle(props.style);
+    if (!('flex' in style)) {
+      style.flex = 1;
+    }
     if (style.flex && !style.flexBasis) {
       //对设置了flex，将flexBasis设为0 解决有些浏览器不可滚动的bug 0, 0px 与0%不同?
       style.flexBasis = 0;
     }
 
-    let containerProps = {
+    const containerProps = {
       ...props,
       horizontal: undefined,
       ref: this._setScrollViewRef,
@@ -635,21 +639,16 @@ const ScrollView = createReactClass({
       // sendMomentumEvents: (props.onMomentumScrollBegin || props.onMomentumScrollEnd) ? true : false,
     };
 
-    //containerProps = require('RWTouchTest').assignLog(containerProps, 'ScrollView');
+    // require('RWTouchTest').assignLog(containerProps, 'ScrollView');
 
-    return (
-      <View
-        {...containerProps}>
-        {contentContainer}
-      </View>
-    );
+    return React.createElement(View, containerProps, contentContainer);
   },
 });
 
-const styles = StyleSheet.create({
-  base: {
-    flex: 1,
-  },
-});
+// const styles = StyleSheet.create({
+//   base: {
+//     flex: 1,
+//   },
+// });
 
 module.exports = ScrollView;
