@@ -12,6 +12,7 @@ import android.support.annotation.Nullable;
 
 /**
  * Created by yinhf on 2017/9/7.
+ * TODO oppo 下无效
  */
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
 public class ReactViewCornerRippleDrawable extends RippleDrawable {
