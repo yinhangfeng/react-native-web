@@ -11,8 +11,9 @@ git merge origin/lab-master 实现与lab-master 同步
 所有修改以注释 'LAB modify'  标记
 ### js
 * InitializeCore.js 修改Promise 使用bluebird
-* Resolver/polyfills/polyfills.js __requireDefault
-* Resolver/polyfills/polyfills.js Object.is
+* Libraries/polyfills/polyfills.js __requireDefault
+* Libraries/polyfills/polyfills.js Object.is
+* ViewPagerAndroid.android.js 去除child 必须为View 的警告
 ### Android
 * 修改android TextInput 减少在 oppo 上无法弹出键盘的问题(还是有问题) ReactAndroid/src/**/ReactEditText.java
 * ReactViewPager.java 修复ViewPagerAndroid 在父View 为removeClippedSubviews 时 无法populate 的BUG
