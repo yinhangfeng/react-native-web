@@ -519,10 +519,10 @@ const ScrollView = createReactClass({
       ({x, y, animated} = y || {});
     }
 
-    const scrollView = this._scrollViewRef;
-    if (scrollView) {
-      scrollView.scrollTop = y || 0;
-      scrollView.scrollLeft = x || 0;
+    const scrollViewNode = ReactNative.findNodeHandle(this._scrollViewRef);
+    if (scrollViewNode) {
+      scrollViewNode.scrollTop = y || 0;
+      scrollViewNode.scrollLeft = x || 0;
     }
   },
 
