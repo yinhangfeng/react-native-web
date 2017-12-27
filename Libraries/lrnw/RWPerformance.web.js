@@ -12,7 +12,7 @@ const HEIGH = 10;
 
 let level = MEDIUM;
 if (prefixOldFlexbox.flexboxSpec === 'final') {
-  if (bowser.chrome && bowser.compareVersions([bowser.version, '45']) >= 0) {
+  if (bowser.chrome && bowser.compareVersions([bowser.version, '47']) >= 0) {
     level = 7;
   } else if (bowser.android) {
     if (bowser.compareVersions([bowser.osversion, '5']) >= 0) {

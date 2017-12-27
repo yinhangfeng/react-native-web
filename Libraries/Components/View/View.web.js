@@ -104,17 +104,19 @@ const View = createReactClass({
   // },
 
   render: function() {
+    const props = this.props;
+
     let className = CSSClassNames.VIEW;
-    if (this.props.pointerEvents) {
-      className += ' ' + CSSClassNames.pointerEventsClassNames[this.props.pointerEvents];
+    if (props.pointerEvents) {
+      className += ' ' + CSSClassNames.pointerEventsClassNames[props.pointerEvents];
     }
-    if (this.props.className) {
+    if (props.className) {
       //View 的className属性只在lrnw库内部使用
-      className += ' ' + this.props.className;
+      className += ' ' + props.className;
     }
 
     return createWebCoreElement('div', {
-      ...this.props,
+      ...props,
       className,
     });
   },
