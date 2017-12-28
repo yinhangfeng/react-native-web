@@ -605,7 +605,7 @@ const ScrollView = createReactClass({
     }
 
     // const style = flattenStyle([styles.base, props.style]);
-    const style = flattenStyle(props.style);
+    const style = flattenStyle(props.style) || {};
     if (!('flex' in style)) {
       style.flex = 1;
     }
