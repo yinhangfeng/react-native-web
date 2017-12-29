@@ -547,9 +547,9 @@ const Text = createReactClass({
       };
     }
 
-    let style;
+    let numberOfLinesStyle;
     let className = CSSClassNames.TEXT;
-    // if(this.context.isInAParentText) {
+    // if (this.context.isInAParentText) {
     //   className += ' ' + CSSClassNames.TEXT_CHILD);
     // }
     if (newProps.numberOfLines) {
@@ -557,9 +557,9 @@ const Text = createReactClass({
 
       let lineHeight;
       let maxHeight;
-
-      if (newProps.lineHeight) {
-        lineHeight = newProps.lineHeight;
+      const style = StyleSheet.flatten(newProps.style);
+      if (style.lineHeight != null) {
+        lineHeight = style.lineHeight;
         maxHeight = lineHeight * newProps.numberOfLines;
       } else {
         lineHeight = '1.375';
@@ -567,7 +567,7 @@ const Text = createReactClass({
       }
 
       //TODO RW 根据lineHeight 算出maxHeight  用em会比较方便
-      style = { WebkitLineClamp: newProps.numberOfLines, lineHeight: lineHeight, maxHeight: maxHeight };
+      numberOfLinesStyle = { WebkitLineClamp: newProps.numberOfLines, lineHeight: lineHeight, maxHeight: maxHeight };
     }
     if (newProps.className) {
       className += ' ' + newProps.className;
@@ -577,7 +577,7 @@ const Text = createReactClass({
     return createWebCoreElement('span', {
       ...newProps,
       className,
-      style: style ? [newProps.style, style] : newProps.style,
+      style: numberOfLinesStyle ? [newProps.style, numberOfLinesStyle] : newProps.style,
     });
 
   },
