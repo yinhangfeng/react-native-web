@@ -22,6 +22,7 @@ const ReactNativeViewAttributes = require('ReactNativeViewAttributes');
 const StyleSheetPropType = require('StyleSheetPropType');
 const TextStylePropTypes = require('TextStylePropTypes');
 const Touchable = require('Touchable');
+const StyleSheet = require('StyleSheet');
 
 const createReactClass = require('create-react-class');
 // const mergeFast = require('mergeFast');
