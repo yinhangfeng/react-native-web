@@ -188,6 +188,9 @@ var Image = createReactClass({
      * The image will not be scaled up.
      */
     resizeMode: PropTypes.oneOf(['cover', 'contain', 'stretch', 'center']),
+
+    // LAB modify
+    loadingIndicatorAnimated: PropTypes.bool,
   },
 
   statics: {
