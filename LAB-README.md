@@ -20,6 +20,7 @@ git merge origin/lab-master 实现与lab-master 同步
 * PageScrollEvent.java 增加scroll value 为 mPosition + mOffset
 * UIImplementation 对外暴露resolveShadowNode resolveView dispatchViewUpdatesIfNeeded
 * TouchableNativeFeedback ReactViewGroup TNFHolder ReactViewCornerRippleDrawable (TODO flat/RCTView)
+* ReactImageView.java loadingIndicatorAnimated 在 mLoadingImageDrawable 变为null 时 正确设置PlaceholderImage
 ### cli
 * react-native link 支持配置忽略某个平台 local-cli/core/config.index.js
 * react-native link 支持配置android moduleName 代替默认的 'app' local-cli/core/config/android/index.js

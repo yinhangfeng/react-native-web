@@ -244,6 +244,46 @@ exports.examples = [
     },
   },
   {
+    title: 'Loading Indicator',
+    description: 'Loading Indicator',
+    render: function() {
+      class A extends React.Component {
+        constructor() {
+          super();
+          this.state = {
+            animated: true,
+            loadingIndicatorSource: true,
+          };
+        }
+        render() {
+          return (
+            <View>
+              <Image
+                source={{uri: 'https://facebook.github.io/react/logo-og21.png'}}
+                loadingIndicatorSource={this.state.loadingIndicatorSource ? require('./bunny.png') : null}
+                loadingIndicatorAnimated={this.state.animated}
+                style={styles.base}
+              />
+              <Text onPress={() => {
+                this.setState({
+                  animated: !this.state.animated,
+                });
+              }} style={{padding: 10}} >animated</Text>
+              <Text onPress={() => {
+                this.setState({
+                  loadingIndicatorSource: !this.state.loadingIndicatorSource,
+                });
+              }} style={{padding: 10}}  >loadingIndicatorSource</Text>
+            </View>
+          );
+        }
+      }
+      return (
+        <A />
+      );
+    },
+  },
+  {
     title: 'Plain Static Image',
     description: 'Static assets should be placed in the source code tree, and ' +
     'required in the same way as JavaScript modules.',
