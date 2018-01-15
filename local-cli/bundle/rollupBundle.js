@@ -66,7 +66,7 @@ function createRollupConfig(requestOptions, outputOptions, rnConfig, labRnPlugin
     plugins: [
       labRnPlugin,
       createJsonPlugin(rnConfig, pluginOptions),
-      createBabelPlugin(rnConfig, pluginOptions),
+      createBabelPlugin(rnConfig, pluginOptions, outputOptions),
       !outputOptions.dev && createRNInlinePlugin(rnConfig, pluginOptions),
       // TODO metro-bundler inline constantFolding JSTransformer/worker/index transformCode
       !outputOptions.dev && createReplacePlugin(rnConfig, pluginOptions),
@@ -92,8 +92,11 @@ function createJsonPlugin(rnConfig) {
 }
 
 // https://github.com/rollup/rollup-plugin-babel
-function createBabelPlugin(rnConfig) {
-  const babelConfig = require('./rollupBabelConfig');
+function createBabelPlugin(rnConfig, options, outputOptions) {
+  const getRollupBabelConfig = require('./getRollupBabelConfig');
+  const babelConfig = getRollupBabelConfig({
+    es6: outputOptions.babelPresetTarget === 'es6',
+  });
 
   let config = merge(
     {},

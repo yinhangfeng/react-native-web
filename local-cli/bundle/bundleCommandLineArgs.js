@@ -77,6 +77,10 @@ module.exports = [
     description: 'uglify-js or closure',
     default: 'uglify',
   }, {
+    // LAB modify
+    command: '--babel-preset-target [string]',
+    description: '输出目标的兼容性,目前只支持es6',
+  }, {
     command: '--read-global-cache',
     description: 'Try to fetch transformed JS code from the global cache, if configured.',
     default: false,

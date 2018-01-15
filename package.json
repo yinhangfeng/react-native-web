@@ -123,7 +123,8 @@
     "lrnw": "node local-cli/cli.js start --port 9080",
     "bundle-prod": "node local-cli/cli.js bundle --platform web --dev false --entry-file Examples/index.web.js --bundle-output build/rntester/bundle.min.js",
     "bundle-rollup": "node local-cli/cli.js bundle --rollup --platform web --dev true --entry-file Examples/index.web.js --bundle-output build/rntester/bundle.rollup.js",
-    "bundle-rollup-prod": "node local-cli/cli.js bundle --rollup --platform web --dev false --entry-file Examples/index.web.js --bundle-output build/rntester/bundle.rollup.min.js"
+    "bundle-rollup-prod": "node local-cli/cli.js bundle --rollup --platform web --dev false --entry-file Examples/index.web.js --bundle-output build/rntester/bundle.rollup.min.js",
+    "bundle-rollup-prod-es6": "node local-cli/cli.js bundle --rollup --platform web --dev false --babel-preset-target es6 --entry-file Examples/index.web.js --bundle-output build/rntester/bundle.rollup.es6.min.js"
   },
   "bin": {
     "lab-react-native-web": "local-cli/wrong-react-native.js"

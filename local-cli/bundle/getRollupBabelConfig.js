@@ -3,12 +3,12 @@
  */
 'use strict';
 
-var resolvePlugins = require('babel-preset-react-native/lib/resolvePlugins');
+const resolvePlugins = require('babel-preset-react-native/lib/resolvePlugins');
 
-module.exports = {
-  comments: false,
-  compact: true,
-  plugins: resolvePlugins([
+function getPreset({
+  es6,
+}) {
+  const plugins = [
     'syntax-class-properties',
     'syntax-trailing-function-commas',
     'transform-class-properties',
@@ -18,7 +18,7 @@ module.exports = {
     'transform-es2015-function-name',
     'transform-es2015-literals',
     'transform-es2015-parameters',
-    'transform-es2015-shorthand-properties',
+    // 'transform-es2015-shorthand-properties',
     'transform-flow-strip-types',
     'transform-react-jsx',
     'transform-regenerator',
@@ -28,7 +28,7 @@ module.exports = {
     //   {strict: false, allowTopLevelThis: true},
     // ]
     'syntax-async-functions',
-    'transform-es2015-classes',
+    // 'transform-es2015-classes',
     'transform-es2015-arrow-functions',
     'check-es2015-constants',
     'transform-es2015-spread',
@@ -41,12 +41,23 @@ module.exports = {
     'transform-react-display-name',
     // require('../transforms/transform-dynamic-import'),
     'external-helpers',
-  ]),
-  env: {
-    development: {
-      plugins: resolvePlugins(['transform-react-jsx-source']),
+  ];
+  if (!es6) {
+    plugins.push('transform-es2015-shorthand-properties');
+    plugins.push('transform-es2015-classes');
+  }
+  return {
+    comments: false,
+    compact: true,
+    plugins: resolvePlugins(plugins),
+    env: {
+      development: {
+        plugins: resolvePlugins(['transform-react-jsx-source']),
+      },
     },
-  },
-  // retainLines: true,
-  externalHelpers: true,
-};
+    // retainLines: true,
+    externalHelpers: true,
+  };
+}
+
+module.exports = getPreset;
