@@ -106,7 +106,7 @@ exports.NativeAppEventEmitter = null; //require('RCTNativeAppEventEmitter');
 exports.NativeModules = require('NativeModules');
 exports.Platform = require('Platform');
 exports.processColor = require('processColor');
-exports.requireNativeComponent = null; //require('requireNativeComponent');
+exports.requireNativeComponent = require('requireNativeComponent');
 exports.takeSnapshot
 
 // Prop Types
