@@ -54,7 +54,7 @@
 // }
 
 // 使用bluebird TODO Global rejection events
-const Promise = require('bluebird/js/release/bluebird');
+const Promise = require('bluebird/js/browser/bluebird.min');
 
 const config = {
   warnings: __DEV__,

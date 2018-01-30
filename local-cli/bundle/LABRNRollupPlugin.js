@@ -50,7 +50,7 @@ module.exports = function LABRN({
     
     // TODO 对外部package 使用 module 代替main
     resolveId(importee, importer) {
-      console.log('resolveId', importee, importer);
+      // console.log('resolveId', importee, importer);
 
       if (isPluginsHelpers(importee)) {
         return;
@@ -69,7 +69,7 @@ module.exports = function LABRN({
       }
       if (importer === importee) {
         // XXX rollup-plugin-commonjs 引起 如果处理会导致问题
-        console.log('importer === importee', importee)
+        // console.log('importer === importee', importee)
         return;
       }
 
@@ -82,7 +82,7 @@ module.exports = function LABRN({
           fromModule = inputModule;
         }
         module = resolutionRequest.resolveDependency(fromModule, importee)
-        console.log('resolveId resolveDependency path:', module.path);
+        // console.log('resolveId resolveDependency path:', module.path);
       }
       if (module) {
         if (module.isAsset()) {
@@ -96,7 +96,7 @@ module.exports = function LABRN({
     },
 
     load(id) {
-      console.log('load', id);
+      // console.log('load', id);
 
       if (isPluginsHelpers(id)) {
         return;
