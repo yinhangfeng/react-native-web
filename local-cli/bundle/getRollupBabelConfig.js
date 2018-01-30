@@ -7,6 +7,7 @@ const resolvePlugins = require('babel-preset-react-native/lib/resolvePlugins');
 
 function getPreset({
   es6,
+  dev,
 }) {
   const plugins = [
     'syntax-class-properties',
@@ -46,15 +47,18 @@ function getPreset({
     plugins.push('transform-es2015-shorthand-properties');
     plugins.push('transform-es2015-classes');
   }
+  if (dev) {
+    plugins.push('transform-react-jsx-source');
+  }
   return {
     comments: false,
     compact: true,
     plugins: resolvePlugins(plugins),
-    env: {
-      development: {
-        plugins: resolvePlugins(['transform-react-jsx-source']),
-      },
-    },
+    // env: {
+    //   development: {
+    //     plugins: resolvePlugins(['transform-react-jsx-source']),
+    //   },
+    // },
     // retainLines: true,
     externalHelpers: true,
   };

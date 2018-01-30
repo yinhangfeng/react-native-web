@@ -153,7 +153,7 @@ function buildBundle(
         if (shouldClosePackager) {
           packagerInstance.end();
         }
-        return bundle.saveBundle();
+        return bundle.saveBundle(args);
       });
   } else {
     bundlePromise = output.build(packagerInstance, requestOpts)
