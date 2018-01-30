@@ -27,22 +27,24 @@ const PixelRatio = require('PixelRatio');
 //const assetPathUtils = require('../../local-cli/bundle/assetPathUtils');
 // const invariant = require('fbjs/lib/invariant');
 
-function assetPathUtilsGetBasePath(asset) {
-  var basePath = asset.httpServerLocation;
-  if (basePath[0] === '/') {
-    basePath = basePath.substr(1);
-  }
-  return basePath;
-}
+// function assetPathUtilsGetBasePath(asset) {
+//   var basePath = asset.httpServerLocation;
+//   if (basePath[0] === '/') {
+//     basePath = basePath.substr(1);
+//   }
+//   return basePath;
+// }
 
 /**
  * Returns a path like 'assets/AwesomeModule/icon@2x.png'
  */
 function getScaledAssetPath(asset): string {
-  var scale = AssetSourceResolver.pickScale(asset.scales, PixelRatio.get());
+  // var scale = AssetSourceResolver.pickScale(asset.scales, PixelRatio.get());
+  var scale = AssetSourceResolver.pickScale(asset.s, PixelRatio.get());
   var scaleSuffix = scale === 1 ? '' : '@' + scale + 'x';
-  var assetDir = assetPathUtilsGetBasePath(asset);
-  return assetDir + '/' + asset.name + scaleSuffix + '.' + asset.type;
+  // var assetDir = assetPathUtilsGetBasePath(asset);
+  // return assetDir + '/' + asset.name + scaleSuffix + '.' + asset.type;
+  return '/assets' + asset.l + '/' + asset.n + scaleSuffix + '.' + asset.t;
 }
 
 /**
@@ -55,6 +57,18 @@ function getScaledAssetPath(asset): string {
 //   return drawbleFolder + '/' + fileName + '.' + asset.type;
 // }
 
+/**
+ * 
+ * asset: {
+ *   l: fileSystemLocation,
+ *   w: width,
+ *   h: height,
+ *   s: scales,
+ *   a: hash,
+ *   n: name,
+ *   t: type,
+ * }
+ */
 class AssetSourceResolver {
 
   serverUrl: ?string;
@@ -78,13 +92,23 @@ class AssetSourceResolver {
   }
 
   defaultAsset(): ResolvedAssetSource {
+    // RW modify 增加缓存 PixelRatio 改变?
+    if (this.asset.__default) {
+      return this.asset.__default;
+    }
     let url = this.devServerUrl;
     if (url == null) {
       url = this.serverUrl;
     }
-    return this.fromSource(
-      url + '/' + getScaledAssetPath(this.asset) + '?hash=' + this.asset.hash
+    const resolved = this.fromSource(
+      // url + '/' + getScaledAssetPath(this.asset) + '?hash=' + this.asset.hash
+      url + getScaledAssetPath(this.asset) + '?hash=' + this.asset.h
     );
+    this.asset.__default = resolved;
+    if (__DEV__) {
+      Object.freeze(resolved);
+    }
+    return resolved;
   }
 
   /**
@@ -142,10 +166,13 @@ class AssetSourceResolver {
   fromSource(source: string): ResolvedAssetSource {
     return {
       __packager_asset: true,
-      width: this.asset.width,
-      height: this.asset.height,
+      // width: this.asset.width,
+      width: this.asset.w,
+      // height: this.asset.height,
+      height: this.asset.h,
       uri: source,
-      scale: AssetSourceResolver.pickScale(this.asset.scales, PixelRatio.get()),
+      // scale: AssetSourceResolver.pickScale(this.asset.scales, PixelRatio.get()),
+      scale: AssetSourceResolver.pickScale(this.asset.s, PixelRatio.get()),
     };
   }
 
