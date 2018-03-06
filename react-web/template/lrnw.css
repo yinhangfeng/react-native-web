@@ -440,6 +440,13 @@ html {
   -webkit-text-size-adjust: 100%;
   -webkit-tap-highlight-color: rgba(0,0,0,0);
   font-family: Arial, Helvetica, sans-serif;
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
 }
 
 body {
@@ -531,7 +538,6 @@ body {
 
 .lrnw-view {
   position: relative;
-  box-sizing: border-box;
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -593,7 +599,6 @@ display: -webkit-box;可以 但 display: flex不可以?
   background-color: transparent;
   border-color: black;
   border-width: 0;
-  box-sizing: border-box;
   color: inherit;
   font: inherit;
   padding: 0;
