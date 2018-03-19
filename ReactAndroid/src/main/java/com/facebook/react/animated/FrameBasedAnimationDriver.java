@@ -49,7 +49,7 @@ class FrameBasedAnimationDriver extends AnimationDriver {
       mFromValue = mAnimatedValue.mValue;
     }
     long timeFromStartMillis = (frameTimeNanos - mStartFrameTimeNanos) / 1000000;
-    int frameIndex = (int) (timeFromStartMillis / FRAME_TIME_MILLIS);
+    int frameIndex = (int) Math.round(timeFromStartMillis / FRAME_TIME_MILLIS);
     if (frameIndex < 0) {
       throw new IllegalStateException("Calculated frame index should never be lower than 0");
     } else if (mHasFinished) {
