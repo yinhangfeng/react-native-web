@@ -1,12 +1,13 @@
 /* global window */
 import ImageResizeMode from './ImageResizeMode';
 import React, {
-  Component, PropTypes
+  Component
 } from 'react';
 import ReactNative, {
   View,
   StyleSheet,
 } from 'react-native';
+import PropTypes from 'prop-types';
 
 const STATUS_ERRORED = 'ERRORED';
 const STATUS_LOADED = 'LOADED';

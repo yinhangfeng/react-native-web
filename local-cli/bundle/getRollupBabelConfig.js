@@ -3,64 +3,85 @@
  */
 'use strict';
 
-const resolvePlugins = require('babel-preset-react-native/lib/resolvePlugins');
+// TODO 使用@babel/plugin-transform-runtime babel-plugin-jsx-pragmatic
+// 但需要判断 当前文件是 require 还是 import 决定插入的代码 而且如果createElement 插入 require 的话也不利于压缩
+const TRANSFORM_REACT_JSX_PRAGMA = '__react_create_element';
 
-function getPreset({
-  es6,
-  dev,
-}) {
+function requirePlugin(name) {
+  return require(`babel-plugin-${name}`);
+}
+
+function getPreset({ es6, dev }) {
   const plugins = [
-    'syntax-class-properties',
-    'syntax-trailing-function-commas',
-    'transform-class-properties',
-    'transform-es2015-block-scoping',
-    'transform-es2015-computed-properties',
-    'transform-es2015-destructuring',
-    'transform-es2015-function-name',
-    'transform-es2015-literals',
-    'transform-es2015-parameters',
-    // 'transform-es2015-shorthand-properties',
-    'transform-flow-strip-types',
-    'transform-react-jsx',
-    'transform-regenerator',
+    requirePlugin('syntax-class-properties'),
+    requirePlugin('syntax-trailing-function-commas'),
+    // use `this.foo = bar` instead of `this.defineProperty('foo', ...)`
+    // (Makes the properties enumerable)
+    [requirePlugin('transform-class-properties'), { loose: true }],
+    requirePlugin('transform-es2015-block-scoping'),
+    requirePlugin('transform-es2015-computed-properties'),
+    requirePlugin('transform-es2015-destructuring'),
+    requirePlugin('transform-es2015-function-name'),
+    requirePlugin('transform-es2015-literals'),
+    requirePlugin('transform-es2015-parameters'),
+    // requirePlugin('transform-es2015-shorthand-properties'),
+    requirePlugin('transform-flow-strip-types'),
+    [
+      requirePlugin('transform-react-jsx'),
+      {
+        pragma: TRANSFORM_REACT_JSX_PRAGMA,
+        useBuiltIns: true,
+      }
+    ],
+    requirePlugin('transform-regenerator'),
     // rollup 不需要
     // [
-    //   'transform-es2015-modules-commonjs',
+    //   requirePlugin('transform-es2015-modules-commonjs'),
     //   {strict: false, allowTopLevelThis: true},
     // ]
-    'syntax-async-functions',
+    requirePlugin('syntax-async-functions'),
     // 'transform-es2015-classes',
-    'transform-es2015-arrow-functions',
-    'check-es2015-constants',
-    'transform-es2015-spread',
-    'transform-object-rest-spread',
-    'transform-es2015-template-literals',
+    requirePlugin('transform-es2015-arrow-functions'),
+    requirePlugin('check-es2015-constants'),
+    requirePlugin('transform-es2015-spread'),
+    requirePlugin('transform-object-rest-spread'),
+    [
+      requirePlugin('transform-es2015-template-literals'),
+      { loose: true }, // dont 'a'.concat('b'), just use 'a'+'b'
+    ],
     // polyfills 已经提供
     // 'transform-object-assign',
-    'transform-es2015-for-of',
-    // require('../transforms/transform-symbol-member'),
-    'transform-react-display-name',
+    [requirePlugin('transform-es2015-for-of'), { loose: true }],
+    // require('../transforms/transform-symbol-member'), //TODO
+    requirePlugin('transform-react-display-name'),
     // require('../transforms/transform-dynamic-import'),
-    'external-helpers',
+
+    // 'transform-runtime',
+    requirePlugin('external-helpers'),
+    // [
+    //   'babel-plugin-jsx-pragmatic',
+    //   {
+    //     module: 'react',
+    //     import: TRANSFORM_REACT_JSX_PRAGMA,
+    //     export: 'createElement',
+    //   },
+    // ],
   ];
+
   if (!es6) {
-    plugins.push('transform-es2015-shorthand-properties');
-    plugins.push('transform-es2015-classes');
+    plugins.push(requirePlugin('transform-es2015-shorthand-properties'));
+    plugins.push(requirePlugin('transform-es2015-classes'));
   }
   if (dev) {
-    plugins.push('transform-react-jsx-source');
+    plugins.push(requirePlugin('transform-react-jsx-source'));
   }
   return {
     comments: false,
     compact: true,
-    plugins: resolvePlugins(plugins),
-    // env: {
-    //   development: {
-    //     plugins: resolvePlugins(['transform-react-jsx-source']),
-    //   },
-    // },
-    // retainLines: true,
+    plugins,
+    retainLines: true,
     externalHelpers: true,
+    // runtimeHelpers: true,
   };
 }
 

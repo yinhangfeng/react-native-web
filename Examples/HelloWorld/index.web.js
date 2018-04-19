@@ -22,7 +22,7 @@ import ReactNative, {
   RWConfig,
 } from 'react-native';
 
-import TestImage from './Image';
+// import TestImage from './Image';
 import img_test from './img/test.png';
 
 //RWConfig.bodyScrollMode = true;
@@ -61,12 +61,12 @@ class Hello extends Component {
 
     return (
       <View style={{padding: 10,}}>
-        <TestImage
+        {/* <TestImage
           source={{uri: 'http://desk.fd.zol-img.com.cn/t_s960x600c5/g5/M00/00/0A/ChMkJ1ecZb2IQdT8AATJRtrzV70AAT_1gNHoPkABMle872.jpg'}}
           resizeMode="cover"
           style={{width: 300,}}>
           <Text>xxxxx</Text>
-        </TestImage>
+        </TestImage> */}
 
         <Image
           defaultSource={img_test}

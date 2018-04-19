@@ -31,6 +31,7 @@ const polyfills = [
 
 const runBeforeMainModule = [
   require.resolve('../../Libraries/Core/InitializeCore.web.js'),
+  require.resolve('./runBeforeMainModule.js'),
 ];
 
 function createLABRNPlugin(packagerInstance, options, assetsOutput) {
@@ -58,7 +59,7 @@ function createRollupConfig(options, rnConfig, labRnPlugin) {
     // 将input 转换为绝对路径 方便labRnPlugin处理
     input: path.resolve(options.entryFile),
     // 去除每个模块的 'use strict' 会在bundle外部拼接
-    strict: false,
+    // strict: false,
     plugins: [
       labRnPlugin,
       createJsonPlugin(rnConfig, options),
