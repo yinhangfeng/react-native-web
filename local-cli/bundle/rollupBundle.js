@@ -197,6 +197,10 @@ function createUglifyPlugin(rnConfig, options) {
  * @return bundle 假的Bundle对象 包括 saveBundle getAssets
  */
 function bundle(packagerInstance, requestOptions, args, rnConfig) {
+  // 标记属于rollup bundle 进行es 打包
+  // 目前在 lab4/local-cli/Builder metro/.. Package.getMain metro/.. ModuleResolution 有用到
+  process.env.LRNW_ROLLUP_BUNDLE = true;
+
   const options = {
     ...args,
     ...requestOptions,
