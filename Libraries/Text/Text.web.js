@@ -559,7 +559,7 @@ const Text = createReactClass({
       let lineHeight;
       let maxHeight;
       const style = StyleSheet.flatten(newProps.style);
-      if (style.lineHeight != null) {
+      if (style && style.lineHeight != null) {
         lineHeight = style.lineHeight;
         maxHeight = lineHeight * newProps.numberOfLines;
       } else {
