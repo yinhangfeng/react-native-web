@@ -37,4 +37,18 @@ function getAssetByID(assetId: number): PackagerAsset {
   return assets[assetId - 1];
 }
 
-module.exports = { registerAsset, getAssetByID };
+function registerImage(httpServerLocation, width, height, scales, hash, name, type) {
+  return assets.push({
+    l: httpServerLocation,
+    w: width,
+    h: height,
+    s: scales,
+    a: hash,
+    n: name,
+    t: type || 'png',
+  });
+}
+
+exports.registerAsset = registerAsset;
+exports.getAssetByID = getAssetByID;
+exports.registerImage = registerImage;

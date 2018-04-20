@@ -125,7 +125,8 @@
     "bundle-rollup": "node local-cli/cli.js bundle --rollup --platform web --dev true --entry-file Examples/index.web.js --bundle-output build/rntester/bundle.rollup.js",
     "bundle-rollup-prod": "node local-cli/cli.js bundle --rollup --platform web --dev false --entry-file Examples/index.web.js --bundle-output build/rntester/bundle.rollup.min.js",
     "bundle-rollup-prod-es6": "node local-cli/cli.js bundle --rollup --platform web --dev false --babel-preset-target es6 --entry-file Examples/index.web.js --bundle-output build/rntester/bundle.rollup.es6.min.js",
-    "bundle-hello-rollup": "node local-cli/cli.js bundle --rollup --platform web --dev true --entry-file Examples/HelloWorld/index.web.js --bundle-output build/rntester/bundle.rollup.js"
+    "bundle-hello-rollup": "node local-cli/cli.js bundle --rollup --platform web --dev true --entry-file Examples/HelloWorld/index.web.js --bundle-output build/rntester/bundle.rollup.js",
+    "minify-bundle": "uglifyjs build/rntester/bundle.rollup.min.js --output build/rntester/bundle.rollup.min.min.js --compress --mangle eval"
   },
   "bin": {
     "lab-react-native-web": "local-cli/wrong-react-native.js"
@@ -167,7 +168,7 @@
     "inquirer": "^3.0.6",
     "lodash": "^4.16.6",
     "material-ui": "git+ssh://git@git.dev.backustech.com:lab4/material-ui.git#0.17-stable",
-    "metro-bundler": "git+ssh://git@git.dev.backustech.com:lab4/metro-bundler.git#0.20-stable",
+    "metro-bundler": "git+ssh://git@git.dev.backustech.com:lab4/metro-bundler.git#0.20.2x-dev",
     "mime": "^1.3.4",
     "minimist": "^1.2.0",
     "mkdirp": "^0.5.1",

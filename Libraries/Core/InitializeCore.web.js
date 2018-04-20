@@ -259,3 +259,5 @@ if (!global.fetch) {
 //     JSInspector.registerAgent(require('NetworkAgent'));
 //   }
 // }
+
+global.__lrnw_register_image = require('AssetRegistry').registerImage;

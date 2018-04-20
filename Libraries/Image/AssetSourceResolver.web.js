@@ -59,7 +59,7 @@ function getScaledAssetPath(asset): string {
 
 /**
  * 
- * asset: {
+ * image asset: {
  *   l: fileSystemLocation,
  *   w: width,
  *   h: height,
@@ -177,6 +177,9 @@ class AssetSourceResolver {
   }
 
   static pickScale(scales: Array<number>, deviceScale: number): number {
+    if (!Array.isArray(scales)) {
+      return scales;
+    }
     // Packager guarantees that `scales` array is sorted
     for (var i = 0; i < scales.length; i++) {
       if (scales[i] >= deviceScale) {

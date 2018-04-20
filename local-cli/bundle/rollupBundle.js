@@ -31,7 +31,7 @@ const polyfills = [
 
 const runBeforeMainModule = [
   require.resolve('../../Libraries/Core/InitializeCore.web.js'),
-  require.resolve('./runBeforeMainModule.js'),
+  require.resolve('./rollupRunBeforeMainModule.js'),
 ];
 
 function createLABRNPlugin(packagerInstance, options, assetsOutput) {
