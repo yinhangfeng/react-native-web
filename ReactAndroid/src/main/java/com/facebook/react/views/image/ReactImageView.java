@@ -85,6 +85,7 @@ public class ReactImageView extends GenericDraweeView {
   private static final Matrix sMatrix = new Matrix();
   private static final Matrix sInverse = new Matrix();
   private ImageResizeMethod mResizeMethod = ImageResizeMethod.AUTO;
+  private boolean mLoadingIndicatorAnimated;
 
   private class RoundedCornerPostprocessor extends BasePostprocessor {
 
@@ -313,10 +314,36 @@ public class ReactImageView extends GenericDraweeView {
     mIsDirty = true;
   }
 
+  public void setLoadingIndicatorAnimated(boolean loadingIndicatorAnimated) {
+    if (mLoadingIndicatorAnimated == loadingIndicatorAnimated) {
+      return;
+    }
+    mLoadingIndicatorAnimated = loadingIndicatorAnimated;
+    if (mLoadingImageDrawable != null) {
+      if (loadingIndicatorAnimated) {
+        if (!(mLoadingImageDrawable instanceof AutoRotateDrawable)) {
+          mLoadingImageDrawable = new AutoRotateDrawable(mLoadingImageDrawable, 1000);
+          mIsDirty = true;
+        }
+      } else if (mLoadingImageDrawable instanceof AutoRotateDrawable) {
+        mLoadingImageDrawable = mLoadingImageDrawable.getCurrent();
+        mIsDirty = true;
+      }
+    }
+  }
+
   public void setLoadingIndicatorSource(@Nullable String name) {
     Drawable drawable = ResourceDrawableIdHelper.getInstance().getResourceDrawable(getContext(), name);
-    mLoadingImageDrawable =
-        drawable != null ? (Drawable) new AutoRotateDrawable(drawable, 1000) : null;
+// TEST    Drawable drawable = name == null ? null : ResourceDrawableIdHelper.getInstance().getResourceDrawable(getContext(), "launcher_icon");
+
+    // LAB modify 可配置LoadingIndicator 是否需要动画
+//    mLoadingImageDrawable =
+//        drawable != null ? (Drawable) new AutoRotateDrawable(drawable, 1000) : null;
+    if (drawable != null && mLoadingIndicatorAnimated) {
+      mLoadingImageDrawable = new AutoRotateDrawable(drawable, 1000);
+    } else {
+      mLoadingImageDrawable = drawable;
+    }
     mIsDirty = true;
   }
 
@@ -369,6 +396,9 @@ public class ReactImageView extends GenericDraweeView {
 
     if (mLoadingImageDrawable != null) {
       hierarchy.setPlaceholderImage(mLoadingImageDrawable, ScalingUtils.ScaleType.CENTER);
+    } else {
+      // LAB modify
+      hierarchy.setPlaceholderImage(null);
     }
 
     boolean usePostprocessorScaling =

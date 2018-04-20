@@ -20,9 +20,12 @@ var {
   TouchableOpacity,
   View,
   ViewPagerAndroid,
+  Animated,
 } = ReactNative;
 
 import type { ViewPagerScrollState } from 'ViewPagerAndroid';
+
+const AnimatedViewPagerAndroid = Animated.createAnimatedComponent(ViewPagerAndroid);
 
 var PAGES = 5;
 var BGCOLOR = ['#fdc08e', '#fff6b9', '#99d1b7', '#dde5fe', '#f79273'];
@@ -90,6 +93,53 @@ class ProgressBar extends React.Component {
   }
 }
 
+class AnimationProgressBar extends React.Component {
+  constructor(props, context) {
+    super(props, context);
+    this.state = {
+      width: 0,
+      // divide: new Animated.Value(2),
+    };
+  }
+
+  render() {
+    // const widthValue = this.props.scrollValue.interpolate({
+    //   inputRange: [0, 1],
+    //   outputRange: [0,  this.state.width / (this.props.pageCount - 1)],
+    // });
+    const widthValue = this.props.scrollValue.interpolate({
+      inputRange: [0, 1],
+      outputRange: [0,  (this.state.width / (this.props.pageCount - 1)) * 2],
+    });
+    // const translateX = Animated.divide(widthValue, this.state.divide);
+    return (
+      <View
+        onLayout={(e) => {
+          this.setState({
+            width: e.nativeEvent.layout.width,
+          });
+        }}
+        style={{
+          height: 10,
+          margin: 5,
+        }}
+      >
+        <Animated.View style={{
+          position: 'absolute',
+          left: -0.5,
+          width: 1,
+          height: 10,
+          backgroundColor: '#03a9f4',
+          transform: [
+            // {translateX, },
+            { scaleX: widthValue, }
+          ],
+        }}/>
+      </View>
+    );
+  }
+}
+
 class ViewPagerAndroidExample extends React.Component {
   static title = '<ViewPagerAndroid>';
   static description = 'Container that allows to flip left and right between child views.';
@@ -102,6 +152,7 @@ class ViewPagerAndroidExample extends React.Component {
       position: 0,
       offset: 0,
     },
+    scrollValue: new Animated.Value(0),
   };
 
   onPageSelected = (e) => {
@@ -153,18 +204,31 @@ class ViewPagerAndroidExample extends React.Component {
     var { page, animationsAreEnabled } = this.state;
     return (
       <View removeClippedSubviews={true} style={styles.container}>
-        <View emoveClippedSubviews={true} style={{flex: 1}}>
-          <ViewPagerAndroid
+        <View removeClippedSubviews={true} style={{flex: 1}}>
+          <AnimatedViewPagerAndroid
             style={[{position: 'absolute', left: 0, top: 0, right: 0, bottom: 0,}, this.state.hide ? {top: -1000, bottom: 1000,} : null]}
             initialPage={0}
             scrollEnabled={this.state.scrollEnabled}
-            onPageScroll={this.onPageScroll}
+            // onPageScroll={this.onPageScroll}
+            onPageScroll={Animated.event(
+              [{
+                nativeEvent: {
+                  // position: this.state.scrollValue,
+                  // offset: this.state.scrollValue,
+                  value: this.state.scrollValue,
+                },
+              }, ],
+              {
+                useNativeDriver: true,
+                listener: this.onPageScroll,
+              },
+            )}
             onPageSelected={this.onPageSelected}
             onPageScrollStateChanged={this.onPageScrollStateChanged}
             pageMargin={10}
             ref={viewPager => { this.viewPager = viewPager; }}>
             {pages}
-          </ViewPagerAndroid>
+          </AnimatedViewPagerAndroid>
         </View>
         <View style={styles.buttons}>
           <Button
@@ -200,6 +264,10 @@ class ViewPagerAndroidExample extends React.Component {
           <Button text="Next" enabled={page < PAGES - 1} onPress={() => this.move(1)}/>
           <Button text="Last" enabled={page < PAGES - 1} onPress={() => this.go(PAGES - 1)}/>
         </View>
+        <AnimationProgressBar
+          scrollValue={this.state.scrollValue}
+          pageCount={PAGES}
+        />
       </View>
     );
   }

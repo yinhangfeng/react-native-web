@@ -93,8 +93,17 @@ const Config = {
   },
 
   findOptional(startDir: string): ConfigT {
-    const configPath = findConfigPath(startDir);
-    return configPath ? this.load(configPath, startDir) : {...Config.DEFAULT};
+    // LAB modify 只查找项目根目录
+    const projectRoot = getProjectRoots()[0];
+    const configPath = path.join(projectRoot, RN_CLI_CONFIG);
+    if (fs.existsSync(configPath)) {
+      return this.load(configPath, startDir);
+    } else {
+      return {...Config.DEFAULT};
+    }
+
+    // const configPath = findConfigPath(startDir);
+    // return configPath ? this.load(configPath, startDir) : {...Config.DEFAULT};
   },
 
   load(configFile: string): ConfigT {

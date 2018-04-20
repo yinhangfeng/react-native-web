@@ -11,14 +11,16 @@ git merge origin/lab-master 实现与lab-master 同步
 所有修改以注释 'LAB modify'  标记
 ### js
 * InitializeCore.js 修改Promise 使用bluebird
-* Resolver/polyfills/polyfills.js __requireDefault
-* Resolver/polyfills/polyfills.js Object.is
+* Libraries/polyfills/polyfills.js __requireDefault
+* Libraries/polyfills/polyfills.js Object.is
+* ViewPagerAndroid.android.js 去除child 必须为View 的警告
 ### Android
 * 修改android TextInput 减少在 oppo 上无法弹出键盘的问题(还是有问题) ReactAndroid/src/**/ReactEditText.java
-* ReactViewPager.java 修复ViewPagerAndroid 在父View为removeClippedSubviews时 无法populate的BUG
-* ViewPagerAndroid 
-* UIImplementation 对外暴露resolveShadowNode resolveView
+* ReactViewPager.java 修复ViewPagerAndroid 在父View 为removeClippedSubviews 时 无法populate 的BUG
+* PageScrollEvent.java 增加scroll value 为 mPosition + mOffset
+* UIImplementation 对外暴露resolveShadowNode resolveView dispatchViewUpdatesIfNeeded
 * TouchableNativeFeedback ReactViewGroup TNFHolder ReactViewCornerRippleDrawable (TODO flat/RCTView)
+* ReactImageView.java loadingIndicatorAnimated 在 mLoadingImageDrawable 变为null 时 正确设置PlaceholderImage
 ### cli
 * react-native link 支持配置忽略某个平台 local-cli/core/config.index.js
 * react-native link 支持配置android moduleName 代替默认的 'app' local-cli/core/config/android/index.js
