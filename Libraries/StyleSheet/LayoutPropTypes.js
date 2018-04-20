@@ -26,7 +26,9 @@ var ReactPropTypes = require('prop-types');
  * These properties are a subset of our styles that are consumed by the layout
  * algorithm and affect the positioning and sizing of views.
  */
-var LayoutPropTypes = {
+var LayoutPropTypes;
+if (__DEV__) {
+LayoutPropTypes = {
   /** `display` sets the display type of this component.
    *
    *  It works similarly to `display` in CSS, but only support 'flex' and 'none'.
@@ -510,5 +512,8 @@ var LayoutPropTypes = {
     'rtl',
   ]),
 };
+} else {
+  LayoutPropTypes = {};
+}
 
 module.exports = LayoutPropTypes;

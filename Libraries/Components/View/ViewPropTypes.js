@@ -79,7 +79,9 @@ export type ViewProps = {
   needsOffscreenAlphaCompositing?: bool,
 } & TVViewProps;
 
-module.exports = {
+let ViewPropTypes;
+if (__DEV__) {
+ViewPropTypes = {
   ...PlatformViewPropTypes,
 
   /**
@@ -465,3 +467,8 @@ module.exports = {
    */
   needsOffscreenAlphaCompositing: PropTypes.bool,
 };
+} else {
+  ViewPropTypes = {};
+}
+
+module.exports = ViewPropTypes;

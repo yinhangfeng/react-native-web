@@ -15,6 +15,10 @@ var ReactPropTypes = require('prop-types');
 
 var deprecatedPropType = require('deprecatedPropType');
 
+var TransformPropTypes;
+
+if (__DEV__) {
+
 var TransformMatrixPropType = function(
   props : Object,
   propName : string,
@@ -41,7 +45,7 @@ var DecomposedMatrixPropType = function(
   }
 };
 
-var TransformPropTypes = {
+TransformPropTypes = {
   /**
    * `transform` accepts an array of transformation objects. Each object specifies
    * the property that will be transformed as the key, and the value to use in the
@@ -91,5 +95,6 @@ var TransformPropTypes = {
   translateX: deprecatedPropType(ReactPropTypes.number, 'Use the transform prop instead.'),
   translateY: deprecatedPropType(ReactPropTypes.number, 'Use the transform prop instead.'),
 };
+}
 
 module.exports = TransformPropTypes;

@@ -8,7 +8,8 @@
 const TRANSFORM_REACT_JSX_PRAGMA = '__react_create_element';
 
 function requirePlugin(name) {
-  return require(`babel-plugin-${name}`);
+  const plugin = require(`babel-plugin-${name}`);
+  return plugin.default ? plugin.default : plugin;
 }
 
 function getPreset({ es6, dev }) {
@@ -68,6 +69,9 @@ function getPreset({ es6, dev }) {
     // ],
   ];
 
+  if (!dev) {
+    plugins.push(requirePlugin('transform-react-remove-prop-types'));
+  }
   if (!es6) {
     plugins.push(requirePlugin('transform-es2015-shorthand-properties'));
     plugins.push(requirePlugin('transform-es2015-classes'));

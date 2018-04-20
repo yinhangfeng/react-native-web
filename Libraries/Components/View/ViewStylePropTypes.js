@@ -20,7 +20,9 @@ var TransformPropTypes = require('TransformPropTypes');
 /**
  * Warning: Some of these properties may not be supported in all releases.
  */
-var ViewStylePropTypes = {
+var ViewStylePropTypes;
+if (__DEV__) {
+ViewStylePropTypes = {
   ...LayoutPropTypes,
   ...ShadowPropTypesIOS,
   ...TransformPropTypes,
@@ -52,5 +54,8 @@ var ViewStylePropTypes = {
    */
   elevation: ReactPropTypes.number,
 };
+} else {
+  ViewStylePropTypes = {};
+}
 
 module.exports = ViewStylePropTypes;

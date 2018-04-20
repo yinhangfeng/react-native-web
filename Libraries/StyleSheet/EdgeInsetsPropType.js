@@ -15,12 +15,16 @@ const PropTypes = require('prop-types');
 
 const createStrictShapeTypeChecker = require('createStrictShapeTypeChecker');
 
-const EdgeInsetsPropType = createStrictShapeTypeChecker({
-  top: PropTypes.number,
-  left: PropTypes.number,
-  bottom: PropTypes.number,
-  right: PropTypes.number,
-});
+let EdgeInsetsPropType;
+
+if (__DEV__) {
+  EdgeInsetsPropType = createStrictShapeTypeChecker({
+    top: PropTypes.number,
+    left: PropTypes.number,
+    bottom: PropTypes.number,
+    right: PropTypes.number,
+  });
+}
 
 export type EdgeInsetsProp = {
   top: number,

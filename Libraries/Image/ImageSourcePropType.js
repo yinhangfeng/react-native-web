@@ -13,6 +13,8 @@
 
 const PropTypes = require('prop-types');
 
+let ImageSourcePropType;
+if (__DEV__) {
 const ImageURISourcePropType = PropTypes.shape({
   /**
    * `uri` is a string representing the resource identifier for the image, which
@@ -81,12 +83,15 @@ const ImageURISourcePropType = PropTypes.shape({
   scale: PropTypes.number,
 });
 
-const ImageSourcePropType = PropTypes.oneOfType([
+ImageSourcePropType = PropTypes.oneOfType([
   ImageURISourcePropType,
   // Opaque type returned by require('./image.jpg')
   PropTypes.number,
   // Multiple sources
   PropTypes.arrayOf(ImageURISourcePropType),
 ]);
+} else {
+  ImageSourcePropType = PropTypes.any;
+}
 
 module.exports = ImageSourcePropType;

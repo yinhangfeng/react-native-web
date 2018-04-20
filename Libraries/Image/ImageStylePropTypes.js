@@ -18,7 +18,9 @@ var ReactPropTypes = require('prop-types');
 var ShadowPropTypesIOS = require('ShadowPropTypesIOS');
 var TransformPropTypes = require('TransformPropTypes');
 
-var ImageStylePropTypes = {
+var ImageStylePropTypes;
+if (__DEV__) {
+ImageStylePropTypes= {
   ...LayoutPropTypes,
   ...ShadowPropTypesIOS,
   ...TransformPropTypes,
@@ -60,5 +62,8 @@ var ImageStylePropTypes = {
   borderBottomLeftRadius: ReactPropTypes.number,
   borderBottomRightRadius: ReactPropTypes.number,
 };
+} else {
+  ImageStylePropTypes = {};
+}
 
 module.exports = ImageStylePropTypes;

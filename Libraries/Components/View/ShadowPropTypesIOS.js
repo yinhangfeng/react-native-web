@@ -24,7 +24,9 @@ const ReactPropTypes = require('prop-types');
  * These properties are iOS only - for similar functionality on Android, use the [`elevation`
  * property](docs/viewstyleproptypes.html#elevation).
  */
-const ShadowPropTypesIOS = {
+let ShadowPropTypesIOS;
+if (__DEV__) {
+ShadowPropTypesIOS = {
   /**
    * Sets the drop shadow color
    * @platform ios
@@ -49,5 +51,6 @@ const ShadowPropTypesIOS = {
    */
   shadowRadius: ReactPropTypes.number,
 };
+}
 
 module.exports = ShadowPropTypesIOS;

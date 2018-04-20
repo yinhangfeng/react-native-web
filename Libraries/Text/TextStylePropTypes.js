@@ -15,7 +15,9 @@ const ColorPropType = require('ColorPropType');
 const ReactPropTypes = require('prop-types');
 const ViewStylePropTypes = require('ViewStylePropTypes');
 
-const TextStylePropTypes = {
+let TextStylePropTypes;
+if (__DEV__) {
+TextStylePropTypes = {
   ...ViewStylePropTypes,
 
   color: ColorPropType,
@@ -93,5 +95,8 @@ const TextStylePropTypes = {
     ['auto' /*default*/, 'ltr', 'rtl']
   ),
 };
+} else {
+  TextStylePropTypes = {};
+}
 
 module.exports = TextStylePropTypes;

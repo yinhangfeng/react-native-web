@@ -15,9 +15,13 @@ var PropTypes = require('prop-types');
 
 var createStrictShapeTypeChecker = require('createStrictShapeTypeChecker');
 
-var PointPropType = createStrictShapeTypeChecker({
-  x: PropTypes.number,
-  y: PropTypes.number,
-});
+var PointPropType;
+
+if (__DEV__) {
+  PointPropType = createStrictShapeTypeChecker({
+    x: PropTypes.number,
+    y: PropTypes.number,
+  });
+}
 
 module.exports = PointPropType;
