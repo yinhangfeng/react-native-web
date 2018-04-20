@@ -102,7 +102,7 @@ class AssetSourceResolver {
     }
     const resolved = this.fromSource(
       // url + '/' + getScaledAssetPath(this.asset) + '?hash=' + this.asset.hash
-      url + getScaledAssetPath(this.asset) + '?hash=' + this.asset.h
+      url + getScaledAssetPath(this.asset) + '?hash=' + this.asset.a
     );
     this.asset.__default = resolved;
     if (__DEV__) {
