@@ -188,7 +188,7 @@
     "xcode": "^0.9.1",
     "xmldoc": "^0.4.0",
     "yargs": "^9.0.0",
-    "metro-bundler": "git+ssh://git@git.dev.backustech.com:lab4/metro-bundler.git#0.20-stable"
+    "metro-bundler": "git+ssh://git@git.dev.backustech.com:lab4/metro-bundler.git#0.20.2x-dev"
   },
   "devDependencies": {
     "babel-eslint": "^7.2.3",
