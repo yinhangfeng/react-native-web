@@ -177,6 +177,11 @@ function createUglifyPlugin(rnConfig, options) {
   // 配置来自react https://github.com/facebook/react/blob/master/scripts/rollup/build.js
   let config = {
     toplevel: true,
+    compress: {
+      drop_console: true,
+      // pure_funcs: [ 'Object.freeze' ], // 用于压缩rollup 转换结果中的 es module Object.freeze 可能会出问题
+      pure_getters: true, // 可能会出问题
+    },
     mangle: {
       eval: true,
       toplevel: true,
