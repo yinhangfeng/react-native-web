@@ -189,7 +189,7 @@
     "react-timer-mixin": "^0.13.2",
     "regenerator-runtime": "^0.9.5",
     "rimraf": "^2.5.4",
-    "rollup": "~0.58.1",
+    "rollup": "~0.57.1",
     "rollup-plugin-babel": "~3.0.3",
     "rollup-plugin-commonjs": "~9.1.0",
     "rollup-plugin-json": "~2.3.0",
