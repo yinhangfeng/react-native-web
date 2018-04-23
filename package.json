@@ -144,7 +144,7 @@
     "babel-plugin-transform-class-properties": "^6.18.0",
     "babel-plugin-transform-flow-strip-types": "^6.21.0",
     "babel-plugin-transform-object-rest-spread": "^6.20.2",
-    "babel-plugin-transform-react-remove-prop-types": "^0.4.13",
+    "babel-plugin-transform-react-remove-prop-types": "git+https://github.com/backustech-hz/babel-plugin-transform-react-remove-prop-types#0.4-stable",
     "babel-register": "^6.24.1",
     "babel-runtime": "^6.26.0",
     "base64-js": "^1.1.2",
@@ -168,7 +168,9 @@
     "i": "^0.3.6",
     "inquirer": "^3.0.6",
     "lodash": "^4.16.6",
+    "lodash-es": "^4.16.6",
     "material-ui": "git+ssh://git@git.dev.backustech.com:lab4/material-ui.git#0.17-stable",
+    "metro-bundler": "git+ssh://git@git.dev.backustech.com:lab4/metro-bundler.git#0.20.2x-dev",
     "mime": "^1.3.4",
     "minimist": "^1.2.0",
     "mkdirp": "^0.5.1",
@@ -200,8 +202,7 @@
     "ws": "^1.1.0",
     "xcode": "^0.9.1",
     "xmldoc": "^0.4.0",
-    "yargs": "^9.0.0",
-    "metro-bundler": "git+ssh://git@git.dev.backustech.com:lab4/metro-bundler.git#0.20.2x-dev"
+    "yargs": "^9.0.0"
   },
   "devDependencies": {
     "babel-eslint": "^7.2.3",

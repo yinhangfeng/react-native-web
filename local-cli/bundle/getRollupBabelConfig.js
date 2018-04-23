@@ -70,7 +70,12 @@ function getPreset({ es6, dev }) {
   ];
 
   if (!dev) {
-    plugins.push(requirePlugin('transform-react-remove-prop-types'));
+    plugins.push([
+      requirePlugin('transform-react-remove-prop-types'),
+      {
+        doNotCheckReactClass: true,
+      }
+    ]);
   }
   if (!es6) {
     plugins.push(requirePlugin('transform-es2015-shorthand-properties'));
