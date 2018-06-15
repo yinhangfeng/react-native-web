@@ -36,7 +36,7 @@ const defaultOptParser = (val) => val;
 
 const handleError = (err) => {
   console.error();
-  console.error(err.message || err);
+  console.error(err);
   console.error();
   process.exit(1);
 };
