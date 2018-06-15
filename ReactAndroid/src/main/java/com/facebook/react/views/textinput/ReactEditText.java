@@ -1,10 +1,8 @@
 /**
  * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  */
 
 package com.facebook.react.views.textinput;
@@ -19,6 +17,7 @@ import android.text.InputType;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextWatcher;
+import android.text.TextUtils;
 import android.text.method.KeyListener;
 import android.text.method.QwertyKeyListener;
 import android.text.style.AbsoluteSizeSpan;
@@ -35,6 +34,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import com.facebook.infer.annotation.Assertions;
 import com.facebook.react.bridge.ReactContext;
+import com.facebook.react.uimanager.PixelUtil;
 import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.views.text.CustomStyleSpan;
 import com.facebook.react.views.text.ReactTagSpan;
@@ -82,6 +82,8 @@ public class ReactEditText extends EditText {
   private @Nullable ScrollWatcher mScrollWatcher;
   private final InternalKeyListener mKeyListener;
   private boolean mDetectScrollMovement = false;
+  private boolean mOnKeyPress = false;
+  private float mLetterSpacingPt = 0;
 
   private ReactViewBackgroundManager mReactBackgroundManager;
 
@@ -89,7 +91,7 @@ public class ReactEditText extends EditText {
   // OPPO 手机键盘无法弹出的BUG
   private static boolean __LAB__enableJSSettingFocus = true;
   static {
-    if (Build.MODEL.contains("OPPO") || Build.MANUFACTURER.contains("OPPO")) {
+    if (Build.VERSION.SDK_INT < 24 && (Build.MODEL.contains("OPPO") || Build.MANUFACTURER.contains("OPPO"))) {
       __LAB__enableJSSettingFocus = false;
       Log.d("ReactEditText", "__LAB__enableJSSettingFocus=false");
     }
@@ -128,16 +130,7 @@ public class ReactEditText extends EditText {
   // TODO: t6408636 verify if we should schedule a layout after a View does a requestLayout()
   @Override
   public boolean isLayoutRequested() {
-    // If we are watching and updating container height based on content size
-    // then we don't want to scroll right away. This isn't perfect -- you might
-    // want to limit the height the text input can grow to. Possible solution
-    // is to add another prop that determines whether we should scroll to end
-    // of text.
-    if (mContentSizeWatcher != null) {
-      return isMultiline();
-    } else {
-      return false;
-    }
+    return false;
   }
 
   @Override
@@ -192,12 +185,17 @@ public class ReactEditText extends EditText {
 
   @Override
   public InputConnection onCreateInputConnection(EditorInfo outAttrs) {
-    InputConnection connection = super.onCreateInputConnection(outAttrs);
+    ReactContext reactContext = (ReactContext) getContext();
+    InputConnection inputConnection = super.onCreateInputConnection(outAttrs);
+    if (inputConnection != null && mOnKeyPress) {
+      inputConnection = new ReactEditTextInputConnectionWrapper(inputConnection, reactContext, this);
+    }
+
     if (isMultiline() && getBlurOnSubmit()) {
       // Remove IME_FLAG_NO_ENTER_ACTION to keep the original IME_OPTION
       outAttrs.imeOptions &= ~EditorInfo.IME_FLAG_NO_ENTER_ACTION;
     }
-    return connection;
+    return inputConnection;
   }
 
   @Override
@@ -288,6 +286,10 @@ public class ReactEditText extends EditText {
     mBlurOnSubmit = blurOnSubmit;
   }
 
+  public void setOnKeyPress(boolean onKeyPress) {
+    mOnKeyPress = onKeyPress;
+  }
+
   public boolean getBlurOnSubmit() {
     if (mBlurOnSubmit == null) {
       // Default blurOnSubmit
@@ -325,7 +327,10 @@ public class ReactEditText extends EditText {
 
   /*package*/ void commitStagedInputType() {
     if (getInputType() != mStagedInputType) {
+      int selectionStart = getSelectionStart();
+      int selectionEnd = getSelectionEnd();
       setInputType(mStagedInputType);
+      setSelection(selectionStart, selectionEnd);
     }
   }
 
@@ -362,6 +367,11 @@ public class ReactEditText extends EditText {
 
   // VisibleForTesting from {@link TextInputEventsTestCase}.
   public void maybeSetText(ReactTextUpdate reactTextUpdate) {
+    if( isSecureText() &&
+        TextUtils.equals(getText(), reactTextUpdate.getText())) {
+      return;
+    }
+
     // Only set the text if it is up to date.
     mMostRecentEventCount = reactTextUpdate.getJsEventCounter();
     if (mMostRecentEventCount < mNativeEventCount) {
@@ -459,6 +469,14 @@ public class ReactEditText extends EditText {
     return (getInputType() & InputType.TYPE_TEXT_FLAG_MULTI_LINE) != 0;
   }
 
+  private boolean isSecureText() {
+    return
+      (getInputType() &
+        (InputType.TYPE_NUMBER_VARIATION_PASSWORD |
+          InputType.TYPE_TEXT_VARIATION_PASSWORD))
+      != 0;
+  }
+
   private void onContentSizeChange() {
     if (mContentSizeWatcher != null) {
       mContentSizeWatcher.onLayout();
@@ -528,8 +546,8 @@ public class ReactEditText extends EditText {
 
   @Override
   protected boolean verifyDrawable(Drawable drawable) {
-    if (mContainsImages && getText() instanceof Spanned) {
-      Spanned text = (Spanned) getText();
+    if (mContainsImages) {
+      Spanned text = getText();
       TextInlineImageSpan[] spans = text.getSpans(0, text.length(), TextInlineImageSpan.class);
       for (TextInlineImageSpan span : spans) {
         if (span.getDrawable() == drawable) {
@@ -542,8 +560,8 @@ public class ReactEditText extends EditText {
 
   @Override
   public void invalidateDrawable(Drawable drawable) {
-    if (mContainsImages && getText() instanceof Spanned) {
-      Spanned text = (Spanned) getText();
+    if (mContainsImages) {
+      Spanned text = getText();
       TextInlineImageSpan[] spans = text.getSpans(0, text.length(), TextInlineImageSpan.class);
       for (TextInlineImageSpan span : spans) {
         if (span.getDrawable() == drawable) {
@@ -557,8 +575,8 @@ public class ReactEditText extends EditText {
   @Override
   public void onDetachedFromWindow() {
     super.onDetachedFromWindow();
-    if (mContainsImages && getText() instanceof Spanned) {
-      Spanned text = (Spanned) getText();
+    if (mContainsImages) {
+      Spanned text = getText();
       TextInlineImageSpan[] spans = text.getSpans(0, text.length(), TextInlineImageSpan.class);
       for (TextInlineImageSpan span : spans) {
         span.onDetachedFromWindow();
@@ -569,8 +587,8 @@ public class ReactEditText extends EditText {
   @Override
   public void onStartTemporaryDetach() {
     super.onStartTemporaryDetach();
-    if (mContainsImages && getText() instanceof Spanned) {
-      Spanned text = (Spanned) getText();
+    if (mContainsImages) {
+      Spanned text = getText();
       TextInlineImageSpan[] spans = text.getSpans(0, text.length(), TextInlineImageSpan.class);
       for (TextInlineImageSpan span : spans) {
         span.onStartTemporaryDetach();
@@ -581,8 +599,8 @@ public class ReactEditText extends EditText {
   @Override
   public void onAttachedToWindow() {
     super.onAttachedToWindow();
-    if (mContainsImages && getText() instanceof Spanned) {
-      Spanned text = (Spanned) getText();
+    if (mContainsImages) {
+      Spanned text = getText();
       TextInlineImageSpan[] spans = text.getSpans(0, text.length(), TextInlineImageSpan.class);
       for (TextInlineImageSpan span : spans) {
         span.onAttachedToWindow();
@@ -593,8 +611,8 @@ public class ReactEditText extends EditText {
   @Override
   public void onFinishTemporaryDetach() {
     super.onFinishTemporaryDetach();
-    if (mContainsImages && getText() instanceof Spanned) {
-      Spanned text = (Spanned) getText();
+    if (mContainsImages) {
+      Spanned text =  getText();
       TextInlineImageSpan[] spans = text.getSpans(0, text.length(), TextInlineImageSpan.class);
       for (TextInlineImageSpan span : spans) {
         span.onFinishTemporaryDetach();
@@ -625,6 +643,29 @@ public class ReactEditText extends EditText {
 
   public void setBorderStyle(@Nullable String style) {
     mReactBackgroundManager.setBorderStyle(style);
+  }
+
+  public void setLetterSpacingPt(float letterSpacingPt) {
+    mLetterSpacingPt = letterSpacingPt;
+    updateLetterSpacing();
+  }
+
+  @Override
+  public void setTextSize (float size) {
+    super.setTextSize(size);
+    updateLetterSpacing();
+  }
+
+  @Override
+  public void setTextSize (int unit, float size) {
+    super.setTextSize(unit, size);
+    updateLetterSpacing();
+  }
+
+  protected void updateLetterSpacing() {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+      setLetterSpacing(PixelUtil.toPixelFromSP(mLetterSpacingPt) / getTextSize());
+    }
   }
 
   /**

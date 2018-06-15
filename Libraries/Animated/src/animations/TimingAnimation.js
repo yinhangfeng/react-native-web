@@ -1,12 +1,9 @@
 /**
  * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
- * @providesModule TimingAnimation
  * @flow
  * @format
  */
@@ -15,7 +12,6 @@
 const AnimatedValue = require('../nodes/AnimatedValue');
 const AnimatedValueXY = require('../nodes/AnimatedValueXY');
 const Animation = require('./Animation');
-const invariant = require('fbjs/lib/invariant');
 
 const {shouldUseNativeDriver} = require('../NativeAnimatedHelper');
 
@@ -59,7 +55,6 @@ class TimingAnimation extends Animation {
   constructor(config: TimingAnimationConfigSingle) {
     super();
     this._toValue = config.toValue;
-    invariant(this._toValue > -Infinity && this._toValue < Infinity, 'toValue must be a valid number: %s', this._toValue);
     this._easing = config.easing !== undefined ? config.easing : easeInOut();
     this._duration = config.duration !== undefined ? config.duration : 500;
     this._delay = config.delay !== undefined ? config.delay : 0;

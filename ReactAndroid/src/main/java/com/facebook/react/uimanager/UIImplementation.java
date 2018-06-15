@@ -1,10 +1,8 @@
 /**
  * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  */
 package com.facebook.react.uimanager;
 
@@ -27,6 +25,8 @@ import com.facebook.react.bridge.UiThreadUtil;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.common.ReactConstants;
 import com.facebook.react.modules.i18nmanager.I18nUtil;
+import com.facebook.react.uimanager.common.MeasureSpecProvider;
+import com.facebook.react.uimanager.common.SizeMonitoringFrameLayout;
 import com.facebook.react.uimanager.debug.NotThreadSafeViewHierarchyUpdateDebugListener;
 import com.facebook.react.uimanager.events.EventDispatcher;
 import com.facebook.systrace.Systrace;
@@ -55,6 +55,14 @@ public class UIImplementation {
   private final int[] mMeasureBuffer = new int[4];
 
   private long mLastCalculateLayoutTime = 0;
+  protected @Nullable LayoutUpdateListener mLayoutUpdateListener;
+
+  /** Interface definition for a callback to be invoked when the layout has been updated */
+  public interface LayoutUpdateListener {
+
+    /** Called when the layout has been updated */
+    void onLayoutUpdated(ReactShadowNode root);
+  }
 
   public UIImplementation(
       ReactApplicationContext reactContext,
@@ -124,10 +132,6 @@ public class UIImplementation {
     return viewManager.createShadowNodeInstance(mReactContext);
   }
 
-  /**
-   * LAB modify 通过reactTag 获取shadowNode
-   * 必须在NativeModulesQueueThread 执行
-   */
   public final ReactShadowNode resolveShadowNode(int reactTag) {
     return mShadowNodeRegistry.getNode(reactTag);
   }
@@ -211,7 +215,12 @@ public class UIImplementation {
     int heightMeasureSpec = rootView.getHeightMeasureSpec();
     updateRootView(rootCSSNode, widthMeasureSpec, heightMeasureSpec);
 
-    mShadowNodeRegistry.addRootNode(rootCSSNode);
+    context.runOnNativeModulesQueueThread(new Runnable() {
+      @Override
+      public void run() {
+        mShadowNodeRegistry.addRootNode(rootCSSNode);
+      }
+    });
 
     // register it within NativeViewHierarchyManager
     mOperationsQueue.addRootView(tag, rootView, context);
@@ -257,8 +266,10 @@ public class UIImplementation {
     ReactShadowNode shadowNode = mShadowNodeRegistry.getNode(tag);
 
     if (shadowNode == null) {
-      throw new IllegalViewOperationException(
-          "Trying to set local data for view with unknown tag: " + tag);
+      FLog.w(
+        ReactConstants.TAG,
+        "Attempt to set local data for view with unknown tag: " + tag);
+      return;
     }
 
     shadowNode.setLocalData(data);
@@ -280,9 +291,10 @@ public class UIImplementation {
   public void createView(int tag, String className, int rootViewTag, ReadableMap props) {
     ReactShadowNode cssNode = createShadowNode(className);
     ReactShadowNode rootNode = mShadowNodeRegistry.getNode(rootViewTag);
+    Assertions.assertNotNull(rootNode, "Root node with tag " + rootViewTag + " doesn't exist");
     cssNode.setReactTag(tag);
     cssNode.setViewClassName(className);
-    cssNode.setRootNode(rootNode);
+    cssNode.setRootTag(rootNode.getReactTag());
     cssNode.setThemedContext(rootNode.getThemedContext());
 
     mShadowNodeRegistry.addNode(cssNode);
@@ -709,6 +721,10 @@ public class UIImplementation {
           } finally {
             Systrace.endSection(Systrace.TRACE_TAG_REACT_JAVA_BRIDGE);
           }
+
+          if (mLayoutUpdateListener != null) {
+            mLayoutUpdateListener.onLayoutUpdated(cssRoot);
+          }
         }
       }
     } finally {
@@ -786,7 +802,7 @@ public class UIImplementation {
     mOperationsQueue.enqueueClearJSResponder();
   }
 
-  public void dispatchViewManagerCommand(int reactTag, int commandId, ReadableArray commandArgs) {
+  public void dispatchViewManagerCommand(int reactTag, int commandId, @Nullable ReadableArray commandArgs) {
     assertViewExists(reactTag, "dispatchViewManagerCommand");
     mOperationsQueue.enqueueDispatchCommand(reactTag, commandId, commandArgs);
   }
@@ -804,6 +820,10 @@ public class UIImplementation {
   public void showPopupMenu(int reactTag, ReadableArray items, Callback error, Callback success) {
     assertViewExists(reactTag, "showPopupMenu");
     mOperationsQueue.enqueueShowPopupMenu(reactTag, items, error, success);
+  }
+
+  public void dismissPopupMenu() {
+    mOperationsQueue.enqueueDismissPopupMenu();
   }
 
   public void sendAccessibilityEvent(int tag, int eventType) {
@@ -995,6 +1015,10 @@ public class UIImplementation {
     mOperationsQueue.enqueueUIBlock(block);
   }
 
+  public void prependUIBlock(UIBlock block) {
+    mOperationsQueue.prependUIBlock(block);
+  }
+
   public int resolveRootTagFromReactTag(int reactTag) {
     if (mShadowNodeRegistry.isRootNode(reactTag)) {
       return reactTag;
@@ -1003,7 +1027,7 @@ public class UIImplementation {
     ReactShadowNode node = resolveShadowNode(reactTag);
     int rootTag = 0;
     if (node != null) {
-      rootTag = node.getRootNode().getReactTag();
+      rootTag = node.getRootTag();
     } else {
       FLog.w(
         ReactConstants.TAG,
@@ -1020,5 +1044,13 @@ public class UIImplementation {
    */
   public void enableLayoutCalculationForRootNode(int rootViewTag) {
     this.mMeasuredRootNodes.add(rootViewTag);
+  }
+
+  public void setLayoutUpdateListener(LayoutUpdateListener listener) {
+    mLayoutUpdateListener = listener;
+  }
+
+  public void removeLayoutUpdateListener() {
+    mLayoutUpdateListener = null;
   }
 }
