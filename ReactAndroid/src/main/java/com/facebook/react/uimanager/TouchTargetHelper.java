@@ -1,10 +1,8 @@
 /**
  * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  */
 
 package com.facebook.react.uimanager;
@@ -94,7 +92,6 @@ public class TouchTargetHelper {
     View nativeTargetView = findTouchTargetView(viewCoords, viewGroup);
     if (nativeTargetView != null) {
       View reactTargetView = findClosestReactAncestor(nativeTargetView);
-//      Log.i("TouchTargetHelper", "findTargetTagAndCoordinatesForTouch: nativeTargetView:" + nativeTargetView.getId() + " reactTargetView:" + (reactTargetView != null ? reactTargetView.getId() : -1));
       if (reactTargetView != null) {
         if (nativeViewTag != null) {
           nativeViewTag[0] = reactTargetView.getId();

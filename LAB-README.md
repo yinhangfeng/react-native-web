@@ -18,7 +18,7 @@ git merge origin/lab-master 实现与lab-master 同步
 * 修改android TextInput 减少在 oppo 上无法弹出键盘的问题(还是有问题) ReactAndroid/src/**/ReactEditText.java
 * ReactViewPager.java 修复ViewPagerAndroid 在父View 为removeClippedSubviews 时 无法populate 的BUG
 * PageScrollEvent.java 增加scroll value 为 mPosition + mOffset
-* UIImplementation 对外暴露resolveShadowNode resolveView dispatchViewUpdatesIfNeeded
+* UIImplementation 对外暴露 resolveView dispatchViewUpdatesIfNeeded
 * TouchableNativeFeedback ReactViewGroup TNFHolder ReactViewCornerRippleDrawable (TODO flat/RCTView)
 * ReactImageView.java loadingIndicatorAnimated 在 mLoadingImageDrawable 变为null 时 正确设置PlaceholderImage
 ### cli
@@ -28,6 +28,7 @@ git merge origin/lab-master 实现与lab-master 同步
 * 修改 local-cli/link/android/patches/makeImportPatch.js
 * bundleCommandLineArgs.js 增加 --extra-build-options 参数
 * rn-cli.config.js 增加 plugins 支持
+* local-cli/util/Config.js findOptional 只查找项目根目录(与yarn本地git安装 npm5 本地安装兼容)
 ### other
 * .gitignore 未忽略android maven目录，使得npm可直接依赖该git分支，在发布前运行./gradlew installArchives
 
