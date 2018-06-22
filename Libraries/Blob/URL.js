@@ -10,9 +10,9 @@
 
 'use strict';
 
-const Blob = require('Blob');
+const Blob = require('react-native/Libraries/Blob/Blob');
 
-const {BlobModule} = require('NativeModules');
+const {BlobModule} = require('react-native/Libraries/BatchedBridge/NativeModules');
 
 let BLOB_URL_PREFIX = null;
 

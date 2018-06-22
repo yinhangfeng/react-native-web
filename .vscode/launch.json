@@ -1,0 +1,108 @@
+{
+  // 使用 IntelliSense 了解相关属性。 
+  // 悬停以查看现有属性的描述。
+  // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch File",
+      "program": "${file}"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch Program",
+      "program": "${workspaceFolder}/Libraries/react-native/react-native-implementation"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "bundle-rollup",
+      "program": "${workspaceFolder}/local-cli/cli.js",
+      "args": [
+        "bundle",
+        "--rollup",
+        "--platform",
+        "web",
+        "--dev",
+        "true",
+        "--entry-file",
+        "Examples/index.web.js",
+        "--bundle-output",
+        "build/rntester/bundle.rollup.js",
+        "--assets-dest",
+        "build/rntester/",
+        "--max-workers",
+        "1"
+      ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "bundle-rollup-prod",
+      "program": "${workspaceFolder}/local-cli/cli.js",
+      "args": [
+        "bundle",
+        "--rollup",
+        "--platform",
+        "web",
+        "--dev",
+        "false",
+        "--entry-file",
+        "Examples/index.web.js",
+        "--bundle-output",
+        "build/rntester/bundle.rollup.js",
+        "--assets-dest",
+        "build/rntester/",
+        "--max-workers",
+        "1"
+      ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "rn-start",
+      "program": "${workspaceFolder}/local-cli/cli.js",
+      "args": [
+        "start",
+        "--max-workers",
+        "1"
+      ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "lrnw-start",
+      "program": "${workspaceFolder}/local-cli/cli.js",
+      "args": [
+        "start",
+        "--max-workers",
+        "1",
+        "--port",
+        "9080"
+      ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "lrnw-bundle-prod",
+      "program": "${workspaceFolder}/local-cli/cli.js",
+      "cwd": "${workspaceFolder}",
+      "args": [
+        "bundle",
+        "--platform",
+        "web",
+        "--dev",
+        "false",
+        "--entry-file",
+        "Examples/index.web.js",
+        "--bundle-output",
+        "build/bundle.min.js",
+        "--max-workers",
+        "1"
+      ]
+    },
+  ]
+}

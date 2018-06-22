@@ -10,7 +10,7 @@
 
 'use strict';
 
-const InteractionManager = require('InteractionManager');
+const InteractionManager = require('react-native/Libraries/Interaction/InteractionManager');
 
 /**
  * A simple class for batching up invocations of a low-pri callback. A timeout is set to run the

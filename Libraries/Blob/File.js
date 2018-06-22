@@ -9,11 +9,11 @@
  */
 'use strict';
 
-const Blob = require('Blob');
+const Blob = require('react-native/Libraries/Blob/Blob');
 
 const invariant = require('fbjs/lib/invariant');
 
-import type {BlobOptions} from 'BlobTypes';
+import type {BlobOptions} from 'react-native/Libraries/Blob/BlobTypes';
 
 /**
  * The File interface provides information about files.

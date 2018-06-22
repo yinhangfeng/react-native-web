@@ -10,11 +10,11 @@
 
 'use strict';
 
-const PerformanceLogger = require('PerformanceLogger');
-const React = require('React');
-const StyleSheet = require('StyleSheet');
-const Text = require('Text');
-const View = require('View');
+const PerformanceLogger = require('react-native/Libraries/Utilities/PerformanceLogger');
+const React = require('react-native/Libraries/react-native/React');
+const StyleSheet = require('react-native/Libraries/StyleSheet/StyleSheet');
+const Text = require('react-native/Libraries/Text/Text');
+const View = require('react-native/Libraries/Components/View/View');
 
 class PerformanceOverlay extends React.Component<{}> {
   render() {

@@ -10,40 +10,40 @@
 
 'use strict';
 
-const AnimatedImplementation = require('AnimatedImplementation');
-const ColorPropType = require('ColorPropType');
-const EdgeInsetsPropType = require('EdgeInsetsPropType');
-const Platform = require('Platform');
-const PointPropType = require('PointPropType');
+const AnimatedImplementation = require('react-native/Libraries/Animated/src/AnimatedImplementation');
+const ColorPropType = require('react-native/Libraries/StyleSheet/ColorPropType');
+const EdgeInsetsPropType = require('react-native/Libraries/StyleSheet/EdgeInsetsPropType');
+const Platform = require('react-native/Libraries/Utilities/Platform');
+const PointPropType = require('react-native/Libraries/StyleSheet/PointPropType');
 const PropTypes = require('prop-types');
-const React = require('React');
-const ReactNative = require('ReactNative');
-const ScrollResponder = require('ScrollResponder');
-const ScrollViewStickyHeader = require('ScrollViewStickyHeader');
-const StyleSheet = require('StyleSheet');
-const StyleSheetPropType = require('StyleSheetPropType');
-const View = require('View');
-const ViewPropTypes = require('ViewPropTypes');
-const ViewStylePropTypes = require('ViewStylePropTypes');
-const InternalScrollViewType = require('InternalScrollViewType');
+const React = require('react-native/Libraries/react-native/React');
+const ReactNative = require('react-native/Libraries/Renderer/shims/ReactNative');
+const ScrollResponder = require('react-native/Libraries/Components/ScrollResponder');
+const ScrollViewStickyHeader = require('react-native/Libraries/Components/ScrollView/ScrollViewStickyHeader');
+const StyleSheet = require('react-native/Libraries/StyleSheet/StyleSheet');
+const StyleSheetPropType = require('react-native/Libraries/StyleSheet/StyleSheetPropType');
+const View = require('react-native/Libraries/Components/View/View');
+const ViewPropTypes = require('react-native/Libraries/Components/View/ViewPropTypes');
+const ViewStylePropTypes = require('react-native/Libraries/Components/View/ViewStylePropTypes');
+const InternalScrollViewType = require('react-native/Libraries/Components/ScrollView/InternalScrollViewType');
 
 const createReactClass = require('create-react-class');
-const dismissKeyboard = require('dismissKeyboard');
-const flattenStyle = require('flattenStyle');
+const dismissKeyboard = require('react-native/Libraries/Utilities/dismissKeyboard');
+const flattenStyle = require('react-native/Libraries/StyleSheet/flattenStyle');
 const invariant = require('fbjs/lib/invariant');
-const processDecelerationRate = require('processDecelerationRate');
-const requireNativeComponent = require('requireNativeComponent');
+const processDecelerationRate = require('react-native/Libraries/Components/ScrollView/processDecelerationRate');
+const requireNativeComponent = require('react-native/Libraries/ReactNative/requireNativeComponent');
 const warning = require('fbjs/lib/warning');
-const resolveAssetSource = require('resolveAssetSource');
+const resolveAssetSource = require('react-native/Libraries/Image/resolveAssetSource');
 
-import type {PressEvent} from 'CoreEventTypes';
-import type {EdgeInsetsProp} from 'EdgeInsetsPropType';
-import type {NativeMethodsMixinType} from 'ReactNativeTypes';
-import type {ViewStyleProp} from 'StyleSheet';
-import type {ViewProps} from 'ViewPropTypes';
-import type {PointProp} from 'PointPropType';
+import type {PressEvent} from 'react-native/Libraries/Types/CoreEventTypes';
+import type {EdgeInsetsProp} from 'react-native/Libraries/StyleSheet/EdgeInsetsPropType';
+import type {NativeMethodsMixinType} from 'react-native/Libraries/Renderer/shims/ReactNativeTypes';
+import type {ViewStyleProp} from 'react-native/Libraries/StyleSheet/StyleSheet';
+import type {ViewProps} from 'react-native/Libraries/Components/View/ViewPropTypes';
+import type {PointProp} from 'react-native/Libraries/StyleSheet/PointPropType';
 
-import type {ColorValue} from 'StyleSheetTypes';
+import type {ColorValue} from 'react-native/Libraries/StyleSheet/StyleSheetTypes';
 
 let AndroidScrollView;
 let AndroidHorizontalScrollContentView;

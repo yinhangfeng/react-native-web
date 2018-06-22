@@ -15,7 +15,7 @@ const AnimatedWithChildren = require('./AnimatedWithChildren');
 const NativeAnimatedHelper = require('../NativeAnimatedHelper');
 
 const invariant = require('fbjs/lib/invariant');
-const normalizeColor = require('normalizeColor');
+const normalizeColor = require('react-native/Libraries/Color/normalizeColor');
 
 type ExtrapolateType = 'extend' | 'identity' | 'clamp';
 

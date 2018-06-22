@@ -3,19 +3,19 @@
  */
 'use strict';
 
-const ColorPropType = require('ColorPropType');
-const NativeMethodsMixin = require('NativeMethodsMixin');
-const React = require('React');
+const ColorPropType = require('react-native/Libraries/StyleSheet/ColorPropType');
+const NativeMethodsMixin = require('react-native/Libraries/Renderer/shims/NativeMethodsMixin');
+const React = require('react-native/Libraries/react-native/React');
 const PropTypes = require('prop-types');
-const StyleSheet = require('StyleSheet');
-const View = require('View');
-const ViewPropTypes = require('ViewPropTypes');
+const StyleSheet = require('react-native/Libraries/StyleSheet/StyleSheet');
+const View = require('react-native/Libraries/Components/View/View');
+const ViewPropTypes = require('react-native/Libraries/Components/View/ViewPropTypes');
 
 const createReactClass = require('create-react-class');
 
 const CircularProgress = __requireDefault(require('material-ui/src/CircularProgress'));
-const Image = require('Image');
-const RWPerformance = require('RWPerformance');
+const Image = require('react-native/Libraries/Image/Image');
+const RWPerformance = require('react-native/Libraries/lrnw/RWPerformance');
 
 /**
  * Displays a circular loading indicator.

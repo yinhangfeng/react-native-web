@@ -11,7 +11,7 @@
 
 'use strict';
 
-import type {StackFrame} from 'parseErrorStack';
+import type {StackFrame} from 'react-native/Libraries/Core/Devtools/parseErrorStack';
 
 jest.mock('YellowBoxSymbolication');
 
@@ -20,8 +20,8 @@ const YellowBoxSymbolication: {|
     $ReadOnlyArray<Array<StackFrame>>,
     Promise<Array<StackFrame>>,
   >,
-|} = (require('YellowBoxSymbolication'): any);
-const YellowBoxWarning = require('YellowBoxWarning');
+|} = (require('react-native/Libraries/YellowBox/Data/YellowBoxSymbolication'): any);
+const YellowBoxWarning = require('react-native/Libraries/YellowBox/Data/YellowBoxWarning');
 
 const createStack = methodNames =>
   methodNames.map(methodName => ({

@@ -10,11 +10,11 @@
 
 'use strict';
 
-const BatchedBridge = require('BatchedBridge');
+const BatchedBridge = require('react-native/Libraries/BatchedBridge/BatchedBridge');
 
 const invariant = require('fbjs/lib/invariant');
 
-import type {ExtendedError} from 'parseErrorStack';
+import type {ExtendedError} from 'react-native/Libraries/Core/Devtools/parseErrorStack';
 
 type ModuleConfig = [
   string /* name */,
@@ -158,7 +158,7 @@ if (global.nativeModuleProxy) {
     '__fbBatchedBridgeConfig is not set, cannot invoke native modules',
   );
 
-  const defineLazyObjectProperty = require('defineLazyObjectProperty');
+  const defineLazyObjectProperty = require('react-native/Libraries/Utilities/defineLazyObjectProperty');
   (bridgeConfig.remoteModuleConfig || []).forEach(
     (config: ModuleConfig, moduleID: number) => {
       // Initially this config will only contain the module name when running in JSC. The actual

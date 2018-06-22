@@ -10,7 +10,7 @@
 
 'use strict';
 
-const RCTVibration = require('NativeModules').Vibration;
+const RCTVibration = require('react-native/Libraries/BatchedBridge/NativeModules').Vibration;
 
 const invariant = require('fbjs/lib/invariant');
 

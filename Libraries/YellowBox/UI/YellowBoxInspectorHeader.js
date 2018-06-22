@@ -10,17 +10,17 @@
 
 'use strict';
 
-const Platform = require('Platform');
-const React = require('React');
+const Platform = require('react-native/Libraries/Utilities/Platform');
+const React = require('react-native/Libraries/react-native/React');
 const SafeAreaView = require('SafeAreaView');
-const StyleSheet = require('StyleSheet');
-const Text = require('Text');
-const UTFSequence = require('UTFSequence');
-const View = require('View');
-const YellowBoxPressable = require('YellowBoxPressable');
-const YellowBoxStyle = require('YellowBoxStyle');
+const StyleSheet = require('react-native/Libraries/StyleSheet/StyleSheet');
+const Text = require('react-native/Libraries/Text/Text');
+const UTFSequence = require('react-native/Libraries/UTFSequence');
+const View = require('react-native/Libraries/Components/View/View');
+const YellowBoxPressable = require('react-native/Libraries/YellowBox/UI/YellowBoxPressable');
+const YellowBoxStyle = require('react-native/Libraries/YellowBox/UI/YellowBoxStyle');
 
-import type YellowBoxWarning from 'YellowBoxWarning';
+import type YellowBoxWarning from 'react-native/Libraries/YellowBox/Data/YellowBoxWarning';
 
 type Props = $ReadOnly<{|
   onSelectIndex: (selectedIndex: number) => void,

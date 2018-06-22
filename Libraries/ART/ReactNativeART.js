@@ -10,15 +10,15 @@
 'use strict';
 
 const Color = require('art/core/color');
-const Path = require('ARTSerializablePath');
+const Path = require('react-native/Libraries/ART/ARTSerializablePath');
 const Transform = require('art/core/transform');
 
-const React = require('React');
+const React = require('react-native/Libraries/react-native/React');
 const PropTypes = require('prop-types');
-const ReactNativeViewAttributes = require('ReactNativeViewAttributes');
+const ReactNativeViewAttributes = require('react-native/Libraries/Components/View/ReactNativeViewAttributes');
 
-const createReactNativeComponentClass = require('createReactNativeComponentClass');
-const merge = require('merge');
+const createReactNativeComponentClass = require('react-native/Libraries/Renderer/shims/createReactNativeComponentClass');
+const merge = require('react-native/Libraries/vendor/core/merge');
 const invariant = require('fbjs/lib/invariant');
 
 // Diff Helpers

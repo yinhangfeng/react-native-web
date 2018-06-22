@@ -11,15 +11,15 @@
 
 'use strict';
 
-const BoundingDimensions = require('BoundingDimensions');
-const Position = require('Position');
-const React = require('React');
+const BoundingDimensions = require('react-native/Libraries/Components/Touchable/BoundingDimensions');
+const Position = require('react-native/Libraries/Components/Touchable/Position');
+const React = require('react-native/Libraries/react-native/React');
 const TouchEventUtils = require('fbjs/lib/TouchEventUtils');
-const UIManager = require('UIManager');
-const View = require('View');
+const UIManager = require('react-native/Libraries/ReactNative/UIManager');
+const View = require('react-native/Libraries/Components/View/View');
 
 const keyMirror = require('fbjs/lib/keyMirror');
-const normalizeColor = require('normalizeColor');
+const normalizeColor = require('react-native/Libraries/Color/normalizeColor');
 
 /**
  * `Touchable`: Taps done right.

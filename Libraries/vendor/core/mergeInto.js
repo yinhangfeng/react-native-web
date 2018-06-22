@@ -31,7 +31,7 @@
 
 "use strict";
 
-var mergeHelpers = require('mergeHelpers');
+var mergeHelpers = require('react-native/Libraries/vendor/core/mergeHelpers');
 
 var checkMergeObjectArg = mergeHelpers.checkMergeObjectArg;
 var checkMergeIntoObjectArg = mergeHelpers.checkMergeIntoObjectArg;

@@ -10,15 +10,15 @@
  */
 'use strict';
 
-const ColorPropType = require('ColorPropType');
-// const Platform = require('Platform');
-const React = require('React');
+const ColorPropType = require('react-native/Libraries/StyleSheet/ColorPropType');
+// const Platform = require('react-native/Libraries/Utilities/Platform');
+const React = require('react-native/Libraries/react-native/React');
 const PropTypes = require('prop-types');
-const StyleSheet = require('StyleSheet');
-const Text = require('Text');
+const StyleSheet = require('react-native/Libraries/StyleSheet/StyleSheet');
+const Text = require('react-native/Libraries/Text/Text');
 // const TouchableNativeFeedback = require('TouchableNativeFeedback');
-const TouchableOpacity = require('TouchableOpacity');
-const View = require('View');
+const TouchableOpacity = require('react-native/Libraries/Components/Touchable/TouchableOpacity');
+const View = require('react-native/Libraries/Components/View/View');
 
 const invariant = require('fbjs/lib/invariant');
 

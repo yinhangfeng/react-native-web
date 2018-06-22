@@ -9,15 +9,15 @@
  */
 'use strict';
 
-const BatchedBridge = require('BatchedBridge');
-const BugReporting = require('BugReporting');
-const NativeModules = require('NativeModules');
-const ReactNative = require('ReactNative');
-const SceneTracker = require('SceneTracker');
+const BatchedBridge = require('react-native/Libraries/BatchedBridge/BatchedBridge');
+const BugReporting = require('react-native/Libraries/BugReporting/BugReporting');
+const NativeModules = require('react-native/Libraries/BatchedBridge/NativeModules');
+const ReactNative = require('react-native/Libraries/Renderer/shims/ReactNative');
+const SceneTracker = require('react-native/Libraries/Utilities/SceneTracker');
 
-const infoLog = require('infoLog');
+const infoLog = require('react-native/Libraries/Utilities/infoLog');
 const invariant = require('fbjs/lib/invariant');
-const renderApplication = require('renderApplication');
+const renderApplication = require('react-native/Libraries/ReactNative/renderApplication');
 
 type Task = (taskData: any) => Promise<void>;
 type TaskProvider = () => Task;

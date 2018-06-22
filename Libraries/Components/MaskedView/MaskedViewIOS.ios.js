@@ -9,13 +9,13 @@
  */
 
 const PropTypes = require('prop-types');
-const React = require('React');
-const StyleSheet = require('StyleSheet');
-const View = require('View');
-const ViewPropTypes = require('ViewPropTypes');
-const requireNativeComponent = require('requireNativeComponent');
+const React = require('react-native/Libraries/react-native/React');
+const StyleSheet = require('react-native/Libraries/StyleSheet/StyleSheet');
+const View = require('react-native/Libraries/Components/View/View');
+const ViewPropTypes = require('react-native/Libraries/Components/View/ViewPropTypes');
+const requireNativeComponent = require('react-native/Libraries/ReactNative/requireNativeComponent');
 
-import type {ViewProps} from 'ViewPropTypes';
+import type {ViewProps} from 'react-native/Libraries/Components/View/ViewPropTypes';
 
 const RCTMaskedView = requireNativeComponent('RCTMaskedView');
 

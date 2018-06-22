@@ -10,10 +10,10 @@
 
 'use strict';
 
-const Map = require('Map');
-const NativeEventEmitter = require('NativeEventEmitter');
-const NativeModules = require('NativeModules');
-const Platform = require('Platform');
+const Map = require('react-native/Libraries/vendor/core/Map');
+const NativeEventEmitter = require('react-native/Libraries/EventEmitter/NativeEventEmitter');
+const NativeModules = require('react-native/Libraries/BatchedBridge/NativeModules');
+const Platform = require('react-native/Libraries/Utilities/Platform');
 const RCTNetInfo = NativeModules.NetInfo;
 
 const NetInfoEventEmitter = new NativeEventEmitter(RCTNetInfo);

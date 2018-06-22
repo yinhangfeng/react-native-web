@@ -10,7 +10,7 @@
 
 'use strict';
 
-const FormData = require('FormData');
+const FormData = require('react-native/Libraries/Network/FormData');
 
 describe('FormData', function() {
   var formData;

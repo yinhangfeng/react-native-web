@@ -155,7 +155,7 @@ class LoopExample extends React.Component<{}, $FlowFixMeState> {
   }
 }
 
-const RNTesterSettingSwitchRow = require('RNTesterSettingSwitchRow');
+const RNTesterSettingSwitchRow = require('react-native/RNTester/js/RNTesterSettingSwitchRow');
 class InternalSettings extends React.Component<
   {},
   {busyTime: number | string, filteredStall: number},
@@ -188,9 +188,9 @@ class InternalSettings extends React.Component<
           initialValue={false}
           label="Track JS Stalls"
           onEnable={() => {
-            require('JSEventLoopWatchdog').install({thresholdMS: 25});
+            require('react-native/Libraries/Interaction/JSEventLoopWatchdog').install({thresholdMS: 25});
             this.setState({busyTime: '<none>'});
-            require('JSEventLoopWatchdog').addHandler({
+            require('react-native/Libraries/Interaction/JSEventLoopWatchdog').addHandler({
               onStall: ({busyTime}) =>
                 this.setState(state => ({
                   busyTime,

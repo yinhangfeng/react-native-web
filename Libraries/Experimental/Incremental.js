@@ -10,12 +10,12 @@
 
 'use strict';
 
-const InteractionManager = require('InteractionManager');
-const React = require('React');
+const InteractionManager = require('react-native/Libraries/Interaction/InteractionManager');
+const React = require('react-native/Libraries/react-native/React');
 
 const PropTypes = require('prop-types');
 
-const infoLog = require('infoLog');
+const infoLog = require('react-native/Libraries/Utilities/infoLog');
 
 const DEBUG = false;
 

@@ -10,12 +10,12 @@
 
 'use strict';
 
-import type {AccessibilityTrait} from 'ViewAccessibility';
+import type {AccessibilityTrait} from 'react-native/Libraries/Components/View/ViewAccessibility';
 
 import type {Node} from 'react';
 
-import type {LayoutEvent, PressEvent} from 'CoreEventTypes';
-import type {DangerouslyImpreciseStyleProp} from 'StyleSheet';
+import type {LayoutEvent, PressEvent} from 'react-native/Libraries/Types/CoreEventTypes';
+import type {DangerouslyImpreciseStyleProp} from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 export type PressRetentionOffset = $ReadOnly<{|
   top: number,

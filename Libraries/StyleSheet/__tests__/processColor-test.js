@@ -10,8 +10,8 @@
 
 'use strict';
 
-const {OS} = require('Platform');
-const processColor = require('processColor');
+const {OS} = require('react-native/Libraries/Utilities/Platform');
+const processColor = require('react-native/Libraries/StyleSheet/processColor');
 
 const platformSpecific =
   OS === 'android'

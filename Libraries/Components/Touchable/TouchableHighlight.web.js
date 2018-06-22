@@ -10,4 +10,4 @@
  */
 'use strict';
 
-module.exports = require('TouchableOpacity');
+module.exports = require('react-native/Libraries/Components/Touchable/TouchableOpacity');

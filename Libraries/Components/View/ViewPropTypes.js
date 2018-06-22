@@ -10,25 +10,25 @@
 
 'use strict';
 
-const React = require('React');
-const EdgeInsetsPropType = require('EdgeInsetsPropType');
-const PlatformViewPropTypes = require('PlatformViewPropTypes');
+const React = require('react-native/Libraries/react-native/React');
+const EdgeInsetsPropType = require('react-native/Libraries/StyleSheet/EdgeInsetsPropType');
+const PlatformViewPropTypes = require('react-native/Libraries/Components/View/PlatformViewPropTypes');
 const PropTypes = require('prop-types');
-const StyleSheetPropType = require('StyleSheetPropType');
-const ViewStylePropTypes = require('ViewStylePropTypes');
+const StyleSheetPropType = require('react-native/Libraries/StyleSheet/StyleSheetPropType');
+const ViewStylePropTypes = require('react-native/Libraries/Components/View/ViewStylePropTypes');
 
 const {
   AccessibilityComponentTypes,
   AccessibilityTraits,
-} = require('ViewAccessibility');
+} = require('react-native/Libraries/Components/View/ViewAccessibility');
 
 import type {
   AccessibilityComponentType,
   AccessibilityTrait,
-} from 'ViewAccessibility';
-import type {EdgeInsetsProp} from 'EdgeInsetsPropType';
-import type {TVViewProps} from 'TVViewPropTypes';
-import type {Layout, LayoutEvent} from 'CoreEventTypes';
+} from 'react-native/Libraries/Components/View/ViewAccessibility';
+import type {EdgeInsetsProp} from 'react-native/Libraries/StyleSheet/EdgeInsetsPropType';
+import type {TVViewProps} from 'react-native/Libraries/Components/AppleTV/TVViewPropTypes';
+import type {Layout, LayoutEvent} from 'react-native/Libraries/Types/CoreEventTypes';
 
 const stylePropType = StyleSheetPropType(ViewStylePropTypes);
 

@@ -11,7 +11,7 @@
  */
 'use strict';
 
-const Image = require('Image');
+const Image = require('react-native/Libraries/Image/Image');
 
 // RW TODO web image 是支持children的 但需要兼容imageStyle imageRef 属性
 

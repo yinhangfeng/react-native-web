@@ -12,12 +12,12 @@
  */
 'use strict';
 
-const AssetRegistry = require('AssetRegistry');
-const AssetSourceResolver = require('AssetSourceResolver');
-const RWServerUrl = require('RWServerUrl');
+const AssetRegistry = require('react-native/Libraries/Image/AssetRegistry');
+const AssetSourceResolver = require('react-native/Libraries/Image/AssetSourceResolver');
+const RWServerUrl = require('react-native/Libraries/lrnw/RWServerUrl');
 
 
-import type { ResolvedAssetSource } from 'AssetSourceResolver';
+import type { ResolvedAssetSource } from 'react-native/Libraries/Image/AssetSourceResolver';
 
 let _customSourceTransformer;
 

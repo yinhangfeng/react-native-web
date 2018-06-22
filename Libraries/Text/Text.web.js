@@ -11,24 +11,24 @@
  */
 'use strict';
 
-const ColorPropType = require('ColorPropType');
-const EdgeInsetsPropType = require('EdgeInsetsPropType');
-const NativeMethodsMixin = require('NativeMethodsMixin');
+const ColorPropType = require('react-native/Libraries/StyleSheet/ColorPropType');
+const EdgeInsetsPropType = require('react-native/Libraries/StyleSheet/EdgeInsetsPropType');
+const NativeMethodsMixin = require('react-native/Libraries/Renderer/shims/NativeMethodsMixin');
 
-const React = require('React');
+const React = require('react-native/Libraries/react-native/React');
 const PropTypes = require('prop-types');
-const ReactNativeViewAttributes = require('ReactNativeViewAttributes');
-const StyleSheetPropType = require('StyleSheetPropType');
-const TextStylePropTypes = require('TextStylePropTypes');
-const Touchable = require('Touchable');
-const StyleSheet = require('StyleSheet');
+const ReactNativeViewAttributes = require('react-native/Libraries/Components/View/ReactNativeViewAttributes');
+const StyleSheetPropType = require('react-native/Libraries/StyleSheet/StyleSheetPropType');
+const TextStylePropTypes = require('react-native/Libraries/Text/TextStylePropTypes');
+const Touchable = require('react-native/Libraries/Components/Touchable/Touchable');
+const StyleSheet = require('react-native/Libraries/StyleSheet/StyleSheet');
 
 const createReactClass = require('create-react-class');
 // const mergeFast = require('mergeFast');
 
-const LayoutMixin = require('RWLayoutMixin');
-const createWebCoreElement = require('createWebCoreElement');
-const CSSClassNames = require('CSSClassNames');
+const LayoutMixin = require('react-native/Libraries/lrnw/RWLayoutMixin');
+const createWebCoreElement = require('react-native/Libraries/lrnw/createWebCoreElement');
+const CSSClassNames = require('react-native/Libraries/StyleSheet/CSSClassNames');
 
 const stylePropType = StyleSheetPropType(TextStylePropTypes);
 

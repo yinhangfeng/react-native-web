@@ -14,7 +14,7 @@ var React = require('react');
 var ReactNative = require('react-native');
 var {Image, LayoutAnimation, StyleSheet, Text, View} = ReactNative;
 
-import type {ViewLayout, ViewLayoutEvent} from 'ViewPropTypes';
+import type {ViewLayout, ViewLayoutEvent} from 'react-native/Libraries/Components/View/ViewPropTypes';
 
 type State = {
   containerStyle?: {width: number},

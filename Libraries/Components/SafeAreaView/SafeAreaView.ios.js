@@ -8,11 +8,11 @@
  * @format
  */
 
-const React = require('React');
-const ViewPropTypes = require('ViewPropTypes');
-const requireNativeComponent = require('requireNativeComponent');
+const React = require('react-native/Libraries/react-native/React');
+const ViewPropTypes = require('react-native/Libraries/Components/View/ViewPropTypes');
+const requireNativeComponent = require('react-native/Libraries/ReactNative/requireNativeComponent');
 
-import type {ViewProps} from 'ViewPropTypes';
+import type {ViewProps} from 'react-native/Libraries/Components/View/ViewPropTypes';
 
 const RCTSafeAreaView = requireNativeComponent('RCTSafeAreaView');
 

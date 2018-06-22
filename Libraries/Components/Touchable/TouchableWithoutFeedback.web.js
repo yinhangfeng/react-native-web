@@ -11,20 +11,20 @@
  */
 'use strict';
 
-const EdgeInsetsPropType = require('EdgeInsetsPropType');
-const React = require('React');
+const EdgeInsetsPropType = require('react-native/Libraries/StyleSheet/EdgeInsetsPropType');
+const React = require('react-native/Libraries/react-native/React');
 const PropTypes = require('prop-types');
 const TimerMixin = require('react-timer-mixin');
-const Touchable = require('Touchable');
+const Touchable = require('react-native/Libraries/Components/Touchable/Touchable');
 
 const createReactClass = require('create-react-class');
-const ensurePositiveDelayProps = require('ensurePositiveDelayProps');
+const ensurePositiveDelayProps = require('react-native/Libraries/Components/Touchable/ensurePositiveDelayProps');
 const warning = require('fbjs/lib/warning');
 
 const {
   AccessibilityComponentTypes,
   AccessibilityTraits,
-} = require('ViewAccessibility');
+} = require('react-native/Libraries/Components/View/ViewAccessibility');
 
 export type Event = Object;
 

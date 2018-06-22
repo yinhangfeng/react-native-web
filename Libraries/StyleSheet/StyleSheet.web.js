@@ -2,7 +2,7 @@
  */
 'use strict';
 
-const flatten = require('flattenStyle');
+const flatten = require('react-native/Libraries/StyleSheet/flattenStyle');
 
 const hairlineWidth = 1; //网页环境直接用1px
 

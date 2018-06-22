@@ -10,7 +10,7 @@
 
 'use strict';
 
-const SceneTracker = require('SceneTracker');
+const SceneTracker = require('react-native/Libraries/Utilities/SceneTracker');
 
 describe('setActiveScene', function() {
   it('can handle multiple listeners and unsubscribe', function() {

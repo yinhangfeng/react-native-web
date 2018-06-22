@@ -8,8 +8,8 @@
  * @flow
  */
 
-const React = require('React');
-const ListViewDataSource = require('ListViewDataSource');
+const React = require('react-native/Libraries/react-native/React');
+const ListViewDataSource = require('react-native/Libraries/Lists/ListView/ListViewDataSource');
 
 // This class is purely a facsimile of ListView so that we can
 // properly type it with Flow before migrating ListView off of

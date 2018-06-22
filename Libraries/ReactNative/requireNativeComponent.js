@@ -10,16 +10,16 @@
 
 'use strict';
 
-const ReactNativeStyleAttributes = require('ReactNativeStyleAttributes');
-const UIManager = require('UIManager');
+const ReactNativeStyleAttributes = require('react-native/Libraries/Components/View/ReactNativeStyleAttributes');
+const UIManager = require('react-native/Libraries/ReactNative/UIManager');
 
-const createReactNativeComponentClass = require('createReactNativeComponentClass');
-const insetsDiffer = require('insetsDiffer');
-const matricesDiffer = require('matricesDiffer');
-const pointsDiffer = require('pointsDiffer');
-const processColor = require('processColor');
-const resolveAssetSource = require('resolveAssetSource');
-const sizesDiffer = require('sizesDiffer');
+const createReactNativeComponentClass = require('react-native/Libraries/Renderer/shims/createReactNativeComponentClass');
+const insetsDiffer = require('react-native/Libraries/Utilities/differ/insetsDiffer');
+const matricesDiffer = require('react-native/Libraries/Utilities/differ/matricesDiffer');
+const pointsDiffer = require('react-native/Libraries/Utilities/differ/pointsDiffer');
+const processColor = require('react-native/Libraries/StyleSheet/processColor');
+const resolveAssetSource = require('react-native/Libraries/Image/resolveAssetSource');
+const sizesDiffer = require('react-native/Libraries/Utilities/differ/sizesDiffer');
 const invariant = require('fbjs/lib/invariant');
 const warning = require('fbjs/lib/warning');
 

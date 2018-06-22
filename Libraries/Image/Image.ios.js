@@ -9,17 +9,17 @@
  */
 'use strict';
 
-const ImageProps = require('ImageProps');
-const NativeMethodsMixin = require('NativeMethodsMixin');
-const NativeModules = require('NativeModules');
-const React = require('React');
-const ReactNativeViewAttributes = require('ReactNativeViewAttributes');
-const StyleSheet = require('StyleSheet');
+const ImageProps = require('react-native/Libraries/Image/ImageProps');
+const NativeMethodsMixin = require('react-native/Libraries/Renderer/shims/NativeMethodsMixin');
+const NativeModules = require('react-native/Libraries/BatchedBridge/NativeModules');
+const React = require('react-native/Libraries/react-native/React');
+const ReactNativeViewAttributes = require('react-native/Libraries/Components/View/ReactNativeViewAttributes');
+const StyleSheet = require('react-native/Libraries/StyleSheet/StyleSheet');
 
 const createReactClass = require('create-react-class');
-const flattenStyle = require('flattenStyle');
-const requireNativeComponent = require('requireNativeComponent');
-const resolveAssetSource = require('resolveAssetSource');
+const flattenStyle = require('react-native/Libraries/StyleSheet/flattenStyle');
+const requireNativeComponent = require('react-native/Libraries/ReactNative/requireNativeComponent');
+const resolveAssetSource = require('react-native/Libraries/Image/resolveAssetSource');
 
 const ImageViewManager = NativeModules.ImageViewManager;
 

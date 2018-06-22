@@ -12,10 +12,10 @@
 
 jest.disableAutomock();
 
-const React = require('React');
+const React = require('react-native/Libraries/react-native/React');
 const ReactTestRenderer = require('react-test-renderer');
-const Image = require('Image');
-const View = require('View');
+const Image = require('react-native/Libraries/Image/Image');
+const View = require('react-native/Libraries/Components/View/View');
 
 it('renders assets based on relative path', () => {
   expect(

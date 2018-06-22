@@ -9,10 +9,10 @@
  */
 'use strict';
 
-const ListViewDataSource = require('ListViewDataSource');
-const React = require('React');
-const ScrollView = require('ScrollView');
-const StaticRenderer = require('StaticRenderer');
+const ListViewDataSource = require('react-native/Libraries/Lists/ListView/ListViewDataSource');
+const React = require('react-native/Libraries/react-native/React');
+const ScrollView = require('react-native/Libraries/Components/ScrollView/ScrollView');
+const StaticRenderer = require('react-native/Libraries/Components/StaticRenderer');
 
 class ListViewMock extends React.Component<$FlowFixMeProps> {
   static latestRef: ?ListViewMock;

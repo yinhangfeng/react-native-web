@@ -11,24 +11,24 @@
  */
 'use strict';
 
-// const EdgeInsetsPropType = require('EdgeInsetsPropType');
-const ImageResizeMode = require('ImageResizeMode');
-const ImageSourcePropType = require('ImageSourcePropType');
-const ImageStylePropTypes = require('ImageStylePropTypes');
-const NativeMethodsMixin = require('NativeMethodsMixin');
-const React = require('React');
+// const EdgeInsetsPropType = require('react-native/Libraries/StyleSheet/EdgeInsetsPropType');
+const ImageResizeMode = require('react-native/Libraries/Image/ImageResizeMode');
+const ImageSourcePropType = require('react-native/Libraries/Image/ImageSourcePropType');
+const ImageStylePropTypes = require('react-native/Libraries/Image/ImageStylePropTypes');
+const NativeMethodsMixin = require('react-native/Libraries/Renderer/shims/NativeMethodsMixin');
+const React = require('react-native/Libraries/react-native/React');
 const PropTypes = require('prop-types');
-// const ReactNativeViewAttributes = require('ReactNativeViewAttributes');
-const StyleSheet = require('StyleSheet');
-const StyleSheetPropType = require('StyleSheetPropType');
+// const ReactNativeViewAttributes = require('react-native/Libraries/Components/View/ReactNativeViewAttributes');
+const StyleSheet = require('react-native/Libraries/StyleSheet/StyleSheet');
+const StyleSheetPropType = require('react-native/Libraries/StyleSheet/StyleSheetPropType');
 
 const createReactClass = require('create-react-class');
-const flattenStyle = require('flattenStyle');
-const resolveAssetSource = require('resolveAssetSource');
+const flattenStyle = require('react-native/Libraries/StyleSheet/flattenStyle');
+const resolveAssetSource = require('react-native/Libraries/Image/resolveAssetSource');
 
-const CSSClassNames = require('CSSClassNames');
-const createWebCoreElement = require('createWebCoreElement');
-const View = require('View');
+const CSSClassNames = require('react-native/Libraries/StyleSheet/CSSClassNames');
+const createWebCoreElement = require('react-native/Libraries/lrnw/createWebCoreElement');
+const View = require('react-native/Libraries/Components/View/View');
 
 const STATUS_ERRORED = 1;
 const STATUS_LOADED = 2;

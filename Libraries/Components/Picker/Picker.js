@@ -10,17 +10,17 @@
 
 'use strict';
 
-const ColorPropType = require('ColorPropType');
+const ColorPropType = require('react-native/Libraries/StyleSheet/ColorPropType');
 const PickerIOS = require('PickerIOS');
 const PickerAndroid = require('PickerAndroid');
-const Platform = require('Platform');
-const React = require('React');
+const Platform = require('react-native/Libraries/Utilities/Platform');
+const React = require('react-native/Libraries/react-native/React');
 const PropTypes = require('prop-types');
-const StyleSheetPropType = require('StyleSheetPropType');
-const TextStylePropTypes = require('TextStylePropTypes');
-const UnimplementedView = require('UnimplementedView');
-const ViewPropTypes = require('ViewPropTypes');
-const ViewStylePropTypes = require('ViewStylePropTypes');
+const StyleSheetPropType = require('react-native/Libraries/StyleSheet/StyleSheetPropType');
+const TextStylePropTypes = require('react-native/Libraries/Text/TextStylePropTypes');
+const UnimplementedView = require('react-native/Libraries/Components/UnimplementedViews/UnimplementedView');
+const ViewPropTypes = require('react-native/Libraries/Components/View/ViewPropTypes');
+const ViewStylePropTypes = require('react-native/Libraries/Components/View/ViewStylePropTypes');
 
 const itemStylePropType = StyleSheetPropType(TextStylePropTypes);
 

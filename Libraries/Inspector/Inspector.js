@@ -10,16 +10,16 @@
 
 'use strict';
 
-const Dimensions = require('Dimensions');
-const InspectorOverlay = require('InspectorOverlay');
-const InspectorPanel = require('InspectorPanel');
-const Platform = require('Platform');
-const React = require('React');
-const ReactNative = require('ReactNative');
-const StyleSheet = require('StyleSheet');
-const Touchable = require('Touchable');
-const UIManager = require('UIManager');
-const View = require('View');
+const Dimensions = require('react-native/Libraries/Utilities/Dimensions');
+const InspectorOverlay = require('react-native/Libraries/Inspector/InspectorOverlay');
+const InspectorPanel = require('react-native/Libraries/Inspector/InspectorPanel');
+const Platform = require('react-native/Libraries/Utilities/Platform');
+const React = require('react-native/Libraries/react-native/React');
+const ReactNative = require('react-native/Libraries/Renderer/shims/ReactNative');
+const StyleSheet = require('react-native/Libraries/StyleSheet/StyleSheet');
+const Touchable = require('react-native/Libraries/Components/Touchable/Touchable');
+const UIManager = require('react-native/Libraries/ReactNative/UIManager');
+const View = require('react-native/Libraries/Components/View/View');
 
 /* $FlowFixMe(>=0.54.0 site=react_native_oss) This comment suppresses an error
  * found when Flow v0.54 was deployed. To see the error delete this comment and
@@ -35,7 +35,7 @@ const hook = window.__REACT_DEVTOOLS_GLOBAL_HOOK__;
 const renderers = findRenderers();
 
 // required for devtools to be able to edit react native styles
-hook.resolveRNStyle = require('flattenStyle');
+hook.resolveRNStyle = require('react-native/Libraries/StyleSheet/flattenStyle');
 
 function findRenderers(): $ReadOnlyArray<ReactRenderer> {
   const allRenderers = Object.keys(hook._renderers).map(

@@ -12,7 +12,7 @@
 
 'use strict';
 
-const BackHandler = require('BackHandler');
+const BackHandler = require('react-native/Libraries/Utilities/BackHandler');
 
 const warning = require('fbjs/lib/warning');
 

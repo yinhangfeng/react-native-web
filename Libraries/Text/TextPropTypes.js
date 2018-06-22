@@ -10,11 +10,11 @@
 
 'use strict';
 
-const ColorPropType = require('ColorPropType');
-const EdgeInsetsPropType = require('EdgeInsetsPropType');
+const ColorPropType = require('react-native/Libraries/StyleSheet/ColorPropType');
+const EdgeInsetsPropType = require('react-native/Libraries/StyleSheet/EdgeInsetsPropType');
 const PropTypes = require('prop-types');
-const StyleSheetPropType = require('StyleSheetPropType');
-const TextStylePropTypes = require('TextStylePropTypes');
+const StyleSheetPropType = require('react-native/Libraries/StyleSheet/StyleSheetPropType');
+const TextStylePropTypes = require('react-native/Libraries/Text/TextStylePropTypes');
 
 const stylePropType = StyleSheetPropType(TextStylePropTypes);
 

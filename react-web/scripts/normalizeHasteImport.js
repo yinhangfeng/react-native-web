@@ -83,9 +83,9 @@ async function normalizeHasteImport() {
     console.log();
   }
 
-  // normalizeFile(librariesDir);
+  normalizeFile(librariesDir);
   normalizeFile(path.resolve(projectRoot, 'lib'));
-  // normalizeFile(path.resolve(projectRoot, 'RNTester'));
+  normalizeFile(path.resolve(projectRoot, 'RNTester'));
 }
 
 normalizeHasteImport().then(() => {

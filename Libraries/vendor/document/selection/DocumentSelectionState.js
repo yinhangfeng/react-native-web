@@ -10,7 +10,7 @@
 
 'use strict';
 
-const mixInEventEmitter = require('mixInEventEmitter');
+const mixInEventEmitter = require('react-native/Libraries/vendor/emitter/mixInEventEmitter');
 
 /**
  * DocumentSelectionState is responsible for maintaining selection information

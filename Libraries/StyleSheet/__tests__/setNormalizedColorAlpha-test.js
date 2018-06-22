@@ -10,8 +10,8 @@
 
 'use strict';
 
-const setNormalizedColorAlpha = require('setNormalizedColorAlpha');
-const normalizeColor = require('normalizeColor');
+const setNormalizedColorAlpha = require('react-native/Libraries/StyleSheet/setNormalizedColorAlpha');
+const normalizeColor = require('react-native/Libraries/Color/normalizeColor');
 
 describe('setNormalizedColorAlpha', function() {
   it('should adjust the alpha of the color passed in', function() {

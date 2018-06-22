@@ -10,7 +10,7 @@
 
 'use strict';
 
-const DatePickerModule = require('NativeModules').DatePickerAndroid;
+const DatePickerModule = require('react-native/Libraries/BatchedBridge/NativeModules').DatePickerAndroid;
 
 /**
  * Convert a Date to a timestamp.

@@ -9,12 +9,12 @@
 
 'use strict';
 
-const ColorPropType = require('ColorPropType');
+const ColorPropType = require('react-native/Libraries/StyleSheet/ColorPropType');
 const PropTypes = require('prop-types');
-const React = require('React');
-const ViewPropTypes = require('ViewPropTypes');
+const React = require('react-native/Libraries/react-native/React');
+const ViewPropTypes = require('react-native/Libraries/Components/View/ViewPropTypes');
 
-const requireNativeComponent = require('requireNativeComponent');
+const requireNativeComponent = require('react-native/Libraries/ReactNative/requireNativeComponent');
 
 const STYLE_ATTRIBUTES = [
   'Horizontal',

@@ -10,11 +10,11 @@
 
 'use strict';
 
-const React = require('React');
-const StyleSheet = require('StyleSheet');
-const Text = require('Text');
-const View = require('View');
-const resolveBoxStyle = require('resolveBoxStyle');
+const React = require('react-native/Libraries/react-native/React');
+const StyleSheet = require('react-native/Libraries/StyleSheet/StyleSheet');
+const Text = require('react-native/Libraries/Text/Text');
+const View = require('react-native/Libraries/Components/View/View');
+const resolveBoxStyle = require('react-native/Libraries/Inspector/resolveBoxStyle');
 
 const blank = {
   top: 0,

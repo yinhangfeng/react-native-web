@@ -15,8 +15,8 @@
 
 'use strict';
 
-const Platform = require('Platform');
-const UIManager = require('UIManager');
+const Platform = require('react-native/Libraries/Utilities/Platform');
+const UIManager = require('react-native/Libraries/ReactNative/UIManager');
 
 const inputs = new Set();
 

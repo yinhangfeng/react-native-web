@@ -10,13 +10,13 @@
 
 'use strict';
 
-const AppContainer = require('AppContainer');
-const React = require('React');
+const AppContainer = require('react-native/Libraries/ReactNative/AppContainer');
+const React = require('react-native/Libraries/react-native/React');
 
 const invariant = require('fbjs/lib/invariant');
 
 // require BackHandler so it sets the default handler that exits the app if no listeners respond
-require('BackHandler');
+require('react-native/Libraries/Utilities/BackHandler');
 
 function renderApplication<Props: Object>(
   RootComponent: React.ComponentType<Props>,
@@ -49,9 +49,9 @@ function renderApplication<Props: Object>(
   }
 
   if (fabric) {
-    require('ReactFabric').render(renderable, rootTag);
+    require('react-native/Libraries/Renderer/shims/ReactFabric').render(renderable, rootTag);
   } else {
-    require('ReactNative').render(renderable, rootTag);
+    require('react-native/Libraries/Renderer/shims/ReactNative').render(renderable, rootTag);
   }
 }
 

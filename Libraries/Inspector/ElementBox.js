@@ -10,13 +10,13 @@
 
 'use strict';
 
-const React = require('React');
-const View = require('View');
-const StyleSheet = require('StyleSheet');
-const BorderBox = require('BorderBox');
-const resolveBoxStyle = require('resolveBoxStyle');
+const React = require('react-native/Libraries/react-native/React');
+const View = require('react-native/Libraries/Components/View/View');
+const StyleSheet = require('react-native/Libraries/StyleSheet/StyleSheet');
+const BorderBox = require('react-native/Libraries/Inspector/BorderBox');
+const resolveBoxStyle = require('react-native/Libraries/Inspector/resolveBoxStyle');
 
-const flattenStyle = require('flattenStyle');
+const flattenStyle = require('react-native/Libraries/StyleSheet/flattenStyle');
 
 class ElementBox extends React.Component<$FlowFixMeProps> {
   render() {

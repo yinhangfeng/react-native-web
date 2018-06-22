@@ -10,20 +10,20 @@
 
 'use strict';
 
-const React = require('React');
-const ReactNativeViewAttributes = require('ReactNativeViewAttributes');
-const TextAncestor = require('TextAncestor');
-const TextPropTypes = require('TextPropTypes');
-const Touchable = require('Touchable');
-const UIManager = require('UIManager');
+const React = require('react-native/Libraries/react-native/React');
+const ReactNativeViewAttributes = require('react-native/Libraries/Components/View/ReactNativeViewAttributes');
+const TextAncestor = require('react-native/Libraries/Text/TextAncestor');
+const TextPropTypes = require('react-native/Libraries/Text/TextPropTypes');
+const Touchable = require('react-native/Libraries/Components/Touchable/Touchable');
+const UIManager = require('react-native/Libraries/ReactNative/UIManager');
 
-const createReactNativeComponentClass = require('createReactNativeComponentClass');
+const createReactNativeComponentClass = require('react-native/Libraries/Renderer/shims/createReactNativeComponentClass');
 const nullthrows = require('fbjs/lib/nullthrows');
-const processColor = require('processColor');
+const processColor = require('react-native/Libraries/StyleSheet/processColor');
 
-import type {PressEvent} from 'CoreEventTypes';
-import type {NativeComponent} from 'ReactNative';
-import type {PressRetentionOffset, TextProps} from 'TextProps';
+import type {PressEvent} from 'react-native/Libraries/Types/CoreEventTypes';
+import type {NativeComponent} from 'react-native/Libraries/Renderer/shims/ReactNative';
+import type {PressRetentionOffset, TextProps} from 'react-native/Libraries/Text/TextProps';
 
 type ResponseHandlers = $ReadOnly<{|
   onStartShouldSetResponder: () => boolean,

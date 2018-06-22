@@ -10,8 +10,8 @@
 
 'use strict';
 
-const createStrictShapeTypeChecker = require('createStrictShapeTypeChecker');
-const flattenStyle = require('flattenStyle');
+const createStrictShapeTypeChecker = require('react-native/Libraries/Utilities/createStrictShapeTypeChecker');
+const flattenStyle = require('react-native/Libraries/StyleSheet/flattenStyle');
 
 function StyleSheetPropType(shape: {
   [key: string]: ReactPropsCheckType,

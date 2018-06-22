@@ -10,7 +10,7 @@
 
 'use strict';
 
-const parseErrorStack = require('parseErrorStack');
+const parseErrorStack = require('react-native/Libraries/Core/Devtools/parseErrorStack');
 
 function getFakeError() {
   return new Error('Happy Cat');

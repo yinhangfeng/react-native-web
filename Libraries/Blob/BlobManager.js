@@ -10,11 +10,11 @@
 
 'use strict';
 
-const Blob = require('Blob');
-const BlobRegistry = require('BlobRegistry');
-const {BlobModule} = require('NativeModules');
+const Blob = require('react-native/Libraries/Blob/Blob');
+const BlobRegistry = require('react-native/Libraries/Blob/BlobRegistry');
+const {BlobModule} = require('react-native/Libraries/BatchedBridge/NativeModules');
 
-import type {BlobData, BlobOptions} from 'BlobTypes';
+import type {BlobData, BlobOptions} from 'react-native/Libraries/Blob/BlobTypes';
 
 /*eslint-disable no-bitwise */
 /*eslint-disable eqeqeq */

@@ -10,14 +10,14 @@
 
 'use strict';
 
-const React = require('React');
-const TextAncestor = require('TextAncestor');
+const React = require('react-native/Libraries/react-native/React');
+const TextAncestor = require('react-native/Libraries/Text/TextAncestor');
 
 const invariant = require('fbjs/lib/invariant');
-const requireNativeComponent = require('requireNativeComponent');
+const requireNativeComponent = require('react-native/Libraries/ReactNative/requireNativeComponent');
 
-import type {NativeComponent} from 'ReactNative';
-import type {ViewProps} from 'ViewPropTypes';
+import type {NativeComponent} from 'react-native/Libraries/Renderer/shims/ReactNative';
+import type {ViewProps} from 'react-native/Libraries/Components/View/ViewPropTypes';
 
 export type Props = ViewProps;
 

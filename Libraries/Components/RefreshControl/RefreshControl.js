@@ -10,18 +10,18 @@
 
 'use strict';
 
-const Platform = require('Platform');
-const React = require('React');
-const {NativeComponent} = require('ReactNative');
+const Platform = require('react-native/Libraries/Utilities/Platform');
+const React = require('react-native/Libraries/react-native/React');
+const {NativeComponent} = require('react-native/Libraries/Renderer/shims/ReactNative');
 
-const requireNativeComponent = require('requireNativeComponent');
+const requireNativeComponent = require('react-native/Libraries/ReactNative/requireNativeComponent');
 const nullthrows = require('fbjs/lib/nullthrows');
 
-import type {ColorValue} from 'StyleSheetTypes';
-import type {ViewProps} from 'ViewPropTypes';
+import type {ColorValue} from 'react-native/Libraries/StyleSheet/StyleSheetTypes';
+import type {ViewProps} from 'react-native/Libraries/Components/View/ViewPropTypes';
 
 if (Platform.OS === 'android') {
-  const AndroidSwipeRefreshLayout = require('UIManager')
+  const AndroidSwipeRefreshLayout = require('react-native/Libraries/ReactNative/UIManager')
     .AndroidSwipeRefreshLayout;
   var RefreshLayoutConsts = AndroidSwipeRefreshLayout
     ? AndroidSwipeRefreshLayout.Constants

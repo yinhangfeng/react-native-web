@@ -10,7 +10,7 @@
 
 'use strict';
 
-const PixelRatio = require('PixelRatio');
+const PixelRatio = require('react-native/Libraries/Utilities/PixelRatio');
 
 const scale = PixelRatio.get();
 

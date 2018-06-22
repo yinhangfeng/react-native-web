@@ -10,14 +10,14 @@
 
 'use strict';
 
-const React = require('React');
+const React = require('react-native/Libraries/react-native/React');
 const PropTypes = require('prop-types');
-const ReactNative = require('ReactNative');
-const UIManager = require('UIManager');
-const ViewPropTypes = require('ViewPropTypes');
+const ReactNative = require('react-native/Libraries/Renderer/shims/ReactNative');
+const UIManager = require('react-native/Libraries/ReactNative/UIManager');
+const ViewPropTypes = require('react-native/Libraries/Components/View/ViewPropTypes');
 
-const dismissKeyboard = require('dismissKeyboard');
-const requireNativeComponent = require('requireNativeComponent');
+const dismissKeyboard = require('react-native/Libraries/Utilities/dismissKeyboard');
+const requireNativeComponent = require('react-native/Libraries/ReactNative/requireNativeComponent');
 
 const NativeAndroidViewPager = requireNativeComponent('AndroidViewPager');
 

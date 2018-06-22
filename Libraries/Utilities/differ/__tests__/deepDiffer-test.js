@@ -10,7 +10,7 @@
 
 'use strict';
 
-const deepDiffer = require('deepDiffer');
+const deepDiffer = require('react-native/Libraries/Utilities/differ/deepDiffer');
 
 describe('deepDiffer', function() {
   it('should diff primitives of the same type', () => {

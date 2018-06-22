@@ -11,8 +11,8 @@
 
 'use strict';
 
-const EmitterSubscription = require('EmitterSubscription');
-const EventSubscriptionVendor = require('EventSubscriptionVendor');
+const EmitterSubscription = require('react-native/Libraries/vendor/emitter/EmitterSubscription');
+const EventSubscriptionVendor = require('react-native/Libraries/vendor/emitter/EventSubscriptionVendor');
 
 const emptyFunction = require('fbjs/lib/emptyFunction');
 const invariant = require('fbjs/lib/invariant');

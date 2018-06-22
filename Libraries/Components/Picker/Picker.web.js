@@ -12,30 +12,30 @@
 
 'use strict';
 
-var ColorPropType = require('ColorPropType');
+var ColorPropType = require('react-native/Libraries/StyleSheet/ColorPropType');
 // var PickerIOS = require('PickerIOS');
 // var PickerAndroid = require('PickerAndroid');
-// var Platform = require('Platform');
-var React = require('React');
+// var Platform = require('react-native/Libraries/Utilities/Platform');
+var React = require('react-native/Libraries/react-native/React');
 const PropTypes = require('prop-types');
-var StyleSheetPropType = require('StyleSheetPropType');
-var TextStylePropTypes = require('TextStylePropTypes');
-// var UnimplementedView = require('UnimplementedView');
-const ViewPropTypes = require('ViewPropTypes');
-var ViewStylePropTypes = require('ViewStylePropTypes');
+var StyleSheetPropType = require('react-native/Libraries/StyleSheet/StyleSheetPropType');
+var TextStylePropTypes = require('react-native/Libraries/Text/TextStylePropTypes');
+// var UnimplementedView = require('react-native/Libraries/Components/UnimplementedViews/UnimplementedView');
+const ViewPropTypes = require('react-native/Libraries/Components/View/ViewPropTypes');
+var ViewStylePropTypes = require('react-native/Libraries/Components/View/ViewStylePropTypes');
 
 var itemStylePropType = StyleSheetPropType(TextStylePropTypes);
 
-var View = require('View');
-var StyleSheet = require('StyleSheet');
+var View = require('react-native/Libraries/Components/View/View');
+var StyleSheet = require('react-native/Libraries/StyleSheet/StyleSheet');
 
 var pickerStyleType = StyleSheetPropType({
   ...ViewStylePropTypes,
   color: ColorPropType,
 });
 
-const createWebCoreElement = require('createWebCoreElement');
-const CSSClassNames = require('CSSClassNames');
+const createWebCoreElement = require('react-native/Libraries/lrnw/createWebCoreElement');
+const CSSClassNames = require('react-native/Libraries/StyleSheet/CSSClassNames');
 
 var MODE_DIALOG = 'dialog';
 var MODE_DROPDOWN = 'dropdown';

@@ -36,7 +36,7 @@ describe('TaskQueue', () => {
   beforeEach(() => {
     jest.resetModules();
     onMoreTasks = jest.fn();
-    const TaskQueue = require('TaskQueue');
+    const TaskQueue = require('react-native/Libraries/Interaction/TaskQueue');
     taskQueue = new TaskQueue({onMoreTasks});
     sequenceId = 0;
   });

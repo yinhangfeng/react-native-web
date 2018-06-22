@@ -10,17 +10,17 @@
 
 'use strict';
 
-const Animated = require('Animated');
-const Easing = require('Easing');
-const React = require('React');
-const StyleSheet = require('StyleSheet');
-const Text = require('Text');
-const View = require('View');
-const YellowBoxImageSource = require('YellowBoxImageSource');
-const YellowBoxStyle = require('YellowBoxStyle');
+const Animated = require('react-native/Libraries/Animated/src/Animated');
+const Easing = require('react-native/Libraries/Animated/src/Easing');
+const React = require('react-native/Libraries/react-native/React');
+const StyleSheet = require('react-native/Libraries/StyleSheet/StyleSheet');
+const Text = require('react-native/Libraries/Text/Text');
+const View = require('react-native/Libraries/Components/View/View');
+const YellowBoxImageSource = require('react-native/Libraries/YellowBox/UI/YellowBoxImageSource');
+const YellowBoxStyle = require('react-native/Libraries/YellowBox/UI/YellowBoxStyle');
 
-import type {CompositeAnimation} from 'AnimatedImplementation';
-import type AnimatedInterpolation from 'AnimatedInterpolation';
+import type {CompositeAnimation} from 'react-native/Libraries/Animated/src/AnimatedImplementation';
+import type AnimatedInterpolation from 'react-native/Libraries/Animated/src/nodes/AnimatedInterpolation';
 
 type Props = $ReadOnly<{|
   status: 'COMPLETE' | 'FAILED' | 'NONE' | 'PENDING',

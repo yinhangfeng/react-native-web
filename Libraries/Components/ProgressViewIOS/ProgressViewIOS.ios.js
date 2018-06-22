@@ -10,20 +10,20 @@
 
 'use strict';
 
-const Image = require('Image');
-const NativeMethodsMixin = require('NativeMethodsMixin');
-const React = require('React');
-const ReactNative = require('ReactNative');
+const Image = require('react-native/Libraries/Image/Image');
+const NativeMethodsMixin = require('react-native/Libraries/Renderer/shims/NativeMethodsMixin');
+const React = require('react-native/Libraries/react-native/React');
+const ReactNative = require('react-native/Libraries/Renderer/shims/ReactNative');
 const PropTypes = require('prop-types');
-const StyleSheet = require('StyleSheet');
-const ViewPropTypes = require('ViewPropTypes');
+const StyleSheet = require('react-native/Libraries/StyleSheet/StyleSheet');
+const ViewPropTypes = require('react-native/Libraries/Components/View/ViewPropTypes');
 
 const createReactClass = require('create-react-class');
-const requireNativeComponent = require('requireNativeComponent');
+const requireNativeComponent = require('react-native/Libraries/ReactNative/requireNativeComponent');
 
-import type {ImageSource} from 'ImageSource';
-import type {ColorValue} from 'StyleSheetTypes';
-import type {ViewProps} from 'ViewPropTypes';
+import type {ImageSource} from 'react-native/Libraries/Image/ImageSource';
+import type {ColorValue} from 'react-native/Libraries/StyleSheet/StyleSheetTypes';
+import type {ViewProps} from 'react-native/Libraries/Components/View/ViewPropTypes';
 
 const RCTProgressView = requireNativeComponent('RCTProgressView');
 

@@ -10,7 +10,7 @@
 
 'use strict';
 
-const React = require('React');
+const React = require('react-native/Libraries/react-native/React');
 
 /**
  * Whether the current element is the descendant of a <Text> element.

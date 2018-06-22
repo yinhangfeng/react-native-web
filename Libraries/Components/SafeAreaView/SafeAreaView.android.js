@@ -10,4 +10,4 @@
 
 'use strict';
 
-module.exports = require('View');
+module.exports = require('react-native/Libraries/Components/View/View');

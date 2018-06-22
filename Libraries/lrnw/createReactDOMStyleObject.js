@@ -2,7 +2,7 @@
 
 const getVendorPropertyName = require('domkit/getVendorPropertyName');
 
-const flattenStyle = require('flattenStyle');
+const flattenStyle = require('react-native/Libraries/StyleSheet/flattenStyle');
 const {
   convertTransform,
   convertTransformMatrix,

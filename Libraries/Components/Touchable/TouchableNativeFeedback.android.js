@@ -9,17 +9,17 @@
 
 'use strict';
 
-const Platform = require('Platform');
-const React = require('React');
+const Platform = require('react-native/Libraries/Utilities/Platform');
+const React = require('react-native/Libraries/react-native/React');
 const PropTypes = require('prop-types');
-const ReactNative = require('ReactNative');
-const Touchable = require('Touchable');
-const TouchableWithoutFeedback = require('TouchableWithoutFeedback');
-const UIManager = require('UIManager');
+const ReactNative = require('react-native/Libraries/Renderer/shims/ReactNative');
+const Touchable = require('react-native/Libraries/Components/Touchable/Touchable');
+const TouchableWithoutFeedback = require('react-native/Libraries/Components/Touchable/TouchableWithoutFeedback');
+const UIManager = require('react-native/Libraries/ReactNative/UIManager');
 
 const createReactClass = require('create-react-class');
-const ensurePositiveDelayProps = require('ensurePositiveDelayProps');
-const processColor = require('processColor');
+const ensurePositiveDelayProps = require('react-native/Libraries/Components/Touchable/ensurePositiveDelayProps');
+const processColor = require('react-native/Libraries/StyleSheet/processColor');
 
 const rippleBackgroundPropType = PropTypes.shape({
   type: PropTypes.oneOf(['RippleAndroid']),

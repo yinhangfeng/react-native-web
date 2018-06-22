@@ -11,11 +11,11 @@
  */
 'use strict';
 
-var Dimensions = require('Dimensions');
-var ReactNative = require('ReactNative');
-var Subscribable = require('Subscribable');
-var TextInputState = require('TextInputState');
-var UIManager = require('UIManager');
+var Dimensions = require('react-native/Libraries/Utilities/Dimensions');
+var ReactNative = require('react-native/Libraries/Renderer/shims/ReactNative');
+var Subscribable = require('react-native/Libraries/Components/Subscribable');
+var TextInputState = require('react-native/Libraries/Components/TextInput/TextInputState');
+var UIManager = require('react-native/Libraries/ReactNative/UIManager');
 
 var invariant = require('fbjs/lib/invariant');
 

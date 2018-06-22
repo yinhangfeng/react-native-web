@@ -10,13 +10,13 @@
 
 'use strict';
 
-const React = require('React');
+const React = require('react-native/Libraries/react-native/React');
 const SafeAreaView = require('SafeAreaView');
-const StyleSheet = require('StyleSheet');
-const Text = require('Text');
-const View = require('View');
-const YellowBoxPressable = require('YellowBoxPressable');
-const YellowBoxStyle = require('YellowBoxStyle');
+const StyleSheet = require('react-native/Libraries/StyleSheet/StyleSheet');
+const Text = require('react-native/Libraries/Text/Text');
+const View = require('react-native/Libraries/Components/View/View');
+const YellowBoxPressable = require('react-native/Libraries/YellowBox/UI/YellowBoxPressable');
+const YellowBoxStyle = require('react-native/Libraries/YellowBox/UI/YellowBoxStyle');
 
 type Props = $ReadOnly<{|
   onDismiss: () => void,

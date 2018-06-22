@@ -10,8 +10,8 @@
 
 'use strict';
 
-const NativeEventEmitter = require('NativeEventEmitter');
-const {StatusBarManager} = require('NativeModules');
+const NativeEventEmitter = require('react-native/Libraries/EventEmitter/NativeEventEmitter');
+const {StatusBarManager} = require('react-native/Libraries/BatchedBridge/NativeModules');
 
 /**
  * Use `StatusBar` for mutating the status bar.

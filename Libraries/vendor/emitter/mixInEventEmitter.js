@@ -10,9 +10,9 @@
 
 'use strict';
 
-const EventEmitter = require('EventEmitter');
-const EventEmitterWithHolding = require('EventEmitterWithHolding');
-const EventHolder = require('EventHolder');
+const EventEmitter = require('react-native/Libraries/vendor/emitter/EventEmitter');
+const EventEmitterWithHolding = require('react-native/Libraries/vendor/emitter/EventEmitterWithHolding');
+const EventHolder = require('react-native/Libraries/vendor/emitter/EventHolder');
 
 const invariant = require('fbjs/lib/invariant');
 /* $FlowFixMe(>=0.54.0 site=react_native_oss) This comment suppresses an error
@@ -20,7 +20,7 @@ const invariant = require('fbjs/lib/invariant');
  * run Flow. */
 const keyOf = require('fbjs/lib/keyOf');
 
-import type EmitterSubscription from 'EmitterSubscription';
+import type EmitterSubscription from 'react-native/Libraries/vendor/emitter/EmitterSubscription';
 
 const TYPES_KEY = keyOf({__types: true});
 
@@ -123,7 +123,7 @@ const EventEmitterMixin = {
     if (!this.__eventEmitter) {
       let emitter = new EventEmitter();
       if (__DEV__) {
-        const EventValidator = require('EventValidator');
+        const EventValidator = require('react-native/Libraries/vendor/emitter/EventValidator');
         emitter = EventValidator.addValidation(emitter, this.__types);
       }
 

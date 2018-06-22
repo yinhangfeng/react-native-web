@@ -13,10 +13,10 @@
 
 'use strict';
 
-const AssetRegistry = require('AssetRegistry');
-const AssetSourceResolver = require('AssetSourceResolver');
+const AssetRegistry = require('react-native/Libraries/Image/AssetRegistry');
+const AssetSourceResolver = require('react-native/Libraries/Image/AssetSourceResolver');
 
-import type {ResolvedAssetSource} from 'AssetSourceResolver';
+import type {ResolvedAssetSource} from 'react-native/Libraries/Image/AssetSourceResolver';
 
 let _customSourceTransformer, _serverURL, _scriptURL;
 
@@ -29,7 +29,7 @@ function getSourceCodeScriptURL(): ?string {
   let sourceCode =
     global.nativeExtensions && global.nativeExtensions.SourceCode;
   if (!sourceCode) {
-    const NativeModules = require('NativeModules');
+    const NativeModules = require('react-native/Libraries/BatchedBridge/NativeModules');
     sourceCode = NativeModules && NativeModules.SourceCode;
   }
   _sourceCodeScriptURL = sourceCode.scriptURL;

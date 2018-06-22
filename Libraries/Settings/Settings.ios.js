@@ -10,8 +10,8 @@
 
 'use strict';
 
-const RCTDeviceEventEmitter = require('RCTDeviceEventEmitter');
-const RCTSettingsManager = require('NativeModules').SettingsManager;
+const RCTDeviceEventEmitter = require('react-native/Libraries/EventEmitter/RCTDeviceEventEmitter');
+const RCTSettingsManager = require('react-native/Libraries/BatchedBridge/NativeModules').SettingsManager;
 
 const invariant = require('fbjs/lib/invariant');
 

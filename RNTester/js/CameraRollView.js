@@ -26,8 +26,8 @@ var {
   View,
 } = ReactNative;
 
-var groupByEveryN = require('groupByEveryN');
-var logError = require('logError');
+var groupByEveryN = require('react-native/Libraries/Utilities/groupByEveryN');
+var logError = require('react-native/Libraries/Utilities/logError');
 
 var propTypes = {
   /**

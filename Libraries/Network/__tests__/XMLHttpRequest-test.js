@@ -10,7 +10,7 @@
 
 'use strict';
 jest.unmock('Platform');
-const Platform = require('Platform');
+const Platform = require('react-native/Libraries/Utilities/Platform');
 let requestId = 1;
 
 function setRequestId(id) {
@@ -34,7 +34,7 @@ jest.dontMock('event-target-shim').setMock('NativeModules', {
   },
 });
 
-const XMLHttpRequest = require('XMLHttpRequest');
+const XMLHttpRequest = require('react-native/Libraries/Network/XMLHttpRequest');
 
 describe('XMLHttpRequest', function() {
   var xhr;

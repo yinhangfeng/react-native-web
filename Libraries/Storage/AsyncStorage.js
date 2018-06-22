@@ -12,7 +12,7 @@
 
 'use strict';
 
-const NativeModules = require('NativeModules');
+const NativeModules = require('react-native/Libraries/BatchedBridge/NativeModules');
 
 // Use RocksDB if available, then SQLite, then file storage.
 const RCTAsyncStorage =

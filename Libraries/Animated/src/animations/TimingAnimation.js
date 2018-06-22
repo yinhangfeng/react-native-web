@@ -34,7 +34,7 @@ export type TimingAnimationConfigSingle = AnimationConfig & {
 let _easeInOut;
 function easeInOut() {
   if (!_easeInOut) {
-    const Easing = require('Easing');
+    const Easing = require('react-native/Libraries/Animated/src/Easing');
     _easeInOut = Easing.inOut(Easing.ease);
   }
   return _easeInOut;

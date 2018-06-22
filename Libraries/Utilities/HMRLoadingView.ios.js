@@ -10,8 +10,8 @@
 
 'use strict';
 
-const processColor = require('processColor');
-const {DevLoadingView} = require('NativeModules');
+const processColor = require('react-native/Libraries/StyleSheet/processColor');
+const {DevLoadingView} = require('react-native/Libraries/BatchedBridge/NativeModules');
 
 class HMRLoadingView {
   static showMessage(message: string) {

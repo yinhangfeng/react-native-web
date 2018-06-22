@@ -22,7 +22,7 @@ var {
   Animated,
 } = ReactNative;
 
-import type {ViewPagerScrollState} from 'ViewPagerAndroid';
+import type {ViewPagerScrollState} from 'react-native/Libraries/Components/ViewPager/ViewPagerAndroid';
 
 const AnimatedViewPagerAndroid = Animated.createAnimatedComponent(ViewPagerAndroid);
 

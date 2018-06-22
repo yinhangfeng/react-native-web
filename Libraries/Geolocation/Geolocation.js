@@ -10,11 +10,11 @@
 
 'use strict';
 
-const NativeEventEmitter = require('NativeEventEmitter');
-const RCTLocationObserver = require('NativeModules').LocationObserver;
+const NativeEventEmitter = require('react-native/Libraries/EventEmitter/NativeEventEmitter');
+const RCTLocationObserver = require('react-native/Libraries/BatchedBridge/NativeModules').LocationObserver;
 
 const invariant = require('fbjs/lib/invariant');
-const logError = require('logError');
+const logError = require('react-native/Libraries/Utilities/logError');
 /* $FlowFixMe(>=0.54.0 site=react_native_oss) This comment suppresses an error
  * found when Flow v0.54 was deployed. To see the error delete this comment and
  * run Flow. */
@@ -22,8 +22,8 @@ const warning = require('fbjs/lib/warning');
 
 const LocationEventEmitter = new NativeEventEmitter(RCTLocationObserver);
 
-const Platform = require('Platform');
-const PermissionsAndroid = require('PermissionsAndroid');
+const Platform = require('react-native/Libraries/Utilities/Platform');
+const PermissionsAndroid = require('react-native/Libraries/PermissionsAndroid/PermissionsAndroid');
 
 let subscriptions = [];
 let updatesEnabled = false;

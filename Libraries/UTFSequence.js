@@ -10,7 +10,7 @@
 
 'use strict';
 
-const deepFreezeAndThrowOnMutationInDev = require('deepFreezeAndThrowOnMutationInDev');
+const deepFreezeAndThrowOnMutationInDev = require('react-native/Libraries/Utilities/deepFreezeAndThrowOnMutationInDev');
 
 /**
  * A collection of Unicode sequences for various characters and emoji.

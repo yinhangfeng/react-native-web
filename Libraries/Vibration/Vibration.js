@@ -11,8 +11,8 @@
 
 'use strict';
 
-const RCTVibration = require('NativeModules').Vibration;
-const Platform = require('Platform');
+const RCTVibration = require('react-native/Libraries/BatchedBridge/NativeModules').Vibration;
+const Platform = require('react-native/Libraries/Utilities/Platform');
 
 /**
  * Vibration API

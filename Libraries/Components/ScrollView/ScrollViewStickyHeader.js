@@ -9,12 +9,12 @@
  */
 'use strict';
 
-const AnimatedImplementation = require('AnimatedImplementation');
-const React = require('React');
-const StyleSheet = require('StyleSheet');
-const View = require('View');
+const AnimatedImplementation = require('react-native/Libraries/Animated/src/AnimatedImplementation');
+const React = require('react-native/Libraries/react-native/React');
+const StyleSheet = require('react-native/Libraries/StyleSheet/StyleSheet');
+const View = require('react-native/Libraries/Components/View/View');
 
-import type {LayoutEvent} from 'CoreEventTypes';
+import type {LayoutEvent} from 'react-native/Libraries/Types/CoreEventTypes';
 
 const AnimatedView = AnimatedImplementation.createAnimatedComponent(View);
 

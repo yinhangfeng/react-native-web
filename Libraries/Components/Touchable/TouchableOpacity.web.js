@@ -13,23 +13,23 @@
 
 // Note (avik): add @flow when Flow supports spread properties in propTypes
 
-// var Animated = require('Animated');
-var NativeMethodsMixin = require('NativeMethodsMixin');
-var React = require('React');
+// var Animated = require('react-native/Libraries/Animated/src/Animated');
+var NativeMethodsMixin = require('react-native/Libraries/Renderer/shims/NativeMethodsMixin');
+var React = require('react-native/Libraries/react-native/React');
 var PropTypes = require('prop-types');
 var TimerMixin = require('react-timer-mixin');
-var Touchable = require('Touchable');
-var TouchableWithoutFeedback = require('TouchableWithoutFeedback');
+var Touchable = require('react-native/Libraries/Components/Touchable/Touchable');
+var TouchableWithoutFeedback = require('react-native/Libraries/Components/Touchable/TouchableWithoutFeedback');
 
 var createReactClass = require('create-react-class');
-// var ensurePositiveDelayProps = require('ensurePositiveDelayProps');
-var flattenStyle = require('flattenStyle');
+// var ensurePositiveDelayProps = require('react-native/Libraries/Components/Touchable/ensurePositiveDelayProps');
+var flattenStyle = require('react-native/Libraries/StyleSheet/flattenStyle');
 
-var View = require('View');
+var View = require('react-native/Libraries/Components/View/View');
 var ReactDOM = require('react-dom');
-var CSSClassNames = require('CSSClassNames');
+var CSSClassNames = require('react-native/Libraries/StyleSheet/CSSClassNames');
 
-const RWPerformance = require('RWPerformance');
+const RWPerformance = require('react-native/Libraries/lrnw/RWPerformance');
 
 // 对低性能设备 不使用触摸效果
 const showActive = RWPerformance.level >= RWPerformance.MEDIUM;

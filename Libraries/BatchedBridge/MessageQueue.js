@@ -10,12 +10,12 @@
 
 'use strict';
 
-const ErrorUtils = require('ErrorUtils');
-const Systrace = require('Systrace');
+const ErrorUtils = require('react-native/Libraries/vendor/core/ErrorUtils');
+const Systrace = require('react-native/Libraries/Performance/Systrace');
 
-const deepFreezeAndThrowOnMutationInDev = require('deepFreezeAndThrowOnMutationInDev');
+const deepFreezeAndThrowOnMutationInDev = require('react-native/Libraries/Utilities/deepFreezeAndThrowOnMutationInDev');
 const invariant = require('fbjs/lib/invariant');
-const stringifySafe = require('stringifySafe');
+const stringifySafe = require('react-native/Libraries/Utilities/stringifySafe');
 
 export type SpyData = {
   type: number,
@@ -311,7 +311,7 @@ class MessageQueue {
   __callImmediates() {
     Systrace.beginEvent('JSTimers.callImmediates()');
     if (!JSTimers) {
-      JSTimers = require('JSTimers');
+      JSTimers = require('react-native/Libraries/Core/Timers/JSTimers');
     }
     JSTimers.callImmediates();
     Systrace.endEvent();

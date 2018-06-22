@@ -11,7 +11,7 @@
 
 'use strict';
 
-const YellowBoxCategory = require('YellowBoxCategory');
+const YellowBoxCategory = require('react-native/Libraries/YellowBox/Data/YellowBoxCategory');
 
 describe('YellowBoxCategory', () => {
   it('parses strings', () => {

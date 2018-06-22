@@ -10,7 +10,7 @@
 
 'use strict';
 
-const bezier = require('bezier');
+const bezier = require('react-native/Libraries/Animated/src/bezier');
 
 const identity = function(x) {
   return x;

@@ -10,23 +10,23 @@
 
 'use strict';
 
-const Platform = require('Platform');
-const React = require('React');
-const ScrollView = require('ScrollView');
-const StyleSheet = require('StyleSheet');
-const Text = require('Text');
-const View = require('View');
-const YellowBoxCategory = require('YellowBoxCategory');
-const YellowBoxInspectorFooter = require('YellowBoxInspectorFooter');
-const YellowBoxInspectorHeader = require('YellowBoxInspectorHeader');
-const YellowBoxInspectorSourceMapStatus = require('YellowBoxInspectorSourceMapStatus');
-const YellowBoxInspectorStackFrame = require('YellowBoxInspectorStackFrame');
-const YellowBoxStyle = require('YellowBoxStyle');
+const Platform = require('react-native/Libraries/Utilities/Platform');
+const React = require('react-native/Libraries/react-native/React');
+const ScrollView = require('react-native/Libraries/Components/ScrollView/ScrollView');
+const StyleSheet = require('react-native/Libraries/StyleSheet/StyleSheet');
+const Text = require('react-native/Libraries/Text/Text');
+const View = require('react-native/Libraries/Components/View/View');
+const YellowBoxCategory = require('react-native/Libraries/YellowBox/Data/YellowBoxCategory');
+const YellowBoxInspectorFooter = require('react-native/Libraries/YellowBox/UI/YellowBoxInspectorFooter');
+const YellowBoxInspectorHeader = require('react-native/Libraries/YellowBox/UI/YellowBoxInspectorHeader');
+const YellowBoxInspectorSourceMapStatus = require('react-native/Libraries/YellowBox/UI/YellowBoxInspectorSourceMapStatus');
+const YellowBoxInspectorStackFrame = require('react-native/Libraries/YellowBox/UI/YellowBoxInspectorStackFrame');
+const YellowBoxStyle = require('react-native/Libraries/YellowBox/UI/YellowBoxStyle');
 
-const openFileInEditor = require('openFileInEditor');
+const openFileInEditor = require('react-native/Libraries/Core/Devtools/openFileInEditor');
 
-import type YellowBoxWarning from 'YellowBoxWarning';
-import type {SymbolicationRequest} from 'YellowBoxWarning';
+import type YellowBoxWarning from 'react-native/Libraries/YellowBox/Data/YellowBoxWarning';
+import type {SymbolicationRequest} from 'react-native/Libraries/YellowBox/Data/YellowBoxWarning';
 
 type Props = $ReadOnly<{|
   onDismiss: () => void,

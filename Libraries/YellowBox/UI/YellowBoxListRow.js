@@ -10,16 +10,16 @@
 
 'use strict';
 
-const React = require('React');
-const StyleSheet = require('StyleSheet');
-const Text = require('Text');
-const YellowBoxPressable = require('YellowBoxPressable');
-const View = require('View');
-const YellowBoxCategory = require('YellowBoxCategory');
-const YellowBoxStyle = require('YellowBoxStyle');
-const YellowBoxWarning = require('YellowBoxWarning');
+const React = require('react-native/Libraries/react-native/React');
+const StyleSheet = require('react-native/Libraries/StyleSheet/StyleSheet');
+const Text = require('react-native/Libraries/Text/Text');
+const YellowBoxPressable = require('react-native/Libraries/YellowBox/UI/YellowBoxPressable');
+const View = require('react-native/Libraries/Components/View/View');
+const YellowBoxCategory = require('react-native/Libraries/YellowBox/Data/YellowBoxCategory');
+const YellowBoxStyle = require('react-native/Libraries/YellowBox/UI/YellowBoxStyle');
+const YellowBoxWarning = require('react-native/Libraries/YellowBox/Data/YellowBoxWarning');
 
-import type {Category} from 'YellowBoxCategory';
+import type {Category} from 'react-native/Libraries/YellowBox/Data/YellowBoxCategory';
 
 type Props = $ReadOnly<{|
   category: Category,

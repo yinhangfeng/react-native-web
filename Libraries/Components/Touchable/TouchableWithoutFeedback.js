@@ -10,27 +10,27 @@
 
 'use strict';
 
-const EdgeInsetsPropType = require('EdgeInsetsPropType');
-const React = require('React');
+const EdgeInsetsPropType = require('react-native/Libraries/StyleSheet/EdgeInsetsPropType');
+const React = require('react-native/Libraries/react-native/React');
 const PropTypes = require('prop-types');
 const TimerMixin = require('react-timer-mixin');
-const Touchable = require('Touchable');
+const Touchable = require('react-native/Libraries/Components/Touchable/Touchable');
 
 const createReactClass = require('create-react-class');
-const ensurePositiveDelayProps = require('ensurePositiveDelayProps');
+const ensurePositiveDelayProps = require('react-native/Libraries/Components/Touchable/ensurePositiveDelayProps');
 const warning = require('fbjs/lib/warning');
 
 const {
   AccessibilityComponentTypes,
   AccessibilityTraits,
-} = require('ViewAccessibility');
+} = require('react-native/Libraries/Components/View/ViewAccessibility');
 
-import type {PressEvent} from 'CoreEventTypes';
-import type {EdgeInsetsProp} from 'EdgeInsetsPropType';
+import type {PressEvent} from 'react-native/Libraries/Types/CoreEventTypes';
+import type {EdgeInsetsProp} from 'react-native/Libraries/StyleSheet/EdgeInsetsPropType';
 import type {
   AccessibilityComponentType,
   AccessibilityTraits as AccessibilityTraitsFlow,
-} from 'ViewAccessibility';
+} from 'react-native/Libraries/Components/View/ViewAccessibility';
 
 const PRESS_RETENTION_OFFSET = {top: 20, left: 20, right: 20, bottom: 30};
 

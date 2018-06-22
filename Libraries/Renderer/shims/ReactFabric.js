@@ -10,17 +10,17 @@
 
 'use strict';
 
-const BatchedBridge = require('BatchedBridge');
+const BatchedBridge = require('react-native/Libraries/BatchedBridge/BatchedBridge');
 
 // TODO @sema: Adjust types
-import type {ReactNativeType} from 'ReactNativeTypes';
+import type {ReactNativeType} from 'react-native/Libraries/Renderer/shims/ReactNativeTypes';
 
 let ReactFabric;
 
 if (__DEV__) {
-  ReactFabric = require('ReactFabric-dev');
+  ReactFabric = require('react-native/Libraries/Renderer/oss/ReactFabric-dev');
 } else {
-  ReactFabric = require('ReactFabric-prod');
+  ReactFabric = require('react-native/Libraries/Renderer/oss/ReactFabric-prod');
 }
 
 BatchedBridge.registerCallableModule('ReactFabric', ReactFabric);

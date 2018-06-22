@@ -10,14 +10,14 @@
 
 'use strict';
 
-const IncrementalGroup = require('IncrementalGroup');
-const React = require('React');
+const IncrementalGroup = require('react-native/Libraries/Experimental/IncrementalGroup');
+const React = require('react-native/Libraries/react-native/React');
 const PropTypes = require('prop-types');
-const View = require('View');
+const View = require('react-native/Libraries/Components/View/View');
 
-const ViewPropTypes = require('ViewPropTypes');
+const ViewPropTypes = require('react-native/Libraries/Components/View/ViewPropTypes');
 
-import type {Context} from 'Incremental';
+import type {Context} from 'react-native/Libraries/Experimental/Incremental';
 
 /**
  * WARNING: EXPERIMENTAL. Breaking changes will probably happen a lot and will

@@ -10,22 +10,22 @@
 
 'use strict';
 
-const ImageStylePropTypes = require('ImageStylePropTypes');
-const NativeMethodsMixin = require('NativeMethodsMixin');
-const NativeModules = require('NativeModules');
-const React = require('React');
+const ImageStylePropTypes = require('react-native/Libraries/Image/ImageStylePropTypes');
+const NativeMethodsMixin = require('react-native/Libraries/Renderer/shims/NativeMethodsMixin');
+const NativeModules = require('react-native/Libraries/BatchedBridge/NativeModules');
+const React = require('react-native/Libraries/react-native/React');
 const PropTypes = require('prop-types');
-const ReactNativeViewAttributes = require('ReactNativeViewAttributes');
-const StyleSheet = require('StyleSheet');
-const StyleSheetPropType = require('StyleSheetPropType');
-const TextAncestor = require('TextAncestor');
-const ViewPropTypes = require('ViewPropTypes');
+const ReactNativeViewAttributes = require('react-native/Libraries/Components/View/ReactNativeViewAttributes');
+const StyleSheet = require('react-native/Libraries/StyleSheet/StyleSheet');
+const StyleSheetPropType = require('react-native/Libraries/StyleSheet/StyleSheetPropType');
+const TextAncestor = require('react-native/Libraries/Text/TextAncestor');
+const ViewPropTypes = require('react-native/Libraries/Components/View/ViewPropTypes');
 
 const createReactClass = require('create-react-class');
-const flattenStyle = require('flattenStyle');
-const merge = require('merge');
-const requireNativeComponent = require('requireNativeComponent');
-const resolveAssetSource = require('resolveAssetSource');
+const flattenStyle = require('react-native/Libraries/StyleSheet/flattenStyle');
+const merge = require('react-native/Libraries/vendor/core/merge');
+const requireNativeComponent = require('react-native/Libraries/ReactNative/requireNativeComponent');
+const resolveAssetSource = require('react-native/Libraries/Image/resolveAssetSource');
 
 const {ImageLoader} = NativeModules;
 

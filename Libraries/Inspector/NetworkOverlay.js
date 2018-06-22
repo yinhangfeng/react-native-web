@@ -10,15 +10,15 @@
 
 'use strict';
 
-const ListView = require('ListView');
-const React = require('React');
-const ScrollView = require('ScrollView');
-const StyleSheet = require('StyleSheet');
-const Text = require('Text');
-const TouchableHighlight = require('TouchableHighlight');
-const View = require('View');
-const WebSocketInterceptor = require('WebSocketInterceptor');
-const XHRInterceptor = require('XHRInterceptor');
+const ListView = require('react-native/Libraries/Lists/ListView/ListView');
+const React = require('react-native/Libraries/react-native/React');
+const ScrollView = require('react-native/Libraries/Components/ScrollView/ScrollView');
+const StyleSheet = require('react-native/Libraries/StyleSheet/StyleSheet');
+const Text = require('react-native/Libraries/Text/Text');
+const TouchableHighlight = require('react-native/Libraries/Components/Touchable/TouchableHighlight');
+const View = require('react-native/Libraries/Components/View/View');
+const WebSocketInterceptor = require('react-native/Libraries/WebSocket/WebSocketInterceptor');
+const XHRInterceptor = require('react-native/Libraries/Network/XHRInterceptor');
 
 const LISTVIEW_CELL_HEIGHT = 15;
 const SEPARATOR_THICKNESS = 2;

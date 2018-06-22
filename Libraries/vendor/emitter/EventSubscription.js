@@ -10,7 +10,7 @@
 
 'use strict';
 
-import type EventSubscriptionVendor from 'EventSubscriptionVendor';
+import type EventSubscriptionVendor from 'react-native/Libraries/vendor/emitter/EventSubscriptionVendor';
 
 /**
  * EventSubscription represents a subscription to a particular event. It can

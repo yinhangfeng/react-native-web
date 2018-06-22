@@ -10,10 +10,10 @@
  */
 'use strict';
 
-const React = require('React');
+const React = require('react-native/Libraries/react-native/React');
 const ReactTestRenderer = require('react-test-renderer');
 
-const FlatList = require('FlatList');
+const FlatList = require('react-native/Libraries/Lists/FlatList');
 
 describe('FlatList', () => {
   it('renders simple list', () => {

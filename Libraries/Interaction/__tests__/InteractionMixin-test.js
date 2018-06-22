@@ -19,8 +19,8 @@ describe('InteractionMixin', () => {
 
   beforeEach(() => {
     jest.resetModules();
-    InteractionManager = require('InteractionManager');
-    InteractionMixin = require('InteractionMixin');
+    InteractionManager = require('react-native/Libraries/Interaction/InteractionManager');
+    InteractionMixin = require('react-native/Libraries/Interaction/InteractionMixin');
 
     component = Object.create(InteractionMixin);
   });

@@ -10,8 +10,8 @@
 
 'use strict';
 
-const NativeEventEmitter = require('NativeEventEmitter');
-const RCTPushNotificationManager = require('NativeModules')
+const NativeEventEmitter = require('react-native/Libraries/EventEmitter/NativeEventEmitter');
+const RCTPushNotificationManager = require('react-native/Libraries/BatchedBridge/NativeModules')
   .PushNotificationManager;
 const invariant = require('fbjs/lib/invariant');
 

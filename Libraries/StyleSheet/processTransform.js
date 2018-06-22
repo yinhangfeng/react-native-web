@@ -10,11 +10,11 @@
 
 'use strict';
 
-const MatrixMath = require('MatrixMath');
-const Platform = require('Platform');
+const MatrixMath = require('react-native/Libraries/Utilities/MatrixMath');
+const Platform = require('react-native/Libraries/Utilities/Platform');
 
 const invariant = require('fbjs/lib/invariant');
-const stringifySafe = require('stringifySafe');
+const stringifySafe = require('react-native/Libraries/Utilities/stringifySafe');
 
 /**
  * Generate a transform matrix based on the provided transforms, and use that

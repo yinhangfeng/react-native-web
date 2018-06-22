@@ -9,7 +9,7 @@
  */
 'use strict';
 
-const ColorPropType = require('ColorPropType');
+const ColorPropType = require('react-native/Libraries/StyleSheet/ColorPropType');
 const ReactPropTypes = require('prop-types');
 
 /**

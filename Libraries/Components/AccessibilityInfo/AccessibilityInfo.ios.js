@@ -10,9 +10,9 @@
 
 'use strict';
 
-const NativeModules = require('NativeModules');
-const Promise = require('Promise');
-const RCTDeviceEventEmitter = require('RCTDeviceEventEmitter');
+const NativeModules = require('react-native/Libraries/BatchedBridge/NativeModules');
+const Promise = require('react-native/Libraries/Promise');
+const RCTDeviceEventEmitter = require('react-native/Libraries/EventEmitter/RCTDeviceEventEmitter');
 
 const AccessibilityManager = NativeModules.AccessibilityManager;
 

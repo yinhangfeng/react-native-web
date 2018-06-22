@@ -10,7 +10,7 @@
 
 'use strict';
 
-const MatrixMath = require('MatrixMath');
+const MatrixMath = require('react-native/Libraries/Utilities/MatrixMath');
 
 function degreesToRadians(degrees) {
   return (degrees * Math.PI) / 180;

@@ -11,16 +11,16 @@
 
 'use strict';
 
-import type {StackFrame} from 'parseErrorStack';
+import type {StackFrame} from 'react-native/Libraries/Core/Devtools/parseErrorStack';
 
 jest.mock('symbolicateStackTrace');
 
-const YellowBoxSymbolication = require('YellowBoxSymbolication');
+const YellowBoxSymbolication = require('react-native/Libraries/YellowBox/Data/YellowBoxSymbolication');
 
 const symbolicateStackTrace: JestMockFn<
   $ReadOnlyArray<Array<StackFrame>>,
   Promise<Array<StackFrame>>,
-> = (require('symbolicateStackTrace'): any);
+> = (require('react-native/Libraries/Core/Devtools/symbolicateStackTrace'): any);
 
 const createStack = methodNames =>
   methodNames.map(methodName => ({

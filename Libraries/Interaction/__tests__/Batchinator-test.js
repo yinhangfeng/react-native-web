@@ -17,7 +17,7 @@ function expectToBeCalledOnce(fn) {
 }
 
 describe('Batchinator', () => {
-  const Batchinator = require('Batchinator');
+  const Batchinator = require('react-native/Libraries/Interaction/Batchinator');
 
   it('executes vanilla tasks', () => {
     const callback = jest.fn();

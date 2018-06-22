@@ -9,21 +9,21 @@
 
 'use strict';
 
-const EdgeInsetsPropType = require('EdgeInsetsPropType');
-const ActivityIndicator = require('ActivityIndicator');
-const React = require('React');
+const EdgeInsetsPropType = require('react-native/Libraries/StyleSheet/EdgeInsetsPropType');
+const ActivityIndicator = require('react-native/Libraries/Components/ActivityIndicator/ActivityIndicator');
+const React = require('react-native/Libraries/react-native/React');
 const PropTypes = require('prop-types');
-const ReactNative = require('ReactNative');
-const StyleSheet = require('StyleSheet');
-const UIManager = require('UIManager');
-const View = require('View');
-const ViewPropTypes = require('ViewPropTypes');
-const WebViewShared = require('WebViewShared');
+const ReactNative = require('react-native/Libraries/Renderer/shims/ReactNative');
+const StyleSheet = require('react-native/Libraries/StyleSheet/StyleSheet');
+const UIManager = require('react-native/Libraries/ReactNative/UIManager');
+const View = require('react-native/Libraries/Components/View/View');
+const ViewPropTypes = require('react-native/Libraries/Components/View/ViewPropTypes');
+const WebViewShared = require('react-native/Libraries/Components/WebView/WebViewShared');
 
-const deprecatedPropType = require('deprecatedPropType');
+const deprecatedPropType = require('react-native/Libraries/Utilities/deprecatedPropType');
 const keyMirror = require('fbjs/lib/keyMirror');
-const requireNativeComponent = require('requireNativeComponent');
-const resolveAssetSource = require('resolveAssetSource');
+const requireNativeComponent = require('react-native/Libraries/ReactNative/requireNativeComponent');
+const resolveAssetSource = require('react-native/Libraries/Image/resolveAssetSource');
 
 const RCT_WEBVIEW_REF = 'webview';
 

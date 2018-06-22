@@ -10,9 +10,9 @@
  */
 'use strict';
 
-const NativeEventEmitter = require('NativeEventEmitter');
-const NativeModules = require('NativeModules');
-const Platform = require('Platform');
+const NativeEventEmitter = require('react-native/Libraries/EventEmitter/NativeEventEmitter');
+const NativeModules = require('react-native/Libraries/BatchedBridge/NativeModules');
+const Platform = require('react-native/Libraries/Utilities/Platform');
 
 const invariant = require('fbjs/lib/invariant');
 

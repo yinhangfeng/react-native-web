@@ -36,7 +36,7 @@ if (global.window === undefined) {
   global.window = global;
 }
 
-const defineLazyObjectProperty = require('defineLazyObjectProperty');
+const defineLazyObjectProperty = require('react-native/Libraries/Utilities/defineLazyObjectProperty');
 
 /**
  * Sets an object's property. If a property with the same name exists, this will
@@ -92,13 +92,13 @@ if (env == null) {
 // Setup the Systrace profiling hooks if necessary
 // RW web 不需要
 // if (global.__RCTProfileIsProfiling) {
-//   const Systrace = require('Systrace');
+//   const Systrace = require('react-native/Libraries/Performance/Systrace');
 //   Systrace.setEnabled(true);
 // }
 
 // Set up console
 // RW web 不需要
-// const ExceptionsManager = require('ExceptionsManager');
+// const ExceptionsManager = require('react-native/Libraries/Core/ExceptionsManager');
 // ExceptionsManager.installConsoleErrorReporter();
 
 // Set up error handler
@@ -115,17 +115,17 @@ if (env == null) {
 //     }
 //   };
 
-//   const ErrorUtils = require('ErrorUtils');
+//   const ErrorUtils = require('react-native/Libraries/vendor/core/ErrorUtils');
 //   ErrorUtils.setGlobalHandler(handleError);
 // }
 
-// const {PlatformConstants} = require('NativeModules');
+// const {PlatformConstants} = require('react-native/Libraries/BatchedBridge/NativeModules');
 // if (PlatformConstants) {
 //   const formatVersion = version =>
 //     `${version.major}.${version.minor}.${version.patch}` +
 //     (version.prerelease !== null ? `-${version.prerelease}` : '');
 
-//   const ReactNativeVersion = require('ReactNativeVersion');
+//   const ReactNativeVersion = require('react-native/Libraries/Core/ReactNativeVersion');
 //   const nativeVersion = PlatformConstants.reactNativeVersion;
 //   if (ReactNativeVersion.version.major !== nativeVersion.major ||
 //       ReactNativeVersion.version.minor !== nativeVersion.minor) {
@@ -141,14 +141,14 @@ if (env == null) {
 
 // Set up collections
 // RW 没必要lazy
-const _shouldPolyfillCollection = require('_shouldPolyfillES6Collection');
+const _shouldPolyfillCollection = require('react-native/Libraries/vendor/core/_shouldPolyfillES6Collection');
 if (_shouldPolyfillCollection('Map')) {
-  // polyfillGlobal('Map', () => require('Map'));
-  global.Map = require('Map');
+  // polyfillGlobal('Map', () => require('react-native/Libraries/vendor/core/Map'));
+  global.Map = require('react-native/Libraries/vendor/core/Map');
 }
 if (_shouldPolyfillCollection('Set')) {
-  // polyfillGlobal('Set', () => require('Set'));
-  global.Set = require('Set');
+  // polyfillGlobal('Set', () => require('react-native/Libraries/vendor/core/Set'));
+  global.Set = require('react-native/Libraries/vendor/core/Set');
 }
 
 // Set up regenerator.
@@ -165,7 +165,7 @@ if (!global.regeneratorRuntime) {
 
 // Set up timers
 // const defineLazyTimer = name => {
-//   polyfillGlobal(name, () => require('JSTimers')[name]);
+//   polyfillGlobal(name, () => require('react-native/Libraries/Core/Timers/JSTimers')[name]);
 // };
 // defineLazyTimer('setTimeout');
 // defineLazyTimer('setInterval');
@@ -182,7 +182,7 @@ if (!global.regeneratorRuntime) {
 // The native Promise implementation throws the following error:
 // ERROR: Event loop not supported.
 // 使用bluebird
-global.Promise = require('Promise');
+global.Promise = require('react-native/Libraries/Promise');
 
 // 使用setTimeout 模拟setImmediate 放在Promise之后 不让其使用假的setImmediate
 if (!global.setImmediate) {
@@ -196,19 +196,19 @@ if (!global.setImmediate) {
 // The native XMLHttpRequest in Chrome dev tools is CORS aware and won't
 // let you fetch anything from the internet
 // RW xhr 不需要
-// polyfillGlobal('XMLHttpRequest', () => require('XMLHttpRequest'));
-// polyfillGlobal('FormData', () => require('FormData'));
+// polyfillGlobal('XMLHttpRequest', () => require('react-native/Libraries/Network/XMLHttpRequest'));
+// polyfillGlobal('FormData', () => require('react-native/Libraries/Network/FormData'));
 
 // RW modify
 if (!global.fetch) {
-  polyfillGlobal('fetch', () => require('fetch').fetch);
-  polyfillGlobal('Headers', () => require('fetch').Headers);
-  polyfillGlobal('Request', () => require('fetch').Request);
-  polyfillGlobal('Response', () => require('fetch').Response);
+  polyfillGlobal('fetch', () => require('react-native/Libraries/Network/fetch').fetch);
+  polyfillGlobal('Headers', () => require('react-native/Libraries/Network/fetch').Headers);
+  polyfillGlobal('Request', () => require('react-native/Libraries/Network/fetch').Request);
+  polyfillGlobal('Response', () => require('react-native/Libraries/Network/fetch').Response);
 }
-// polyfillGlobal('WebSocket', () => require('WebSocket'));
-// polyfillGlobal('Blob', () => require('Blob'));
-// polyfillGlobal('URL', () => require('URL'));
+// polyfillGlobal('WebSocket', () => require('react-native/Libraries/WebSocket/WebSocket'));
+// polyfillGlobal('Blob', () => require('react-native/Libraries/Blob/Blob'));
+// polyfillGlobal('URL', () => require('react-native/Libraries/Blob/URL'));
 
 // Set up alert
 // RW web 不需要
@@ -216,7 +216,7 @@ if (!global.fetch) {
 //   global.alert = function(text) {
 //     // Require Alert on demand. Requiring it too early can lead to issues
 //     // with things like Platform not being fully initialized.
-//     require('Alert').alert('Alert', '' + text);
+//     require('react-native/Libraries/Alert/Alert').alert('Alert', '' + text);
 //   };
 // }
 
@@ -228,35 +228,35 @@ if (!global.fetch) {
 
 // see https://github.com/facebook/react-native/issues/10881
 // defineLazyProperty(navigator, 'product', () => 'ReactNative');
-// defineLazyProperty(navigator, 'geolocation', () => require('Geolocation'));
+// defineLazyProperty(navigator, 'geolocation', () => require('react-native/Libraries/Geolocation/Geolocation'));
 
 // Just to make sure the JS gets packaged up. Wait until the JS environment has
 // been initialized before requiring them.
-// const BatchedBridge = require('BatchedBridge');
-// BatchedBridge.registerLazyCallableModule('Systrace', () => require('Systrace'));
-// BatchedBridge.registerLazyCallableModule('JSTimers', () => require('JSTimers'));
-// BatchedBridge.registerLazyCallableModule('HeapCapture', () => require('HeapCapture'));
-// BatchedBridge.registerLazyCallableModule('SamplingProfiler', () => require('SamplingProfiler'));
-// BatchedBridge.registerLazyCallableModule('RCTLog', () => require('RCTLog'));
-// BatchedBridge.registerLazyCallableModule('RCTDeviceEventEmitter', () => require('RCTDeviceEventEmitter'));
-// BatchedBridge.registerLazyCallableModule('RCTNativeAppEventEmitter', () => require('RCTNativeAppEventEmitter'));
-// BatchedBridge.registerLazyCallableModule('PerformanceLogger', () => require('PerformanceLogger'));
+// const BatchedBridge = require('react-native/Libraries/BatchedBridge/BatchedBridge');
+// BatchedBridge.registerLazyCallableModule('Systrace', () => require('react-native/Libraries/Performance/Systrace'));
+// BatchedBridge.registerLazyCallableModule('JSTimers', () => require('react-native/Libraries/Core/Timers/JSTimers'));
+// BatchedBridge.registerLazyCallableModule('HeapCapture', () => require('react-native/Libraries/Utilities/HeapCapture'));
+// BatchedBridge.registerLazyCallableModule('SamplingProfiler', () => require('react-native/Libraries/Performance/SamplingProfiler'));
+// BatchedBridge.registerLazyCallableModule('RCTLog', () => require('react-native/Libraries/Utilities/RCTLog'));
+// BatchedBridge.registerLazyCallableModule('RCTDeviceEventEmitter', () => require('react-native/Libraries/EventEmitter/RCTDeviceEventEmitter'));
+// BatchedBridge.registerLazyCallableModule('RCTNativeAppEventEmitter', () => require('react-native/Libraries/EventEmitter/RCTNativeAppEventEmitter'));
+// BatchedBridge.registerLazyCallableModule('PerformanceLogger', () => require('react-native/Libraries/Utilities/PerformanceLogger'));
 
 // Set up devtools
 // if (__DEV__) {
 //   if (!global.__RCTProfileIsProfiling) {
-//     BatchedBridge.registerCallableModule('HMRClient', require('HMRClient'));
+//     BatchedBridge.registerCallableModule('HMRClient', require('react-native/Libraries/Utilities/HMRClient'));
 
 //     // not when debugging in chrome
 //     // TODO(t12832058) This check is broken
 //     if (!window.document) {
-//       require('setupDevtools');
+//       require('react-native/Libraries/Core/Devtools/setupDevtools');
 //     }
 
 //     // Set up inspector
-//     const JSInspector = require('JSInspector');
-//     JSInspector.registerAgent(require('NetworkAgent'));
+//     const JSInspector = require('react-native/Libraries/JSInspector/JSInspector');
+//     JSInspector.registerAgent(require('react-native/Libraries/JSInspector/NetworkAgent'));
 //   }
 // }
 
-global.__lrnw_register_image = require('AssetRegistry').registerImage;
+global.__lrnw_register_image = require('react-native/Libraries/Image/AssetRegistry').registerImage;

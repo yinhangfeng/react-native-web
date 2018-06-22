@@ -10,21 +10,21 @@
 
 'use strict';
 
-const Animated = require('Animated');
-const Easing = require('Easing');
-const NativeMethodsMixin = require('NativeMethodsMixin');
-const React = require('React');
+const Animated = require('react-native/Libraries/Animated/src/Animated');
+const Easing = require('react-native/Libraries/Animated/src/Easing');
+const NativeMethodsMixin = require('react-native/Libraries/Renderer/shims/NativeMethodsMixin');
+const React = require('react-native/Libraries/react-native/React');
 const PropTypes = require('prop-types');
 const TimerMixin = require('react-timer-mixin');
-const Touchable = require('Touchable');
-const TouchableWithoutFeedback = require('TouchableWithoutFeedback');
+const Touchable = require('react-native/Libraries/Components/Touchable/Touchable');
+const TouchableWithoutFeedback = require('react-native/Libraries/Components/Touchable/TouchableWithoutFeedback');
 
 const createReactClass = require('create-react-class');
-const ensurePositiveDelayProps = require('ensurePositiveDelayProps');
-const flattenStyle = require('flattenStyle');
+const ensurePositiveDelayProps = require('react-native/Libraries/Components/Touchable/ensurePositiveDelayProps');
+const flattenStyle = require('react-native/Libraries/StyleSheet/flattenStyle');
 
-import type {Props as TouchableWithoutFeedbackProps} from 'TouchableWithoutFeedback';
-import type {ViewStyleProp} from 'StyleSheet';
+import type {Props as TouchableWithoutFeedbackProps} from 'react-native/Libraries/Components/Touchable/TouchableWithoutFeedback';
+import type {ViewStyleProp} from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 type Event = Object;
 

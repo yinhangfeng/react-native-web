@@ -10,16 +10,16 @@
 
 'use strict';
 
-const ColorPropType = require('ColorPropType');
-const React = require('React');
+const ColorPropType = require('react-native/Libraries/StyleSheet/ColorPropType');
+const React = require('react-native/Libraries/react-native/React');
 const ReactPropTypes = require('prop-types');
-const StyleSheet = require('StyleSheet');
-const StyleSheetPropType = require('StyleSheetPropType');
-const ViewPropTypes = require('ViewPropTypes');
-const ViewStylePropTypes = require('ViewStylePropTypes');
+const StyleSheet = require('react-native/Libraries/StyleSheet/StyleSheet');
+const StyleSheetPropType = require('react-native/Libraries/StyleSheet/StyleSheetPropType');
+const ViewPropTypes = require('react-native/Libraries/Components/View/ViewPropTypes');
+const ViewStylePropTypes = require('react-native/Libraries/Components/View/ViewStylePropTypes');
 
-const processColor = require('processColor');
-const requireNativeComponent = require('requireNativeComponent');
+const processColor = require('react-native/Libraries/StyleSheet/processColor');
+const requireNativeComponent = require('react-native/Libraries/ReactNative/requireNativeComponent');
 
 const DropdownPicker = requireNativeComponent('AndroidDropdownPicker');
 const DialogPicker = requireNativeComponent('AndroidDialogPicker');

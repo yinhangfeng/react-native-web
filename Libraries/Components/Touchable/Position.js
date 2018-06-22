@@ -9,7 +9,7 @@
 
 'use strict';
 
-const PooledClass = require('PooledClass');
+const PooledClass = require('react-native/Libraries/Components/Touchable/PooledClass');
 
 const twoArgumentPooler = PooledClass.twoArgumentPooler;
 

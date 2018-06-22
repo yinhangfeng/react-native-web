@@ -10,7 +10,7 @@
 
 'use strict';
 
-const AnimatedNode = require('AnimatedNode');
+const AnimatedNode = require('react-native/Libraries/Animated/src/nodes/AnimatedNode');
 
 export type ColorValue = null | string;
 export type DimensionValue = null | number | string | AnimatedNode;

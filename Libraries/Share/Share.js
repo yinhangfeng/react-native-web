@@ -10,12 +10,12 @@
 
 'use strict';
 
-const Platform = require('Platform');
+const Platform = require('react-native/Libraries/Utilities/Platform');
 
 const invariant = require('fbjs/lib/invariant');
-const processColor = require('processColor');
+const processColor = require('react-native/Libraries/StyleSheet/processColor');
 
-const {ActionSheetManager, ShareModule} = require('NativeModules');
+const {ActionSheetManager, ShareModule} = require('react-native/Libraries/BatchedBridge/NativeModules');
 
 type Content =
   | {title?: string, message: string}

@@ -11,20 +11,20 @@
  */
 'use strict';
 
-const NativeMethodsMixin = require('NativeMethodsMixin');
+const NativeMethodsMixin = require('react-native/Libraries/Renderer/shims/NativeMethodsMixin');
 // const PropTypes = require('prop-types');
-const React = require('React');
-// const ReactNativeStyleAttributes = require('ReactNativeStyleAttributes');
-// const ReactNativeViewAttributes = require('ReactNativeViewAttributes');
-const ViewPropTypes = require('ViewPropTypes');
+const React = require('react-native/Libraries/react-native/React');
+// const ReactNativeStyleAttributes = require('react-native/Libraries/Components/View/ReactNativeStyleAttributes');
+// const ReactNativeViewAttributes = require('react-native/Libraries/Components/View/ReactNativeViewAttributes');
+const ViewPropTypes = require('react-native/Libraries/Components/View/ViewPropTypes');
 
 const createReactClass = require('create-react-class');
 
-const LayoutMixin = require('RWLayoutMixin');
-const createWebCoreElement = require('createWebCoreElement');
-const CSSClassNames = require('CSSClassNames');
+const LayoutMixin = require('react-native/Libraries/lrnw/RWLayoutMixin');
+const createWebCoreElement = require('react-native/Libraries/lrnw/createWebCoreElement');
+const CSSClassNames = require('react-native/Libraries/StyleSheet/CSSClassNames');
 
-import type {ViewProps} from 'ViewPropTypes';
+import type {ViewProps} from 'react-native/Libraries/Components/View/ViewPropTypes';
 
 export type Props = ViewProps;
 

@@ -9,24 +9,24 @@
  */
 'use strict';
 
-const InternalListViewType = require('InternalListViewType');
-const ListViewDataSource = require('ListViewDataSource');
-const Platform = require('Platform');
-const React = require('React');
+const InternalListViewType = require('react-native/Libraries/Lists/ListView/InternalListViewType');
+const ListViewDataSource = require('react-native/Libraries/Lists/ListView/ListViewDataSource');
+const Platform = require('react-native/Libraries/Utilities/Platform');
+const React = require('react-native/Libraries/react-native/React');
 const PropTypes = require('prop-types');
-const ReactNative = require('ReactNative');
-const RCTScrollViewManager = require('NativeModules').ScrollViewManager;
-const ScrollView = require('ScrollView');
-const ScrollResponder = require('ScrollResponder');
-const StaticRenderer = require('StaticRenderer');
+const ReactNative = require('react-native/Libraries/Renderer/shims/ReactNative');
+const RCTScrollViewManager = require('react-native/Libraries/BatchedBridge/NativeModules').ScrollViewManager;
+const ScrollView = require('react-native/Libraries/Components/ScrollView/ScrollView');
+const ScrollResponder = require('react-native/Libraries/Components/ScrollResponder');
+const StaticRenderer = require('react-native/Libraries/Components/StaticRenderer');
 const TimerMixin = require('react-timer-mixin');
-const View = require('View');
+const View = require('react-native/Libraries/Components/View/View');
 const cloneReferencedElement = require('react-clone-referenced-element');
 const createReactClass = require('create-react-class');
-const isEmpty = require('isEmpty');
-const merge = require('merge');
+const isEmpty = require('react-native/Libraries/vendor/core/isEmpty');
+const merge = require('react-native/Libraries/vendor/core/merge');
 
-import type {Props as ScrollViewProps} from 'ScrollView';
+import type {Props as ScrollViewProps} from 'react-native/Libraries/Components/ScrollView/ScrollView';
 
 const DEFAULT_PAGE_SIZE = 1;
 const DEFAULT_INITIAL_ROWS = 10;

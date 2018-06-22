@@ -22,7 +22,7 @@ var {
   View,
 } = ReactNative;
 
-var NativeModules = require('NativeModules');
+var NativeModules = require('react-native/Libraries/BatchedBridge/NativeModules');
 var {UIManager} = NativeModules;
 
 var THUMB_URLS = [

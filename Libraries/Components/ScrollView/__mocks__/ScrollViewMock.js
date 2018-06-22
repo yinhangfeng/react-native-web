@@ -14,10 +14,10 @@
 
 declare var jest: any;
 
-const React = require('React');
-const View = require('View');
+const React = require('react-native/Libraries/react-native/React');
+const View = require('react-native/Libraries/Components/View/View');
 
-const requireNativeComponent = require('requireNativeComponent');
+const requireNativeComponent = require('react-native/Libraries/ReactNative/requireNativeComponent');
 
 const RCTScrollView = requireNativeComponent('RCTScrollView');
 

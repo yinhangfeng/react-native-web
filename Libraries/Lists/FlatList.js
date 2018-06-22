@@ -9,22 +9,22 @@
  */
 'use strict';
 
-const MetroListView = require('MetroListView'); // Used as a fallback legacy option
-const React = require('React');
-const View = require('View');
-const VirtualizedList = require('VirtualizedList');
-const ListView = require('ListView');
-const StyleSheet = require('StyleSheet');
+const MetroListView = require('react-native/Libraries/Lists/MetroListView'); // Used as a fallback legacy option
+const React = require('react-native/Libraries/react-native/React');
+const View = require('react-native/Libraries/Components/View/View');
+const VirtualizedList = require('react-native/Libraries/Lists/VirtualizedList');
+const ListView = require('react-native/Libraries/Lists/ListView/ListView');
+const StyleSheet = require('react-native/Libraries/StyleSheet/StyleSheet');
 
 const invariant = require('fbjs/lib/invariant');
 
-import type {DangerouslyImpreciseStyleProp} from 'StyleSheet';
+import type {DangerouslyImpreciseStyleProp} from 'react-native/Libraries/StyleSheet/StyleSheet';
 import type {
   ViewabilityConfig,
   ViewToken,
   ViewabilityConfigCallbackPair,
-} from 'ViewabilityHelper';
-import type {Props as VirtualizedListProps} from 'VirtualizedList';
+} from 'react-native/Libraries/Lists/ViewabilityHelper';
+import type {Props as VirtualizedListProps} from 'react-native/Libraries/Lists/VirtualizedList';
 
 export type SeparatorsObj = {
   highlight: () => void,

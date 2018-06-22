@@ -13,7 +13,7 @@
 var React = require('react');
 var ReactNative = require('react-native');
 var {StyleSheet, Text, View} = ReactNative;
-var TouchableWithoutFeedback = require('TouchableWithoutFeedback');
+var TouchableWithoutFeedback = require('react-native/Libraries/Components/Touchable/TouchableWithoutFeedback');
 
 var styles = StyleSheet.create({
   box: {

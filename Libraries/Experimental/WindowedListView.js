@@ -10,23 +10,23 @@
 
 'use strict';
 
-const Batchinator = require('Batchinator');
-const IncrementalGroup = require('IncrementalGroup');
-const React = require('React');
-const ScrollView = require('ScrollView');
-const Set = require('Set');
-const StyleSheet = require('StyleSheet');
-const Systrace = require('Systrace');
-const View = require('View');
-const ViewabilityHelper = require('ViewabilityHelper');
+const Batchinator = require('react-native/Libraries/Interaction/Batchinator');
+const IncrementalGroup = require('react-native/Libraries/Experimental/IncrementalGroup');
+const React = require('react-native/Libraries/react-native/React');
+const ScrollView = require('react-native/Libraries/Components/ScrollView/ScrollView');
+const Set = require('react-native/Libraries/vendor/core/Set');
+const StyleSheet = require('react-native/Libraries/StyleSheet/StyleSheet');
+const Systrace = require('react-native/Libraries/Performance/Systrace');
+const View = require('react-native/Libraries/Components/View/View');
+const ViewabilityHelper = require('react-native/Libraries/Lists/ViewabilityHelper');
 
-const clamp = require('clamp');
-const deepDiffer = require('deepDiffer');
-const infoLog = require('infoLog');
+const clamp = require('react-native/Libraries/Utilities/clamp');
+const deepDiffer = require('react-native/Libraries/Utilities/differ/deepDiffer');
+const infoLog = require('react-native/Libraries/Utilities/infoLog');
 const invariant = require('fbjs/lib/invariant');
 const nullthrows = require('fbjs/lib/nullthrows');
 
-import type {NativeMethodsMixinType} from 'ReactNativeTypes';
+import type {NativeMethodsMixinType} from 'react-native/Libraries/Renderer/shims/ReactNativeTypes';
 
 const DEBUG = false;
 
@@ -777,7 +777,7 @@ class CellRenderer extends React.Component<CellProps> {
     let debug;
     if (DEBUG) {
       infoLog('render cell ' + this.props.rowIndex);
-      const Text = require('Text');
+      const Text = require('react-native/Libraries/Text/Text');
       debug = (
         <Text style={{backgroundColor: 'lightblue'}}>
           Row: {this.props.rowIndex}

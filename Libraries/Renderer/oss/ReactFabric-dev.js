@@ -16,20 +16,20 @@ if (__DEV__) {
   (function() {
 "use strict";
 
-require("InitializeCore");
+require("react-native/Libraries/Core/InitializeCore");
 var invariant = require("fbjs/lib/invariant");
 var warning = require("fbjs/lib/warning");
-var ReactNativeViewConfigRegistry = require("ReactNativeViewConfigRegistry");
-var UIManager = require("UIManager");
+var ReactNativeViewConfigRegistry = require("react-native/Libraries/Renderer/shims/ReactNativeViewConfigRegistry");
+var UIManager = require("react-native/Libraries/ReactNative/UIManager");
 var React = require("react");
 var emptyObject = require("fbjs/lib/emptyObject");
-var deepDiffer = require("deepDiffer");
-var flattenStyle = require("flattenStyle");
-var deepFreezeAndThrowOnMutationInDev = require("deepFreezeAndThrowOnMutationInDev");
-var TextInputState = require("TextInputState");
-var FabricUIManager = require("FabricUIManager");
+var deepDiffer = require("react-native/Libraries/Utilities/differ/deepDiffer");
+var flattenStyle = require("react-native/Libraries/StyleSheet/flattenStyle");
+var deepFreezeAndThrowOnMutationInDev = require("react-native/Libraries/Utilities/deepFreezeAndThrowOnMutationInDev");
+var TextInputState = require("react-native/Libraries/Components/TextInput/TextInputState");
+var FabricUIManager = require("react-native/Libraries/ReactNative/FabricUIManager");
 var checkPropTypes = require("prop-types/checkPropTypes");
-var ExceptionsManager = require("ExceptionsManager");
+var ExceptionsManager = require("react-native/Libraries/Core/ExceptionsManager");
 
 var invokeGuardedCallback = function(name, func, context, a, b, c, d, e, f) {
   this._hasCaughtError = false;

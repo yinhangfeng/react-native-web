@@ -11,8 +11,8 @@
 
 const {AnimatedEvent} = require('./AnimatedEvent');
 const AnimatedProps = require('./nodes/AnimatedProps');
-const React = require('React');
-const ViewStylePropTypes = require('ViewStylePropTypes');
+const React = require('react-native/Libraries/react-native/React');
+const ViewStylePropTypes = require('react-native/Libraries/Components/View/ViewStylePropTypes');
 
 const invariant = require('fbjs/lib/invariant');
 

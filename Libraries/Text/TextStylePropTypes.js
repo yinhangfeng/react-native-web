@@ -10,9 +10,9 @@
 
 'use strict';
 
-const ColorPropType = require('ColorPropType');
+const ColorPropType = require('react-native/Libraries/StyleSheet/ColorPropType');
 const ReactPropTypes = require('prop-types');
-const ViewStylePropTypes = require('ViewStylePropTypes');
+const ViewStylePropTypes = require('react-native/Libraries/Components/View/ViewStylePropTypes');
 
 let TextStylePropTypes;
 if (__DEV__) {

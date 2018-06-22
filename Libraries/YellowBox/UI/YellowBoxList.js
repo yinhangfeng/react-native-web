@@ -10,19 +10,19 @@
 
 'use strict';
 
-const Dimensions = require('Dimensions');
-const React = require('React');
-const FlatList = require('FlatList');
+const Dimensions = require('react-native/Libraries/Utilities/Dimensions');
+const React = require('react-native/Libraries/react-native/React');
+const FlatList = require('react-native/Libraries/Lists/FlatList');
 const SafeAreaView = require('SafeAreaView');
-const StyleSheet = require('StyleSheet');
-const View = require('View');
-const YellowBoxButton = require('YellowBoxButton');
-const YellowBoxInspector = require('YellowBoxInspector');
-const YellowBoxListRow = require('YellowBoxListRow');
-const YellowBoxStyle = require('YellowBoxStyle');
+const StyleSheet = require('react-native/Libraries/StyleSheet/StyleSheet');
+const View = require('react-native/Libraries/Components/View/View');
+const YellowBoxButton = require('react-native/Libraries/YellowBox/UI/YellowBoxButton');
+const YellowBoxInspector = require('react-native/Libraries/YellowBox/UI/YellowBoxInspector');
+const YellowBoxListRow = require('react-native/Libraries/YellowBox/UI/YellowBoxListRow');
+const YellowBoxStyle = require('react-native/Libraries/YellowBox/UI/YellowBoxStyle');
 
-import type {Category} from 'YellowBoxCategory';
-import type {Registry} from 'YellowBoxRegistry';
+import type {Category} from 'react-native/Libraries/YellowBox/Data/YellowBoxCategory';
+import type {Registry} from 'react-native/Libraries/YellowBox/Data/YellowBoxRegistry';
 
 type Props = $ReadOnly<{|
   onDismiss: (category: Category) => void,

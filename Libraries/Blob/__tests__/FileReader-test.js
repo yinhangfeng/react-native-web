@@ -14,8 +14,8 @@ jest.unmock('event-target-shim').setMock('NativeModules', {
   FileReaderModule: require('../__mocks__/FileReaderModule'),
 });
 
-const Blob = require('Blob');
-const FileReader = require('FileReader');
+const Blob = require('react-native/Libraries/Blob/Blob');
+const FileReader = require('react-native/Libraries/Blob/FileReader');
 
 describe('FileReader', function() {
   it('should read blob as text', async () => {

@@ -9,7 +9,7 @@
 
 'use strict';
 
-const NativeModules = require('NativeModules');
+const NativeModules = require('react-native/Libraries/BatchedBridge/NativeModules');
 
 function emptyCallback() {}
 

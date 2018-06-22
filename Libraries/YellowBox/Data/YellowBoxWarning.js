@@ -10,13 +10,13 @@
 
 'use strict';
 
-const YellowBoxCategory = require('YellowBoxCategory');
-const YellowBoxSymbolication = require('YellowBoxSymbolication');
+const YellowBoxCategory = require('react-native/Libraries/YellowBox/Data/YellowBoxCategory');
+const YellowBoxSymbolication = require('react-native/Libraries/YellowBox/Data/YellowBoxSymbolication');
 
-const parseErrorStack = require('parseErrorStack');
+const parseErrorStack = require('react-native/Libraries/Core/Devtools/parseErrorStack');
 
-import type {Category, Message} from 'YellowBoxCategory';
-import type {Stack} from 'YellowBoxSymbolication';
+import type {Category, Message} from 'react-native/Libraries/YellowBox/Data/YellowBoxCategory';
+import type {Stack} from 'react-native/Libraries/YellowBox/Data/YellowBoxSymbolication';
 
 export type SymbolicationRequest = $ReadOnly<{|
   abort: () => void,

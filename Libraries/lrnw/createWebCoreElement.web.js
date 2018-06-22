@@ -2,7 +2,7 @@
  */
 'use strict';
 
-const createElement = require('React').createElement;
+const createElement = require('react-native/Libraries/react-native/React').createElement;
 const createReactDOMStyleObject = require('./createReactDOMStyleObject');
 
 /**

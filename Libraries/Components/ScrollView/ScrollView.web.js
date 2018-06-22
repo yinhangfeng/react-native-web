@@ -11,30 +11,30 @@
  */
 'use strict';
 
-const ColorPropType = require('ColorPropType');
-const EdgeInsetsPropType = require('EdgeInsetsPropType');
-const PointPropType = require('PointPropType');
+const ColorPropType = require('react-native/Libraries/StyleSheet/ColorPropType');
+const EdgeInsetsPropType = require('react-native/Libraries/StyleSheet/EdgeInsetsPropType');
+const PointPropType = require('react-native/Libraries/StyleSheet/PointPropType');
 const PropTypes = require('prop-types');
-const React = require('React');
-const ReactNative = require('ReactNative');
-const ScrollResponder = require('ScrollResponder');
-const StyleSheet = require('StyleSheet');
-const StyleSheetPropType = require('StyleSheetPropType');
-const View = require('View');
-const ViewPropTypes = require('ViewPropTypes');
-const ViewStylePropTypes = require('ViewStylePropTypes');
+const React = require('react-native/Libraries/react-native/React');
+const ReactNative = require('react-native/Libraries/Renderer/shims/ReactNative');
+const ScrollResponder = require('react-native/Libraries/Components/ScrollResponder');
+const StyleSheet = require('react-native/Libraries/StyleSheet/StyleSheet');
+const StyleSheetPropType = require('react-native/Libraries/StyleSheet/StyleSheetPropType');
+const View = require('react-native/Libraries/Components/View/View');
+const ViewPropTypes = require('react-native/Libraries/Components/View/ViewPropTypes');
+const ViewStylePropTypes = require('react-native/Libraries/Components/View/ViewStylePropTypes');
 
 const createReactClass = require('create-react-class');
-const dismissKeyboard = require('dismissKeyboard');
-const flattenStyle = require('flattenStyle');
+const dismissKeyboard = require('react-native/Libraries/Utilities/dismissKeyboard');
+const flattenStyle = require('react-native/Libraries/StyleSheet/flattenStyle');
 const invariant = require('fbjs/lib/invariant');
-const processDecelerationRate = require('processDecelerationRate');
-const requireNativeComponent = require('requireNativeComponent');
+const processDecelerationRate = require('react-native/Libraries/Components/ScrollView/processDecelerationRate');
+const requireNativeComponent = require('react-native/Libraries/ReactNative/requireNativeComponent');
 const warning = require('fbjs/lib/warning');
 
-const CSSClassNames = require('CSSClassNames');
+const CSSClassNames = require('react-native/Libraries/StyleSheet/CSSClassNames');
 
-import type {NativeMethodsMixinType} from 'ReactNativeTypes';
+import type {NativeMethodsMixinType} from 'react-native/Libraries/Renderer/shims/ReactNativeTypes';
 
 const normalizeScrollEvent = e => {
   e.nativeEvent = {

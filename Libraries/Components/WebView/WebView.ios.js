@@ -10,28 +10,28 @@
 
 'use strict';
 
-const ActivityIndicator = require('ActivityIndicator');
-const EdgeInsetsPropType = require('EdgeInsetsPropType');
-const Linking = require('Linking');
+const ActivityIndicator = require('react-native/Libraries/Components/ActivityIndicator/ActivityIndicator');
+const EdgeInsetsPropType = require('react-native/Libraries/StyleSheet/EdgeInsetsPropType');
+const Linking = require('react-native/Libraries/Linking/Linking');
 const PropTypes = require('prop-types');
-const React = require('React');
-const ReactNative = require('ReactNative');
-const ScrollView = require('ScrollView');
-const StyleSheet = require('StyleSheet');
-const Text = require('Text');
-const UIManager = require('UIManager');
-const View = require('View');
-const ViewPropTypes = require('ViewPropTypes');
-const WebViewShared = require('WebViewShared');
+const React = require('react-native/Libraries/react-native/React');
+const ReactNative = require('react-native/Libraries/Renderer/shims/ReactNative');
+const ScrollView = require('react-native/Libraries/Components/ScrollView/ScrollView');
+const StyleSheet = require('react-native/Libraries/StyleSheet/StyleSheet');
+const Text = require('react-native/Libraries/Text/Text');
+const UIManager = require('react-native/Libraries/ReactNative/UIManager');
+const View = require('react-native/Libraries/Components/View/View');
+const ViewPropTypes = require('react-native/Libraries/Components/View/ViewPropTypes');
+const WebViewShared = require('react-native/Libraries/Components/WebView/WebViewShared');
 
-const deprecatedPropType = require('deprecatedPropType');
+const deprecatedPropType = require('react-native/Libraries/Utilities/deprecatedPropType');
 const invariant = require('fbjs/lib/invariant');
 const keyMirror = require('fbjs/lib/keyMirror');
-const processDecelerationRate = require('processDecelerationRate');
-const requireNativeComponent = require('requireNativeComponent');
-const resolveAssetSource = require('resolveAssetSource');
+const processDecelerationRate = require('react-native/Libraries/Components/ScrollView/processDecelerationRate');
+const requireNativeComponent = require('react-native/Libraries/ReactNative/requireNativeComponent');
+const resolveAssetSource = require('react-native/Libraries/Image/resolveAssetSource');
 
-const RCTWebViewManager = require('NativeModules').WebViewManager;
+const RCTWebViewManager = require('react-native/Libraries/BatchedBridge/NativeModules').WebViewManager;
 
 const BGWASH = 'rgba(255,255,255,0.8)';
 const RCT_WEBVIEW_REF = 'webview';

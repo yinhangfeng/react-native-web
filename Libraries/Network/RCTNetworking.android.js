@@ -12,12 +12,12 @@
 
 // Do not require the native RCTNetworking module directly! Use this wrapper module instead.
 // It will add the necessary requestId, so that you don't have to generate it yourself.
-const MissingNativeEventEmitterShim = require('MissingNativeEventEmitterShim');
-const NativeEventEmitter = require('NativeEventEmitter');
-const RCTNetworkingNative = require('NativeModules').Networking;
-const convertRequestBody = require('convertRequestBody');
+const MissingNativeEventEmitterShim = require('react-native/Libraries/EventEmitter/MissingNativeEventEmitterShim');
+const NativeEventEmitter = require('react-native/Libraries/EventEmitter/NativeEventEmitter');
+const RCTNetworkingNative = require('react-native/Libraries/BatchedBridge/NativeModules').Networking;
+const convertRequestBody = require('react-native/Libraries/Network/convertRequestBody');
 
-import type {RequestBody} from 'convertRequestBody';
+import type {RequestBody} from 'react-native/Libraries/Network/convertRequestBody';
 
 type Header = [string, string];
 

@@ -10,7 +10,7 @@
 
 'use strict';
 
-const React = require('React');
+const React = require('react-native/Libraries/react-native/React');
 const ReactNative = require('react-native');
 const {
   Alert,

@@ -10,7 +10,7 @@
 
 'use strict';
 
-const {SourceCode} = require('NativeModules');
+const {SourceCode} = require('react-native/Libraries/BatchedBridge/NativeModules');
 
 let _cachedDevServerURL: ?string;
 const FALLBACK = 'http://localhost:8081/';

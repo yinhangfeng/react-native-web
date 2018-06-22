@@ -9,13 +9,13 @@
  */
 'use strict';
 
-import type {Props as FlatListProps} from 'FlatList';
-import type {renderItemType} from 'VirtualizedList';
+import type {Props as FlatListProps} from 'react-native/Libraries/Lists/FlatList';
+import type {renderItemType} from 'react-native/Libraries/Lists/VirtualizedList';
 
 const PropTypes = require('prop-types');
-const React = require('React');
-const SwipeableRow = require('SwipeableRow');
-const FlatList = require('FlatList');
+const React = require('react-native/Libraries/react-native/React');
+const SwipeableRow = require('react-native/Libraries/Experimental/SwipeableRow/SwipeableRow');
+const FlatList = require('react-native/Libraries/Lists/FlatList');
 
 type SwipableListProps = {
   /**

@@ -9,23 +9,23 @@
 
 'use strict';
 
-const ColorPropType = require('ColorPropType');
-const NativeMethodsMixin = require('NativeMethodsMixin');
-const Platform = require('Platform');
-const React = require('React');
+const ColorPropType = require('react-native/Libraries/StyleSheet/ColorPropType');
+const NativeMethodsMixin = require('react-native/Libraries/Renderer/shims/NativeMethodsMixin');
+const Platform = require('react-native/Libraries/Utilities/Platform');
+const React = require('react-native/Libraries/react-native/React');
 const PropTypes = require('prop-types');
-const ReactNative = require('ReactNative');
-const StatusBar = require('StatusBar');
-const StyleSheet = require('StyleSheet');
-const UIManager = require('UIManager');
-const View = require('View');
-const ViewPropTypes = require('ViewPropTypes');
+const ReactNative = require('react-native/Libraries/Renderer/shims/ReactNative');
+const StatusBar = require('react-native/Libraries/Components/StatusBar/StatusBar');
+const StyleSheet = require('react-native/Libraries/StyleSheet/StyleSheet');
+const UIManager = require('react-native/Libraries/ReactNative/UIManager');
+const View = require('react-native/Libraries/Components/View/View');
+const ViewPropTypes = require('react-native/Libraries/Components/View/ViewPropTypes');
 
 const DrawerConsts = UIManager.AndroidDrawerLayout.Constants;
 
 const createReactClass = require('create-react-class');
-const dismissKeyboard = require('dismissKeyboard');
-const requireNativeComponent = require('requireNativeComponent');
+const dismissKeyboard = require('react-native/Libraries/Utilities/dismissKeyboard');
+const requireNativeComponent = require('react-native/Libraries/ReactNative/requireNativeComponent');
 
 const RK_DRAWER_REF = 'drawerlayout';
 const INNERVIEW_REF = 'innerView';

@@ -10,12 +10,12 @@
 
 'use strict';
 
-const MissingNativeEventEmitterShim = require('MissingNativeEventEmitterShim');
-const NativeEventEmitter = require('NativeEventEmitter');
-const RCTNetworkingNative = require('NativeModules').Networking;
-const convertRequestBody = require('convertRequestBody');
+const MissingNativeEventEmitterShim = require('react-native/Libraries/EventEmitter/MissingNativeEventEmitterShim');
+const NativeEventEmitter = require('react-native/Libraries/EventEmitter/NativeEventEmitter');
+const RCTNetworkingNative = require('react-native/Libraries/BatchedBridge/NativeModules').Networking;
+const convertRequestBody = require('react-native/Libraries/Network/convertRequestBody');
 
-import type {RequestBody} from 'convertRequestBody';
+import type {RequestBody} from 'react-native/Libraries/Network/convertRequestBody';
 
 import type {NativeResponseType} from './XMLHttpRequest';
 

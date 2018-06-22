@@ -10,14 +10,14 @@
 
 'use strict';
 
-const React = require('React');
+const React = require('react-native/Libraries/react-native/React');
 const PropTypes = require('prop-types');
-const ColorPropType = require('ColorPropType');
-const Platform = require('Platform');
+const ColorPropType = require('react-native/Libraries/StyleSheet/ColorPropType');
+const Platform = require('react-native/Libraries/Utilities/Platform');
 
-const processColor = require('processColor');
+const processColor = require('react-native/Libraries/StyleSheet/processColor');
 
-const StatusBarManager = require('NativeModules').StatusBarManager;
+const StatusBarManager = require('react-native/Libraries/BatchedBridge/NativeModules').StatusBarManager;
 
 /**
  * Status bar style

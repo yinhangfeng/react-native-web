@@ -25,7 +25,7 @@
  */
 'use strict';
 
-const {polyfillObjectProperty, polyfillGlobal} = require('PolyfillFunctions');
+const {polyfillObjectProperty, polyfillGlobal} = require('react-native/Libraries/Utilities/PolyfillFunctions');
 
 if (global.GLOBAL === undefined) {
   global.GLOBAL = global;
@@ -36,12 +36,12 @@ if (global.window === undefined) {
 }
 
 // Set up collections
-const _shouldPolyfillCollection = require('_shouldPolyfillES6Collection');
+const _shouldPolyfillCollection = require('react-native/Libraries/vendor/core/_shouldPolyfillES6Collection');
 if (_shouldPolyfillCollection('Map')) {
-  polyfillGlobal('Map', () => require('Map'));
+  polyfillGlobal('Map', () => require('react-native/Libraries/vendor/core/Map'));
 }
 if (_shouldPolyfillCollection('Set')) {
-  polyfillGlobal('Set', () => require('Set'));
+  polyfillGlobal('Set', () => require('react-native/Libraries/vendor/core/Set'));
 }
 
 // Set up process
@@ -53,13 +53,13 @@ if (!global.process.env.NODE_ENV) {
 
 // Setup the Systrace profiling hooks if necessary
 if (global.__RCTProfileIsProfiling) {
-  const Systrace = require('Systrace');
+  const Systrace = require('react-native/Libraries/Performance/Systrace');
   Systrace.installReactHook();
   Systrace.setEnabled(true);
 }
 
 // Set up console
-const ExceptionsManager = require('ExceptionsManager');
+const ExceptionsManager = require('react-native/Libraries/Core/ExceptionsManager');
 ExceptionsManager.installConsoleErrorReporter();
 
 // Set up error handler
@@ -73,12 +73,12 @@ if (!global.__fbDisableExceptionsManager) {
     }
   };
 
-  const ErrorUtils = require('ErrorUtils');
+  const ErrorUtils = require('react-native/Libraries/vendor/core/ErrorUtils');
   ErrorUtils.setGlobalHandler(handleError);
 }
 
 // Check for compatibility between the JS and native code
-const ReactNativeVersionCheck = require('ReactNativeVersionCheck');
+const ReactNativeVersionCheck = require('react-native/Libraries/Core/ReactNativeVersionCheck');
 ReactNativeVersionCheck.checkVersions();
 
 // Set up regenerator.
@@ -95,7 +95,7 @@ polyfillGlobal('regeneratorRuntime', () => {
 
 // Set up timers
 const defineLazyTimer = name => {
-  polyfillGlobal(name, () => require('JSTimers')[name]);
+  polyfillGlobal(name, () => require('react-native/Libraries/Core/Timers/JSTimers')[name]);
 };
 defineLazyTimer('setTimeout');
 defineLazyTimer('setInterval');
@@ -111,36 +111,36 @@ defineLazyTimer('cancelIdleCallback');
 // Set up Promise
 // The native Promise implementation throws the following error:
 // ERROR: Event loop not supported.
-// polyfillGlobal('Promise', () => require('Promise'));
+// polyfillGlobal('Promise', () => require('react-native/Libraries/Promise'));
 // 使用bluebird
 // bluebird 会根据全局的Promise 来决定async 实现 所以先设置原Promise为空 且不能延迟定义
 // 依赖 setImmediate
 global.OriginalPromise = global.Promise;
 global.Promise = null;
-global.Promise = require('Promise');
+global.Promise = require('react-native/Libraries/Promise');
 
 // Set up XHR
 // The native XMLHttpRequest in Chrome dev tools is CORS aware and won't
 // let you fetch anything from the internet
-polyfillGlobal('XMLHttpRequest', () => require('XMLHttpRequest'));
-polyfillGlobal('FormData', () => require('FormData'));
+polyfillGlobal('XMLHttpRequest', () => require('react-native/Libraries/Network/XMLHttpRequest'));
+polyfillGlobal('FormData', () => require('react-native/Libraries/Network/FormData'));
 
-polyfillGlobal('fetch', () => require('fetch').fetch);
-polyfillGlobal('Headers', () => require('fetch').Headers);
-polyfillGlobal('Request', () => require('fetch').Request);
-polyfillGlobal('Response', () => require('fetch').Response);
-polyfillGlobal('WebSocket', () => require('WebSocket'));
-polyfillGlobal('Blob', () => require('Blob'));
-polyfillGlobal('File', () => require('File'));
-polyfillGlobal('FileReader', () => require('FileReader'));
-polyfillGlobal('URL', () => require('URL'));
+polyfillGlobal('fetch', () => require('react-native/Libraries/Network/fetch').fetch);
+polyfillGlobal('Headers', () => require('react-native/Libraries/Network/fetch').Headers);
+polyfillGlobal('Request', () => require('react-native/Libraries/Network/fetch').Request);
+polyfillGlobal('Response', () => require('react-native/Libraries/Network/fetch').Response);
+polyfillGlobal('WebSocket', () => require('react-native/Libraries/WebSocket/WebSocket'));
+polyfillGlobal('Blob', () => require('react-native/Libraries/Blob/Blob'));
+polyfillGlobal('File', () => require('react-native/Libraries/Blob/File'));
+polyfillGlobal('FileReader', () => require('react-native/Libraries/Blob/FileReader'));
+polyfillGlobal('URL', () => require('react-native/Libraries/Blob/URL'));
 
 // Set up alert
 if (!global.alert) {
   global.alert = function(text) {
     // Require Alert on demand. Requiring it too early can lead to issues
     // with things like Platform not being fully initialized.
-    require('Alert').alert('Alert', '' + text);
+    require('react-native/Libraries/Alert/Alert').alert('Alert', '' + text);
   };
 }
 
@@ -152,31 +152,31 @@ if (navigator === undefined) {
 
 // see https://github.com/facebook/react-native/issues/10881
 polyfillObjectProperty(navigator, 'product', () => 'ReactNative');
-polyfillObjectProperty(navigator, 'geolocation', () => require('Geolocation'));
+polyfillObjectProperty(navigator, 'geolocation', () => require('react-native/Libraries/Geolocation/Geolocation'));
 
 // Just to make sure the JS gets packaged up. Wait until the JS environment has
 // been initialized before requiring them.
-const BatchedBridge = require('BatchedBridge');
-BatchedBridge.registerLazyCallableModule('Systrace', () => require('Systrace'));
-BatchedBridge.registerLazyCallableModule('JSTimers', () => require('JSTimers'));
+const BatchedBridge = require('react-native/Libraries/BatchedBridge/BatchedBridge');
+BatchedBridge.registerLazyCallableModule('Systrace', () => require('react-native/Libraries/Performance/Systrace'));
+BatchedBridge.registerLazyCallableModule('JSTimers', () => require('react-native/Libraries/Core/Timers/JSTimers'));
 BatchedBridge.registerLazyCallableModule('HeapCapture', () =>
-  require('HeapCapture'),
+  require('react-native/Libraries/Utilities/HeapCapture'),
 );
 BatchedBridge.registerLazyCallableModule('SamplingProfiler', () =>
-  require('SamplingProfiler'),
+  require('react-native/Libraries/Performance/SamplingProfiler'),
 );
-BatchedBridge.registerLazyCallableModule('RCTLog', () => require('RCTLog'));
+BatchedBridge.registerLazyCallableModule('RCTLog', () => require('react-native/Libraries/Utilities/RCTLog'));
 BatchedBridge.registerLazyCallableModule('RCTDeviceEventEmitter', () =>
-  require('RCTDeviceEventEmitter'),
+  require('react-native/Libraries/EventEmitter/RCTDeviceEventEmitter'),
 );
 BatchedBridge.registerLazyCallableModule('RCTNativeAppEventEmitter', () =>
-  require('RCTNativeAppEventEmitter'),
+  require('react-native/Libraries/EventEmitter/RCTNativeAppEventEmitter'),
 );
 BatchedBridge.registerLazyCallableModule('PerformanceLogger', () =>
-  require('PerformanceLogger'),
+  require('react-native/Libraries/Utilities/PerformanceLogger'),
 );
 BatchedBridge.registerLazyCallableModule('JSDevSupportModule', () =>
-  require('JSDevSupportModule'),
+  require('react-native/Libraries/Utilities/JSDevSupportModule'),
 );
 
 global.__fetchSegment = function(
@@ -184,7 +184,7 @@ global.__fetchSegment = function(
   options: {|+otaBuildNumber: ?string|},
   callback: (?Error) => void,
 ) {
-  const {SegmentFetcher} = require('NativeModules');
+  const {SegmentFetcher} = require('react-native/Libraries/BatchedBridge/NativeModules');
   if (!SegmentFetcher) {
     throw new Error(
       'SegmentFetcher is missing. Please ensure that it is ' +
@@ -210,19 +210,19 @@ global.__fetchSegment = function(
 // Set up devtools
 if (__DEV__) {
   if (!global.__RCTProfileIsProfiling) {
-    BatchedBridge.registerCallableModule('HMRClient', require('HMRClient'));
+    BatchedBridge.registerCallableModule('HMRClient', require('react-native/Libraries/Utilities/HMRClient'));
 
     // not when debugging in chrome
     // TODO(t12832058) This check is broken
     if (!window.document) {
-      require('setupDevtools');
+      require('react-native/Libraries/Core/Devtools/setupDevtools');
     }
 
     // Set up inspector
-    const JSInspector = require('JSInspector');
+    const JSInspector = require('react-native/Libraries/JSInspector/JSInspector');
     /* $FlowFixMe(>=0.56.0 site=react_native_fb,react_native_oss) This comment
      * suppresses an error found when Flow v0.56 was deployed. To see the error
      * delete this comment and run Flow. */
-    JSInspector.registerAgent(require('NetworkAgent'));
+    JSInspector.registerAgent(require('react-native/Libraries/JSInspector/NetworkAgent'));
   }
 }

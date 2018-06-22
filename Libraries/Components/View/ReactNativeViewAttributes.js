@@ -10,7 +10,7 @@
 
 'use strict';
 
-const ReactNativeStyleAttributes = require('ReactNativeStyleAttributes');
+const ReactNativeStyleAttributes = require('react-native/Libraries/Components/View/ReactNativeStyleAttributes');
 
 const ReactNativeViewAttributes = {};
 

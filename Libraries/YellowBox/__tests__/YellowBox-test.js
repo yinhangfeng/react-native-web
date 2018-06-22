@@ -11,8 +11,8 @@
 
 'use strict';
 
-const YellowBox = require('YellowBox');
-const YellowBoxRegistry = require('YellowBoxRegistry');
+const YellowBox = require('react-native/Libraries/YellowBox/YellowBox');
+const YellowBoxRegistry = require('react-native/Libraries/YellowBox/Data/YellowBoxRegistry');
 
 describe('YellowBox', () => {
   const {error, warn} = console;

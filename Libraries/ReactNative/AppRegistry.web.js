@@ -11,7 +11,7 @@
  */
 'use strict';
 
-const renderApplication = require('renderApplication');
+const renderApplication = require('react-native/Libraries/ReactNative/renderApplication');
 
 const runnables = {};
 

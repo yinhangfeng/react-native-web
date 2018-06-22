@@ -10,7 +10,7 @@
 
 'use strict';
 
-const AnimatedImplementation = require('AnimatedImplementation');
+const AnimatedImplementation = require('react-native/Libraries/Animated/src/AnimatedImplementation');
 
 module.exports = {
   ...AnimatedImplementation,

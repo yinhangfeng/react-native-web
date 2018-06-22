@@ -10,10 +10,10 @@
 
 'use strict';
 
-const React = require('React');
-const StyleSheet = require('StyleSheet');
-const TabBarItemIOS = require('TabBarItemIOS');
-const View = require('View');
+const React = require('react-native/Libraries/react-native/React');
+const StyleSheet = require('react-native/Libraries/StyleSheet/StyleSheet');
+const TabBarItemIOS = require('react-native/Libraries/Components/TabBarIOS/TabBarItemIOS');
+const View = require('react-native/Libraries/Components/View/View');
 
 class DummyTabBarIOS extends React.Component<$FlowFixMeProps> {
   static Item = TabBarItemIOS;

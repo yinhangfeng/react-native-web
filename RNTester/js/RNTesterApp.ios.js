@@ -10,9 +10,9 @@
 
 'use strict';
 
-const AsyncStorage = require('AsyncStorage');
-const BackHandler = require('BackHandler');
-const Linking = require('Linking');
+const AsyncStorage = require('react-native/Libraries/Storage/AsyncStorage');
+const BackHandler = require('react-native/Libraries/Utilities/BackHandler');
+const Linking = require('react-native/Libraries/Linking/Linking');
 const React = require('react');
 const ReactNative = require('react-native');
 const RNTesterActions = require('./RNTesterActions');
@@ -22,7 +22,7 @@ const RNTesterList = require('./RNTesterList.ios');
 const RNTesterNavigationReducer = require('./RNTesterNavigationReducer');
 const URIActionMap = require('./URIActionMap');
 
-const xxx = require('xxx');
+const xxx = require('react-native/RNTester/js/xxx');
 
 const {
   Button,

@@ -3,13 +3,13 @@
  */
 'use strict';
 
-const ColorPropType = require('ColorPropType');
-const NativeMethodsMixin = require('NativeMethodsMixin');
-const React = require('React');
+const ColorPropType = require('react-native/Libraries/StyleSheet/ColorPropType');
+const NativeMethodsMixin = require('react-native/Libraries/Renderer/shims/NativeMethodsMixin');
+const React = require('react-native/Libraries/react-native/React');
 const PropTypes = require('prop-types');
-const StyleSheet = require('StyleSheet');
-const ViewPropTypes = require('ViewPropTypes');
-const View = require('View');
+const StyleSheet = require('react-native/Libraries/StyleSheet/StyleSheet');
+const ViewPropTypes = require('react-native/Libraries/Components/View/ViewPropTypes');
+const View = require('react-native/Libraries/Components/View/View');
 const createReactClass = require('create-react-class');
 
 const Toggle = __requireDefault(require('material-ui/src/Toggle'));

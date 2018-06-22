@@ -10,10 +10,10 @@
 
 'use strict';
 
-const JSEventLoopWatchdog = require('JSEventLoopWatchdog');
-const MessageQueue = require('MessageQueue');
+const JSEventLoopWatchdog = require('react-native/Libraries/Interaction/JSEventLoopWatchdog');
+const MessageQueue = require('react-native/Libraries/BatchedBridge/MessageQueue');
 
-const infoLog = require('infoLog');
+const infoLog = require('react-native/Libraries/Utilities/infoLog');
 
 const BridgeSpyStallHandler = {
   register: function() {

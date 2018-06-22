@@ -12,7 +12,7 @@
 import type {
   DangerouslyImpreciseStyle,
   DangerouslyImpreciseStyleProp,
-} from 'StyleSheet';
+} from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 function flattenStyle(
   style: ?DangerouslyImpreciseStyleProp,

@@ -10,7 +10,7 @@
  */
 'use strict';
 
-const ViewabilityHelper = require('ViewabilityHelper');
+const ViewabilityHelper = require('react-native/Libraries/Lists/ViewabilityHelper');
 
 let rowFrames;
 let data;

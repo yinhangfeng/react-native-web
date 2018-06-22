@@ -10,21 +10,21 @@
 
 'use strict';
 
-const EventEmitter = require('EventEmitter');
-const Image = require('Image');
-const RCTNavigatorManager = require('NativeModules').NavigatorManager;
-const React = require('React');
+const EventEmitter = require('react-native/Libraries/vendor/emitter/EventEmitter');
+const Image = require('react-native/Libraries/Image/Image');
+const RCTNavigatorManager = require('react-native/Libraries/BatchedBridge/NativeModules').NavigatorManager;
+const React = require('react-native/Libraries/react-native/React');
 const PropTypes = require('prop-types');
-const ReactNative = require('ReactNative');
-const StaticContainer = require('StaticContainer.react');
-const StyleSheet = require('StyleSheet');
-const TVEventHandler = require('TVEventHandler');
-const View = require('View');
-const ViewPropTypes = require('ViewPropTypes');
+const ReactNative = require('react-native/Libraries/Renderer/shims/ReactNative');
+const StaticContainer = require('react-native/Libraries/Components/StaticContainer.react');
+const StyleSheet = require('react-native/Libraries/StyleSheet/StyleSheet');
+const TVEventHandler = require('react-native/Libraries/Components/AppleTV/TVEventHandler');
+const View = require('react-native/Libraries/Components/View/View');
+const ViewPropTypes = require('react-native/Libraries/Components/View/ViewPropTypes');
 
 const createReactClass = require('create-react-class');
 const invariant = require('fbjs/lib/invariant');
-const requireNativeComponent = require('requireNativeComponent');
+const requireNativeComponent = require('react-native/Libraries/ReactNative/requireNativeComponent');
 
 /* $FlowFixMe(>=0.54.0 site=react_native_oss) This comment suppresses an error
  * found when Flow v0.54 was deployed. To see the error delete this comment and

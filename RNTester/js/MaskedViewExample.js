@@ -11,8 +11,8 @@
 'use strict';
 
 const React = require('react');
-const RNTesterBlock = require('RNTesterBlock');
-const RNTesterPage = require('RNTesterPage');
+const RNTesterBlock = require('react-native/RNTester/js/RNTesterBlock');
+const RNTesterPage = require('react-native/RNTester/js/RNTesterPage');
 const {
   Animated,
   Image,

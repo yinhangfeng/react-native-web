@@ -12,9 +12,9 @@
 
 const React = require('react');
 const ReactNative = require('react-native');
-const StyleSheet = require('StyleSheet');
-const RNTesterBlock = require('RNTesterBlock');
-const RNTesterPage = require('RNTesterPage');
+const StyleSheet = require('react-native/Libraries/StyleSheet/StyleSheet');
+const RNTesterBlock = require('react-native/RNTester/js/RNTesterBlock');
+const RNTesterPage = require('react-native/RNTester/js/RNTesterPage');
 
 const {Picker, Text} = ReactNative;
 

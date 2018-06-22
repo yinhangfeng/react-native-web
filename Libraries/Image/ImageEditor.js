@@ -9,7 +9,7 @@
  */
 'use strict';
 
-const RCTImageEditingManager = require('NativeModules').ImageEditingManager;
+const RCTImageEditingManager = require('react-native/Libraries/BatchedBridge/NativeModules').ImageEditingManager;
 
 type ImageCropData = {
   /**

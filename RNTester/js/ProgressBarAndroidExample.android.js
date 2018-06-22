@@ -10,11 +10,11 @@
 
 'use strict';
 
-var ProgressBar = require('ProgressBarAndroid');
-var React = require('React');
+var ProgressBar = require('react-native/Libraries/Components/ProgressBarAndroid/ProgressBarAndroid');
+var React = require('react-native/Libraries/react-native/React');
 var createReactClass = require('create-react-class');
-var RNTesterBlock = require('RNTesterBlock');
-var RNTesterPage = require('RNTesterPage');
+var RNTesterBlock = require('react-native/RNTester/js/RNTesterBlock');
+var RNTesterPage = require('react-native/RNTester/js/RNTesterPage');
 
 var TimerMixin = require('react-timer-mixin');
 

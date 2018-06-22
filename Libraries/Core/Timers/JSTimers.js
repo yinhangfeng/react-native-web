@@ -9,13 +9,13 @@
  */
 'use strict';
 
-const Platform = require('Platform');
-const Systrace = require('Systrace');
+const Platform = require('react-native/Libraries/Utilities/Platform');
+const Systrace = require('react-native/Libraries/Performance/Systrace');
 
 const invariant = require('fbjs/lib/invariant');
-const {Timing} = require('NativeModules');
+const {Timing} = require('react-native/Libraries/BatchedBridge/NativeModules');
 
-import type {ExtendedError} from 'parseErrorStack';
+import type {ExtendedError} from 'react-native/Libraries/Core/Devtools/parseErrorStack';
 
 let _performanceNow = null;
 function performanceNow() {
@@ -84,7 +84,7 @@ function _allocateCallback(func: Function, type: JSTimerType): number {
   callbacks[freeIndex] = func;
   types[freeIndex] = type;
   if (__DEV__) {
-    const parseErrorStack = require('parseErrorStack');
+    const parseErrorStack = require('react-native/Libraries/Core/Devtools/parseErrorStack');
     const error: ExtendedError = new Error();
     error.framesToPop = 1;
     const stack = parseErrorStack(error);

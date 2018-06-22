@@ -12,9 +12,9 @@
 
 const {
   __SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED,
-} = require('ReactNative');
+} = require('react-native/Libraries/Renderer/shims/ReactNative');
 
-import type {NativeMethodsMixinType} from 'ReactNativeTypes';
+import type {NativeMethodsMixinType} from 'react-native/Libraries/Renderer/shims/ReactNativeTypes';
 
 const {NativeMethodsMixin} = __SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
 

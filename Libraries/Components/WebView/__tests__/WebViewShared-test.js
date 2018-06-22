@@ -10,7 +10,7 @@
 
 'use strict';
 
-const WebViewShared = require('WebViewShared');
+const WebViewShared = require('react-native/Libraries/Components/WebView/WebViewShared');
 
 describe('WebViewShared', () => {
   it('extracts the origin correctly', () => {

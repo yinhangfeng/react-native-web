@@ -22,7 +22,7 @@ const invariant = require('fbjs/lib/invariant');
  * found when Flow v0.54 was deployed. To see the error delete this comment and
  * run Flow. */
 const warning = require('fbjs/lib/warning');
-const BlobManager = require('BlobManager');
+const BlobManager = require('react-native/Libraries/Blob/BlobManager');
 
 export type NativeResponseType = 'base64' | 'blob' | 'text';
 export type ResponseType =

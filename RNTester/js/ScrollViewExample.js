@@ -9,10 +9,10 @@
  */
 'use strict';
 
-import type {DangerouslyImpreciseStyleProp} from 'StyleSheet';
+import type {DangerouslyImpreciseStyleProp} from 'react-native/Libraries/StyleSheet/StyleSheet';
 
-const ActivityIndicator = require('ActivityIndicator');
-const Platform = require('Platform');
+const ActivityIndicator = require('react-native/Libraries/Components/ActivityIndicator/ActivityIndicator');
+const Platform = require('react-native/Libraries/Utilities/Platform');
 const React = require('react');
 const ReactNative = require('react-native');
 const {

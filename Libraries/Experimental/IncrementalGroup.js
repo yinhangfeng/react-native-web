@@ -10,17 +10,17 @@
 
 'use strict';
 
-const Incremental = require('Incremental');
-const React = require('React');
+const Incremental = require('react-native/Libraries/Experimental/Incremental');
+const React = require('react-native/Libraries/react-native/React');
 
 const PropTypes = require('prop-types');
 
-const infoLog = require('infoLog');
+const infoLog = require('react-native/Libraries/Utilities/infoLog');
 
 let _groupCounter = -1;
 const DEBUG = false;
 
-import type {Props, Context} from 'Incremental';
+import type {Props, Context} from 'react-native/Libraries/Experimental/Incremental';
 
 /**
  * WARNING: EXPERIMENTAL. Breaking changes will probably happen a lot and will

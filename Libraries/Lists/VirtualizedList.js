@@ -9,34 +9,34 @@
  */
 'use strict';
 
-const Batchinator = require('Batchinator');
-const FillRateHelper = require('FillRateHelper');
+const Batchinator = require('react-native/Libraries/Interaction/Batchinator');
+const FillRateHelper = require('react-native/Libraries/Lists/FillRateHelper');
 const PropTypes = require('prop-types');
-const React = require('React');
-const ReactNative = require('ReactNative');
-const RefreshControl = require('RefreshControl');
-const ScrollView = require('ScrollView');
-const StyleSheet = require('StyleSheet');
-const UIManager = require('UIManager');
-const View = require('View');
-const ViewabilityHelper = require('ViewabilityHelper');
+const React = require('react-native/Libraries/react-native/React');
+const ReactNative = require('react-native/Libraries/Renderer/shims/ReactNative');
+const RefreshControl = require('react-native/Libraries/Components/RefreshControl/RefreshControl');
+const ScrollView = require('react-native/Libraries/Components/ScrollView/ScrollView');
+const StyleSheet = require('react-native/Libraries/StyleSheet/StyleSheet');
+const UIManager = require('react-native/Libraries/ReactNative/UIManager');
+const View = require('react-native/Libraries/Components/View/View');
+const ViewabilityHelper = require('react-native/Libraries/Lists/ViewabilityHelper');
 
-const flattenStyle = require('flattenStyle');
-const infoLog = require('infoLog');
+const flattenStyle = require('react-native/Libraries/StyleSheet/flattenStyle');
+const infoLog = require('react-native/Libraries/Utilities/infoLog');
 const invariant = require('fbjs/lib/invariant');
 /* $FlowFixMe(>=0.54.0 site=react_native_oss) This comment suppresses an error
  * found when Flow v0.54 was deployed. To see the error delete this comment and
  * run Flow. */
 const warning = require('fbjs/lib/warning');
 
-const {computeWindowedRenderLimits} = require('VirtualizeUtils');
+const {computeWindowedRenderLimits} = require('react-native/Libraries/Lists/VirtualizeUtils');
 
-import type {DangerouslyImpreciseStyleProp} from 'StyleSheet';
+import type {DangerouslyImpreciseStyleProp} from 'react-native/Libraries/StyleSheet/StyleSheet';
 import type {
   ViewabilityConfig,
   ViewToken,
   ViewabilityConfigCallbackPair,
-} from 'ViewabilityHelper';
+} from 'react-native/Libraries/Lists/ViewabilityHelper';
 
 type Item = any;
 

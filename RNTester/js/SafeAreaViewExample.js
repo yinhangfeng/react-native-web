@@ -9,14 +9,14 @@
  */
 'use strict';
 
-const Button = require('Button');
-const DeviceInfo = require('DeviceInfo');
-const Modal = require('Modal');
+const Button = require('react-native/Libraries/Components/Button');
+const DeviceInfo = require('react-native/Libraries/Utilities/DeviceInfo');
+const Modal = require('react-native/Libraries/Modal/Modal');
 const React = require('react');
 const SafeAreaView = require('SafeAreaView');
-const StyleSheet = require('StyleSheet');
-const Text = require('Text');
-const View = require('View');
+const StyleSheet = require('react-native/Libraries/StyleSheet/StyleSheet');
+const Text = require('react-native/Libraries/Text/Text');
+const View = require('react-native/Libraries/Components/View/View');
 
 exports.displayName = (undefined: ?string);
 exports.framework = 'React';

@@ -10,14 +10,14 @@
 
 'use strict';
 
-const Alert = require('Alert');
+const Alert = require('react-native/Libraries/Alert/Alert');
 const React = require('react');
 const ReactNative = require('react-native');
 const {Animated, FlatList, StyleSheet, View} = ReactNative;
 
 const RNTesterPage = require('./RNTesterPage');
 
-const infoLog = require('infoLog');
+const infoLog = require('react-native/Libraries/Utilities/infoLog');
 
 const {
   FooterComponent,

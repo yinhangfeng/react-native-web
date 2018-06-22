@@ -28,7 +28,7 @@ const SamplingProfiler = {
       error = e.toString();
     }
 
-    const {JSCSamplingProfiler} = require('NativeModules');
+    const {JSCSamplingProfiler} = require('react-native/Libraries/BatchedBridge/NativeModules');
     JSCSamplingProfiler.operationComplete(token, result, error);
   },
 };

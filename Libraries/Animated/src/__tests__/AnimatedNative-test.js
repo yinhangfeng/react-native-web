@@ -27,8 +27,8 @@ jest
   // findNodeHandle is imported from ReactNative so mock that whole module.
   .setMock('ReactNative', {findNodeHandle: () => 1});
 
-const Animated = require('Animated');
-const NativeAnimatedHelper = require('NativeAnimatedHelper');
+const Animated = require('react-native/Libraries/Animated/src/Animated');
+const NativeAnimatedHelper = require('react-native/Libraries/Animated/src/NativeAnimatedHelper');
 
 function createAndMountComponent(ComponentClass, props) {
   const component = new ComponentClass();
@@ -41,7 +41,7 @@ function createAndMountComponent(ComponentClass, props) {
 }
 
 describe('Native Animated', () => {
-  const nativeAnimatedModule = require('NativeModules').NativeAnimatedModule;
+  const nativeAnimatedModule = require('react-native/Libraries/BatchedBridge/NativeModules').NativeAnimatedModule;
 
   beforeEach(() => {
     nativeAnimatedModule.addAnimatedEventToView = jest.fn();

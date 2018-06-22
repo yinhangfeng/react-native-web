@@ -12,23 +12,23 @@
  */
 'use strict';
 
-var ListViewDataSource = require('ListViewDataSource');
-var React = require('React');
+var ListViewDataSource = require('react-native/Libraries/Lists/ListView/ListViewDataSource');
+var React = require('react-native/Libraries/react-native/React');
 var PropTypes = require('prop-types');
-var ReactNative = require('ReactNative');
-//var RCTScrollViewManager = require('NativeModules').ScrollViewManager;
-var ScrollView = require('ScrollView');
-//var ScrollResponder = require('ScrollResponder');
-var StaticRenderer = require('StaticRenderer');
+var ReactNative = require('react-native/Libraries/Renderer/shims/ReactNative');
+//var RCTScrollViewManager = require('react-native/Libraries/BatchedBridge/NativeModules').ScrollViewManager;
+var ScrollView = require('react-native/Libraries/Components/ScrollView/ScrollView');
+//var ScrollResponder = require('react-native/Libraries/Components/ScrollResponder');
+var StaticRenderer = require('react-native/Libraries/Components/StaticRenderer');
 var TimerMixin = require('react-timer-mixin');
 
 var cloneReferencedElement = require('react-clone-referenced-element');
 var createReactClass = require('create-react-class');
-var isEmpty = require('isEmpty');
-// var merge = require('merge');
+var isEmpty = require('react-native/Libraries/vendor/core/isEmpty');
+// var merge = require('react-native/Libraries/vendor/core/merge');
 const invariant = require('fbjs/lib/invariant');
 
-var RWConfig = require('RWConfig');
+var RWConfig = require('react-native/Libraries/lrnw/RWConfig');
 
 var DEFAULT_PAGE_SIZE = 1;
 var DEFAULT_INITIAL_ROWS = 10;

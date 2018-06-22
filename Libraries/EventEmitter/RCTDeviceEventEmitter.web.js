@@ -10,10 +10,10 @@
  */
 'use strict';
 
-const EventEmitter = require('EventEmitter');
-const EventSubscriptionVendor = require('EventSubscriptionVendor');
+const EventEmitter = require('react-native/Libraries/vendor/emitter/EventEmitter');
+const EventSubscriptionVendor = require('react-native/Libraries/vendor/emitter/EventSubscriptionVendor');
 
-import type EmitterSubscription from 'EmitterSubscription';
+import type EmitterSubscription from 'react-native/Libraries/vendor/emitter/EmitterSubscription';
 
 /**
  * Deprecated - subclass NativeEventEmitter to create granular event modules instead of

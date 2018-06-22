@@ -12,8 +12,8 @@
 
 'use strict';
 
-const Platform = require('Platform');
-const TVEventHandler = require('TVEventHandler');
+const Platform = require('react-native/Libraries/Utilities/Platform');
+const TVEventHandler = require('react-native/Libraries/Components/AppleTV/TVEventHandler');
 
 type BackPressEventName = $Enum<{
   backPress: string,

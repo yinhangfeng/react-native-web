@@ -10,8 +10,8 @@
 
 'use strict';
 
-const EventEmitter = require('EventEmitter');
-const RCTDeviceEventEmitter = require('RCTDeviceEventEmitter');
+const EventEmitter = require('react-native/Libraries/vendor/emitter/EventEmitter');
+const RCTDeviceEventEmitter = require('react-native/Libraries/EventEmitter/RCTDeviceEventEmitter');
 
 /**
  * Mock the NativeEventEmitter as a normal JS EventEmitter.

@@ -9,10 +9,10 @@
  */
 'use strict';
 
-const binaryToBase64 = require('binaryToBase64');
+const binaryToBase64 = require('react-native/Libraries/Utilities/binaryToBase64');
 
-const Blob = require('Blob');
-const FormData = require('FormData');
+const Blob = require('react-native/Libraries/Blob/Blob');
+const FormData = require('react-native/Libraries/Network/FormData');
 
 export type RequestBody =
   | string

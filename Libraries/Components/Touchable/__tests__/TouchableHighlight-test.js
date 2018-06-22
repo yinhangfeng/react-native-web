@@ -10,10 +10,10 @@
 
 'use strict';
 
-const React = require('React');
+const React = require('react-native/Libraries/react-native/React');
 const ReactTestRenderer = require('react-test-renderer');
-const Text = require('Text');
-const TouchableHighlight = require('TouchableHighlight');
+const Text = require('react-native/Libraries/Text/Text');
+const TouchableHighlight = require('react-native/Libraries/Components/Touchable/TouchableHighlight');
 
 describe('TouchableHighlight', () => {
   it('renders correctly', () => {

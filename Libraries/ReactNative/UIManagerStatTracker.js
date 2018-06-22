@@ -9,7 +9,7 @@
  */
 'use strict';
 
-const UIManager = require('UIManager');
+const UIManager = require('react-native/Libraries/ReactNative/UIManager');
 
 let installed = false;
 const UIManagerStatTracker = {

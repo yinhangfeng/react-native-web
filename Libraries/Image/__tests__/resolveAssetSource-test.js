@@ -10,9 +10,9 @@
 
 'use strict';
 
-const AssetRegistry = require('AssetRegistry');
-const Platform = require('Platform');
-const NativeModules = require('NativeModules');
+const AssetRegistry = require('react-native/Libraries/Image/AssetRegistry');
+const Platform = require('react-native/Libraries/Utilities/Platform');
+const NativeModules = require('react-native/Libraries/BatchedBridge/NativeModules');
 const resolveAssetSource = require('../resolveAssetSource');
 
 function expectResolvesAsset(input, expectedSource) {

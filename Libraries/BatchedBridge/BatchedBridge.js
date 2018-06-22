@@ -10,7 +10,7 @@
 
 'use strict';
 
-const MessageQueue = require('MessageQueue');
+const MessageQueue = require('react-native/Libraries/BatchedBridge/MessageQueue');
 
 const BatchedBridge = new MessageQueue();
 

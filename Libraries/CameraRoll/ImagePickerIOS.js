@@ -10,7 +10,7 @@
 
 'use strict';
 
-const RCTImagePicker = require('NativeModules').ImagePickerIOS;
+const RCTImagePicker = require('react-native/Libraries/BatchedBridge/NativeModules').ImagePickerIOS;
 
 const ImagePickerIOS = {
   canRecordVideos: function(callback: Function) {

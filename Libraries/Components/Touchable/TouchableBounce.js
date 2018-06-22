@@ -9,19 +9,19 @@
  */
 'use strict';
 
-const Animated = require('Animated');
-const EdgeInsetsPropType = require('EdgeInsetsPropType');
-const NativeMethodsMixin = require('NativeMethodsMixin');
-const React = require('React');
+const Animated = require('react-native/Libraries/Animated/src/Animated');
+const EdgeInsetsPropType = require('react-native/Libraries/StyleSheet/EdgeInsetsPropType');
+const NativeMethodsMixin = require('react-native/Libraries/Renderer/shims/NativeMethodsMixin');
+const React = require('react-native/Libraries/react-native/React');
 const createReactClass = require('create-react-class');
 const PropTypes = require('prop-types');
-const Touchable = require('Touchable');
-const TouchableWithoutFeedback = require('TouchableWithoutFeedback');
-const ViewPropTypes = require('ViewPropTypes');
+const Touchable = require('react-native/Libraries/Components/Touchable/Touchable');
+const TouchableWithoutFeedback = require('react-native/Libraries/Components/Touchable/TouchableWithoutFeedback');
+const ViewPropTypes = require('react-native/Libraries/Components/View/ViewPropTypes');
 
-import type {EdgeInsetsProp} from 'EdgeInsetsPropType';
-import type {Props as TouchableWithoutFeedbackProps} from 'TouchableWithoutFeedback';
-import type {ViewStyleProp} from 'StyleSheet';
+import type {EdgeInsetsProp} from 'react-native/Libraries/StyleSheet/EdgeInsetsPropType';
+import type {Props as TouchableWithoutFeedbackProps} from 'react-native/Libraries/Components/Touchable/TouchableWithoutFeedback';
+import type {ViewStyleProp} from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 type Event = Object;
 

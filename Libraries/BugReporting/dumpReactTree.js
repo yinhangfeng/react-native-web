@@ -11,7 +11,7 @@
 'use strict';
 
 /*
-const getReactData = require('getReactData');
+const getReactData = require('react-native/Libraries/BugReporting/getReactData');
 
 const INDENTATION_SIZE = 2;
 const MAX_DEPTH = 2;

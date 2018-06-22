@@ -10,11 +10,11 @@
 
 'use strict';
 
-const AlertIOS = require('AlertIOS');
-const NativeModules = require('NativeModules');
-const Platform = require('Platform');
+const AlertIOS = require('react-native/Libraries/Alert/AlertIOS');
+const NativeModules = require('react-native/Libraries/BatchedBridge/NativeModules');
+const Platform = require('react-native/Libraries/Utilities/Platform');
 
-import type {AlertType, AlertButtonStyle} from 'AlertIOS';
+import type {AlertType, AlertButtonStyle} from 'react-native/Libraries/Alert/AlertIOS';
 
 export type Buttons = Array<{
   text?: string,

@@ -10,7 +10,7 @@
 
 'use strict';
 
-const RCTToastAndroid = require('NativeModules').ToastAndroid;
+const RCTToastAndroid = require('react-native/Libraries/BatchedBridge/NativeModules').ToastAndroid;
 
 /**
  * This exposes the native ToastAndroid module as a JS module. This has a function 'show'

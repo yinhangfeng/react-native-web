@@ -10,12 +10,12 @@
 
 'use strict';
 
-const MissingNativeEventEmitterShim = require('MissingNativeEventEmitterShim');
-const NativeEventEmitter = require('NativeEventEmitter');
-const NativeModules = require('NativeModules');
+const MissingNativeEventEmitterShim = require('react-native/Libraries/EventEmitter/MissingNativeEventEmitterShim');
+const NativeEventEmitter = require('react-native/Libraries/EventEmitter/NativeEventEmitter');
+const NativeModules = require('react-native/Libraries/BatchedBridge/NativeModules');
 const RCTAppState = NativeModules.AppState;
 
-const logError = require('logError');
+const logError = require('react-native/Libraries/Utilities/logError');
 const invariant = require('fbjs/lib/invariant');
 
 /**

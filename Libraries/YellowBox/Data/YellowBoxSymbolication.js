@@ -10,9 +10,9 @@
 
 'use strict';
 
-const symbolicateStackTrace = require('symbolicateStackTrace');
+const symbolicateStackTrace = require('react-native/Libraries/Core/Devtools/symbolicateStackTrace');
 
-import type {StackFrame} from 'parseErrorStack';
+import type {StackFrame} from 'react-native/Libraries/Core/Devtools/parseErrorStack';
 
 type CacheKey = string;
 

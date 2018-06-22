@@ -86,7 +86,7 @@ class NotificationExample extends React.Component<{}> {
   }
 
   _sendNotification() {
-    require('RCTDeviceEventEmitter').emit('remoteNotificationReceived', {
+    require('react-native/Libraries/EventEmitter/RCTDeviceEventEmitter').emit('remoteNotificationReceived', {
       remote: true,
       aps: {
         alert: 'Sample notification',
@@ -99,7 +99,7 @@ class NotificationExample extends React.Component<{}> {
   }
 
   _sendLocalNotification() {
-    require('RCTDeviceEventEmitter').emit('localNotificationReceived', {
+    require('react-native/Libraries/EventEmitter/RCTDeviceEventEmitter').emit('localNotificationReceived', {
       aps: {
         alert: 'Sample local notification',
         badge: '+1',

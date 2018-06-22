@@ -10,20 +10,20 @@
 
 'use strict';
 
-const Dimensions = require('Dimensions');
-const FrameRateLogger = require('FrameRateLogger');
-const Keyboard = require('Keyboard');
-const ReactNative = require('ReactNative');
-const Subscribable = require('Subscribable');
-const TextInputState = require('TextInputState');
-const UIManager = require('UIManager');
+const Dimensions = require('react-native/Libraries/Utilities/Dimensions');
+const FrameRateLogger = require('react-native/Libraries/Interaction/FrameRateLogger');
+const Keyboard = require('react-native/Libraries/Components/Keyboard/Keyboard');
+const ReactNative = require('react-native/Libraries/Renderer/shims/ReactNative');
+const Subscribable = require('react-native/Libraries/Components/Subscribable');
+const TextInputState = require('react-native/Libraries/Components/TextInput/TextInputState');
+const UIManager = require('react-native/Libraries/ReactNative/UIManager');
 
 const invariant = require('fbjs/lib/invariant');
 const nullthrows = require('fbjs/lib/nullthrows');
 const performanceNow = require('fbjs/lib/performanceNow');
 const warning = require('fbjs/lib/warning');
 
-const {ScrollViewManager} = require('NativeModules');
+const {ScrollViewManager} = require('react-native/Libraries/BatchedBridge/NativeModules');
 
 /**
  * Mixin that can be integrated in order to handle scrolling that plays well

@@ -10,21 +10,21 @@
 
 'use strict';
 
-const BoxInspector = require('BoxInspector');
+const BoxInspector = require('react-native/Libraries/Inspector/BoxInspector');
 const PropTypes = require('prop-types');
-const React = require('React');
-const StyleInspector = require('StyleInspector');
-const StyleSheet = require('StyleSheet');
-const Text = require('Text');
-const TouchableHighlight = require('TouchableHighlight');
-const TouchableWithoutFeedback = require('TouchableWithoutFeedback');
-const View = require('View');
+const React = require('react-native/Libraries/react-native/React');
+const StyleInspector = require('react-native/Libraries/Inspector/StyleInspector');
+const StyleSheet = require('react-native/Libraries/StyleSheet/StyleSheet');
+const Text = require('react-native/Libraries/Text/Text');
+const TouchableHighlight = require('react-native/Libraries/Components/Touchable/TouchableHighlight');
+const TouchableWithoutFeedback = require('react-native/Libraries/Components/Touchable/TouchableWithoutFeedback');
+const View = require('react-native/Libraries/Components/View/View');
 
-const flattenStyle = require('flattenStyle');
-const mapWithSeparator = require('mapWithSeparator');
-const openFileInEditor = require('openFileInEditor');
+const flattenStyle = require('react-native/Libraries/StyleSheet/flattenStyle');
+const mapWithSeparator = require('react-native/Libraries/Utilities/mapWithSeparator');
+const openFileInEditor = require('react-native/Libraries/Core/Devtools/openFileInEditor');
 
-import type {DangerouslyImpreciseStyleProp} from 'StyleSheet';
+import type {DangerouslyImpreciseStyleProp} from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 class ElementProperties extends React.Component<{
   hierarchy: Array<$FlowFixMe>,

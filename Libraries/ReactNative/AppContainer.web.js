@@ -13,9 +13,9 @@
 
 'use strict';
 
-const React = require('React');
-const CSSClassNames = require('CSSClassNames');
-const RWConfig = require('RWConfig');
+const React = require('react-native/Libraries/react-native/React');
+const CSSClassNames = require('react-native/Libraries/StyleSheet/CSSClassNames');
+const RWConfig = require('react-native/Libraries/lrnw/RWConfig');
 // TODO material-ui 库需要, 暂时放在这里，应该由使用者提供
 const getMuiTheme = __requireDefault(require('material-ui/src/styles/getMuiTheme'));
 const PropTypes = require('prop-types');

@@ -11,8 +11,8 @@
 'use strict';
 
 const EventTarget = require('event-target-shim');
-const Blob = require('Blob');
-const {FileReaderModule} = require('NativeModules');
+const Blob = require('react-native/Libraries/Blob/Blob');
+const {FileReaderModule} = require('react-native/Libraries/BatchedBridge/NativeModules');
 
 type ReadyState =
   | 0 // EMPTY

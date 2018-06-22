@@ -9,7 +9,7 @@
 
 'use strict';
 
-const ListViewDataSource = require('ListViewDataSource');
+const ListViewDataSource = require('react-native/Libraries/Lists/ListView/ListViewDataSource');
 
 /**
  * Data source wrapper around ListViewDataSource to allow for tracking of

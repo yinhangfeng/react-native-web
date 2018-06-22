@@ -30,7 +30,7 @@
 
 "use strict";
 
-var mergeInto = require('mergeInto');
+var mergeInto = require('react-native/Libraries/vendor/core/mergeInto');
 
 /**
  * Shallow merges two structures into a return value, without mutating either.

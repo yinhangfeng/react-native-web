@@ -10,9 +10,9 @@
 
 'use strict';
 
-const EventEmitter = require('EventEmitter');
-const Platform = require('Platform');
-const RCTDeviceEventEmitter = require('RCTDeviceEventEmitter');
+const EventEmitter = require('react-native/Libraries/vendor/emitter/EventEmitter');
+const Platform = require('react-native/Libraries/Utilities/Platform');
+const RCTDeviceEventEmitter = require('react-native/Libraries/EventEmitter/RCTDeviceEventEmitter');
 
 const invariant = require('fbjs/lib/invariant');
 
@@ -128,7 +128,7 @@ let dims: ?{[key: string]: any} =
   global.nativeExtensions.DeviceInfo.Dimensions;
 let nativeExtensionsEnabled = true;
 if (!dims) {
-  const DeviceInfo = require('DeviceInfo');
+  const DeviceInfo = require('react-native/Libraries/Utilities/DeviceInfo');
   dims = DeviceInfo.Dimensions;
   nativeExtensionsEnabled = false;
 }

@@ -10,11 +10,11 @@
 
 'use strict';
 
-const AnimatedImplementation = require('AnimatedImplementation');
-const Image = require('Image');
-const ScrollView = require('ScrollView');
-const Text = require('Text');
-const View = require('View');
+const AnimatedImplementation = require('react-native/Libraries/Animated/src/AnimatedImplementation');
+const Image = require('react-native/Libraries/Image/Image');
+const ScrollView = require('react-native/Libraries/Components/ScrollView/ScrollView');
+const Text = require('react-native/Libraries/Text/Text');
+const View = require('react-native/Libraries/Components/View/View');
 
 const Animated = {
   View: AnimatedImplementation.createAnimatedComponent(View),

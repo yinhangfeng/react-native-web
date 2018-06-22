@@ -9,32 +9,32 @@
  */
 'use strict';
 
-const ColorPropType = require('ColorPropType');
-const DocumentSelectionState = require('DocumentSelectionState');
-const EventEmitter = require('EventEmitter');
-const NativeMethodsMixin = require('NativeMethodsMixin');
-const Platform = require('Platform');
-const React = require('React');
+const ColorPropType = require('react-native/Libraries/StyleSheet/ColorPropType');
+const DocumentSelectionState = require('react-native/Libraries/vendor/document/selection/DocumentSelectionState');
+const EventEmitter = require('react-native/Libraries/vendor/emitter/EventEmitter');
+const NativeMethodsMixin = require('react-native/Libraries/Renderer/shims/NativeMethodsMixin');
+const Platform = require('react-native/Libraries/Utilities/Platform');
+const React = require('react-native/Libraries/react-native/React');
 const createReactClass = require('create-react-class');
 const PropTypes = require('prop-types');
-const ReactNative = require('ReactNative');
-const StyleSheet = require('StyleSheet');
-const Text = require('Text');
-const TextAncestor = require('TextAncestor');
-const TextInputState = require('TextInputState');
+const ReactNative = require('react-native/Libraries/Renderer/shims/ReactNative');
+const StyleSheet = require('react-native/Libraries/StyleSheet/StyleSheet');
+const Text = require('react-native/Libraries/Text/Text');
+const TextAncestor = require('react-native/Libraries/Text/TextAncestor');
+const TextInputState = require('react-native/Libraries/Components/TextInput/TextInputState');
 const TimerMixin = require('react-timer-mixin');
-const TouchableWithoutFeedback = require('TouchableWithoutFeedback');
-const UIManager = require('UIManager');
-const ViewPropTypes = require('ViewPropTypes');
+const TouchableWithoutFeedback = require('react-native/Libraries/Components/Touchable/TouchableWithoutFeedback');
+const UIManager = require('react-native/Libraries/ReactNative/UIManager');
+const ViewPropTypes = require('react-native/Libraries/Components/View/ViewPropTypes');
 
 const emptyFunction = require('fbjs/lib/emptyFunction');
 const invariant = require('fbjs/lib/invariant');
-const requireNativeComponent = require('requireNativeComponent');
+const requireNativeComponent = require('react-native/Libraries/ReactNative/requireNativeComponent');
 const warning = require('fbjs/lib/warning');
 
-import type {ColorValue} from 'StyleSheetTypes';
-import type {TextStyleProp} from 'StyleSheet';
-import type {ViewProps} from 'ViewPropTypes';
+import type {ColorValue} from 'react-native/Libraries/StyleSheet/StyleSheetTypes';
+import type {TextStyleProp} from 'react-native/Libraries/StyleSheet/StyleSheet';
+import type {ViewProps} from 'react-native/Libraries/Components/View/ViewPropTypes';
 
 let AndroidTextInput;
 let RCTMultilineTextInputView;

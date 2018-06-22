@@ -10,7 +10,7 @@
 
 'use strict';
 
-const TimePickerModule = require('NativeModules').TimePickerAndroid;
+const TimePickerModule = require('react-native/Libraries/BatchedBridge/NativeModules').TimePickerAndroid;
 
 /**
  * Opens the standard Android time picker dialog.

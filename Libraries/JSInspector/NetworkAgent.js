@@ -10,12 +10,12 @@
 
 'use strict';
 
-const InspectorAgent = require('InspectorAgent');
-const JSInspector = require('JSInspector');
-const Map = require('Map');
-const XMLHttpRequest = require('XMLHttpRequest');
+const InspectorAgent = require('react-native/Libraries/JSInspector/InspectorAgent');
+const JSInspector = require('react-native/Libraries/JSInspector/JSInspector');
+const Map = require('react-native/Libraries/vendor/core/Map');
+const XMLHttpRequest = require('react-native/Libraries/Network/XMLHttpRequest');
 
-import type EventSender from 'InspectorAgent';
+import type EventSender from 'react-native/Libraries/JSInspector/InspectorAgent';
 
 type RequestId = string;
 

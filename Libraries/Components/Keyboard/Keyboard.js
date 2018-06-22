@@ -10,11 +10,11 @@
 
 'use strict';
 
-const LayoutAnimation = require('LayoutAnimation');
+const LayoutAnimation = require('react-native/Libraries/LayoutAnimation/LayoutAnimation');
 const invariant = require('fbjs/lib/invariant');
-const NativeEventEmitter = require('NativeEventEmitter');
-const KeyboardObserver = require('NativeModules').KeyboardObserver;
-const dismissKeyboard = require('dismissKeyboard');
+const NativeEventEmitter = require('react-native/Libraries/EventEmitter/NativeEventEmitter');
+const KeyboardObserver = require('react-native/Libraries/BatchedBridge/NativeModules').KeyboardObserver;
+const dismissKeyboard = require('react-native/Libraries/Utilities/dismissKeyboard');
 const KeyboardEventEmitter = new NativeEventEmitter(KeyboardObserver);
 
 type KeyboardEventName =

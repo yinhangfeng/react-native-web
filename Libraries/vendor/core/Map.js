@@ -13,10 +13,10 @@
 
 'use strict';
 
-const _shouldPolyfillES6Collection = require('_shouldPolyfillES6Collection');
-const guid = require('guid');
+const _shouldPolyfillES6Collection = require('react-native/Libraries/vendor/core/_shouldPolyfillES6Collection');
+const guid = require('react-native/Libraries/vendor/core/guid');
 const isNode = require('fbjs/lib/isNode');
-const toIterator = require('toIterator');
+const toIterator = require('react-native/Libraries/vendor/core/toIterator');
 
 module.exports = (function(global, undefined) {
   // Since our implementation is spec-compliant for the most part we can safely

@@ -10,7 +10,7 @@
 
 'use strict';
 
-const React = require('React');
+const React = require('react-native/Libraries/react-native/React');
 
 opaque type DoNotCommitUsageOfPureComponentDebug = {};
 
@@ -20,7 +20,7 @@ opaque type DoNotCommitUsageOfPureComponentDebug = {};
  * Change `extends React.PureComponent` to `extends PureComponentDebug` or inject it
  * everywhere by putting this line in your app setup:
  *
- *    React.PureComponent = require('PureComponentDebug');
+ *    React.PureComponent = require('react-native/Libraries/Performance/PureComponentDebug');
  *
  * Should only be used for local testing, and will trigger a flow failure if you try to
  * commit any usages.

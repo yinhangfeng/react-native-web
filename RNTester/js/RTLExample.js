@@ -26,7 +26,7 @@ const {
   View,
   Button,
 } = ReactNative;
-const Platform = require('Platform');
+const Platform = require('react-native/Libraries/Utilities/Platform');
 
 const RNTesterPage = require('./RNTesterPage');
 const RNTesterBlock = require('./RNTesterBlock');

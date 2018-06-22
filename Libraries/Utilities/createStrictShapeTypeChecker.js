@@ -11,7 +11,7 @@
 'use strict';
 
 const invariant = require('fbjs/lib/invariant');
-const merge = require('merge');
+const merge = require('react-native/Libraries/vendor/core/merge');
 
 function createStrictShapeTypeChecker(shapeTypes: {
   [key: string]: ReactPropsCheckType,

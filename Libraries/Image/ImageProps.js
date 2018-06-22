@@ -10,16 +10,16 @@
 
 'use strict';
 
-const EdgeInsetsPropType = require('EdgeInsetsPropType');
-const ImageSourcePropType = require('ImageSourcePropType');
-const ImageStylePropTypes = require('ImageStylePropTypes');
+const EdgeInsetsPropType = require('react-native/Libraries/StyleSheet/EdgeInsetsPropType');
+const ImageSourcePropType = require('react-native/Libraries/Image/ImageSourcePropType');
+const ImageStylePropTypes = require('react-native/Libraries/Image/ImageStylePropTypes');
 const PropTypes = require('prop-types');
-const StyleSheetPropType = require('StyleSheetPropType');
+const StyleSheetPropType = require('react-native/Libraries/StyleSheet/StyleSheetPropType');
 
-import type {ImageSource} from 'ImageSource';
-import type {EdgeInsetsProp} from 'EdgeInsetsPropType';
-import type {LayoutEvent, SyntheticEvent} from 'CoreEventTypes';
-import type {ImageStyleProp} from 'StyleSheet';
+import type {ImageSource} from 'react-native/Libraries/Image/ImageSource';
+import type {EdgeInsetsProp} from 'react-native/Libraries/StyleSheet/EdgeInsetsPropType';
+import type {LayoutEvent, SyntheticEvent} from 'react-native/Libraries/Types/CoreEventTypes';
+import type {ImageStyleProp} from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 export type ImageProps = {
   accessible?: boolean,

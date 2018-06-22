@@ -10,9 +10,9 @@
 
 'use strict';
 
-const YellowBoxWarning = require('YellowBoxWarning');
+const YellowBoxWarning = require('react-native/Libraries/YellowBox/Data/YellowBoxWarning');
 
-import type {Category} from 'YellowBoxCategory';
+import type {Category} from 'react-native/Libraries/YellowBox/Data/YellowBoxCategory';
 
 export type Registry = Map<Category, $ReadOnlyArray<YellowBoxWarning>>;
 

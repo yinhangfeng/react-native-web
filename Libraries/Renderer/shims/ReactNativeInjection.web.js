@@ -3,7 +3,7 @@
  */
 'use strict';
 
-require('InitializeCore');
+require('react-native/Libraries/Core/InitializeCore');
 
 //兼容native touch机制
 require('./injectResponderEventPlugin');

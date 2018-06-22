@@ -15,7 +15,7 @@ const ReactNative = require('react-native');
 const ViewExample = require('./ViewExample');
 
 const createExamplePage = require('./createExamplePage');
-const nativeImageSource = require('nativeImageSource');
+const nativeImageSource = require('react-native/Libraries/Image/nativeImageSource');
 const {
   AlertIOS,
   NavigatorIOS,

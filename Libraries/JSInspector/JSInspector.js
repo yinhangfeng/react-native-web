@@ -10,7 +10,7 @@
 
 'use strict';
 
-import type EventSender from 'InspectorAgent';
+import type EventSender from 'react-native/Libraries/JSInspector/InspectorAgent';
 
 interface Agent {
   constructor(eventSender: EventSender): void;

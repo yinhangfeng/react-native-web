@@ -17,7 +17,7 @@ jest.setMock('NativeModules', {
   },
 });
 
-const WebSocket = require('WebSocket');
+const WebSocket = require('react-native/Libraries/WebSocket/WebSocket');
 
 describe('WebSocket', function() {
   it('should have connection lifecycle constants defined on the class', () => {

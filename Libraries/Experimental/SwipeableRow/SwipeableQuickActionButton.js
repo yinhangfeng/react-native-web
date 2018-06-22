@@ -10,15 +10,15 @@
 
 'use strict';
 
-const Image = require('Image');
+const Image = require('react-native/Libraries/Image/Image');
 const PropTypes = require('prop-types');
-const React = require('React');
-const Text = require('Text');
-const TouchableHighlight = require('TouchableHighlight');
-const View = require('View');
-const ViewPropTypes = require('ViewPropTypes');
+const React = require('react-native/Libraries/react-native/React');
+const Text = require('react-native/Libraries/Text/Text');
+const TouchableHighlight = require('react-native/Libraries/Components/Touchable/TouchableHighlight');
+const View = require('react-native/Libraries/Components/View/View');
+const ViewPropTypes = require('react-native/Libraries/Components/View/ViewPropTypes');
 
-import type {ImageSource} from 'ImageSource';
+import type {ImageSource} from 'react-native/Libraries/Image/ImageSource';
 
 /**
  * Standard set of quick action buttons that can, if the user chooses, be used

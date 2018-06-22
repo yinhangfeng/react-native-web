@@ -9,7 +9,7 @@
  */
 'use strict';
 
-const NativeAnimatedHelper = require('NativeAnimatedHelper');
+const NativeAnimatedHelper = require('react-native/Libraries/Animated/src/NativeAnimatedHelper');
 
 import type AnimatedValue from '../nodes/AnimatedValue';
 

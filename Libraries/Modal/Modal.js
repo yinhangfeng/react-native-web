@@ -10,18 +10,18 @@
 
 'use strict';
 
-const AppContainer = require('AppContainer');
-const I18nManager = require('I18nManager');
-const NativeEventEmitter = require('NativeEventEmitter');
-const NativeModules = require('NativeModules');
-const Platform = require('Platform');
-const React = require('React');
+const AppContainer = require('react-native/Libraries/ReactNative/AppContainer');
+const I18nManager = require('react-native/Libraries/ReactNative/I18nManager');
+const NativeEventEmitter = require('react-native/Libraries/EventEmitter/NativeEventEmitter');
+const NativeModules = require('react-native/Libraries/BatchedBridge/NativeModules');
+const Platform = require('react-native/Libraries/Utilities/Platform');
+const React = require('react-native/Libraries/react-native/React');
 const PropTypes = require('prop-types');
-const StyleSheet = require('StyleSheet');
-const View = require('View');
+const StyleSheet = require('react-native/Libraries/StyleSheet/StyleSheet');
+const View = require('react-native/Libraries/Components/View/View');
 
-const deprecatedPropType = require('deprecatedPropType');
-const requireNativeComponent = require('requireNativeComponent');
+const deprecatedPropType = require('react-native/Libraries/Utilities/deprecatedPropType');
+const requireNativeComponent = require('react-native/Libraries/ReactNative/requireNativeComponent');
 
 const RCTModalHostView = requireNativeComponent('RCTModalHostView');
 
@@ -30,7 +30,7 @@ const ModalEventEmitter =
     ? new NativeEventEmitter(NativeModules.ModalManager)
     : null;
 
-import type EmitterSubscription from 'EmitterSubscription';
+import type EmitterSubscription from 'react-native/Libraries/vendor/emitter/EmitterSubscription';
 
 /**
  * The Modal component is a simple way to present content above an enclosing view.

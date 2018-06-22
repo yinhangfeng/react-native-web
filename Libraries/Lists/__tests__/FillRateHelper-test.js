@@ -10,7 +10,7 @@
  */
 'use strict';
 
-const FillRateHelper = require('FillRateHelper');
+const FillRateHelper = require('react-native/Libraries/Lists/FillRateHelper');
 
 let rowFramesGlobal;
 const dataGlobal = [

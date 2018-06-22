@@ -10,8 +10,8 @@
  */
 'use strict';
 
-const UIManager = require('UIManager');
-const findNodeHandle = require('ReactNative').findNodeHandle;
+const UIManager = require('react-native/Libraries/ReactNative/UIManager');
+const findNodeHandle = require('react-native/Libraries/Renderer/shims/ReactNative').findNodeHandle;
 
 type MeasureOnSuccessCallback = (
   x: number,

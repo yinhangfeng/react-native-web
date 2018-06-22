@@ -9,14 +9,14 @@
  */
 'use strict';
 
-const MetroListView = require('MetroListView');
-const Platform = require('Platform');
-const React = require('React');
-const ScrollView = require('ScrollView');
-const VirtualizedSectionList = require('VirtualizedSectionList');
+const MetroListView = require('react-native/Libraries/Lists/MetroListView');
+const Platform = require('react-native/Libraries/Utilities/Platform');
+const React = require('react-native/Libraries/react-native/React');
+const ScrollView = require('react-native/Libraries/Components/ScrollView/ScrollView');
+const VirtualizedSectionList = require('react-native/Libraries/Lists/VirtualizedSectionList');
 
-import type {ViewToken} from 'ViewabilityHelper';
-import type {Props as VirtualizedSectionListProps} from 'VirtualizedSectionList';
+import type {ViewToken} from 'react-native/Libraries/Lists/ViewabilityHelper';
+import type {Props as VirtualizedSectionListProps} from 'react-native/Libraries/Lists/VirtualizedSectionList';
 
 type Item = any;
 

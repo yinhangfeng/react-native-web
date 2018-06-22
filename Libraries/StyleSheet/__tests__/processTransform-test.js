@@ -10,7 +10,7 @@
 
 'use strict';
 
-const processTransform = require('processTransform');
+const processTransform = require('react-native/Libraries/StyleSheet/processTransform');
 
 describe('processTransform', () => {
   describe('validation', () => {

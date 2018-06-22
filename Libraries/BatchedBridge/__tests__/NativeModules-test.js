@@ -46,8 +46,8 @@ describe('MessageQueue', function() {
     jest.resetModules();
 
     global.__fbBatchedBridgeConfig = require('MessageQueueTestConfig');
-    BatchedBridge = require('BatchedBridge');
-    NativeModules = require('NativeModules');
+    BatchedBridge = require('react-native/Libraries/BatchedBridge/BatchedBridge');
+    NativeModules = require('react-native/Libraries/BatchedBridge/NativeModules');
   });
 
   it('should generate native modules', () => {

@@ -10,17 +10,17 @@
 
 'use strict';
 
-const ColorPropType = require('ColorPropType');
-const React = require('React');
+const ColorPropType = require('react-native/Libraries/StyleSheet/ColorPropType');
+const React = require('react-native/Libraries/react-native/React');
 const PropTypes = require('prop-types');
-const StyleSheet = require('StyleSheet');
-const TabBarItemIOS = require('TabBarItemIOS');
-const ViewPropTypes = require('ViewPropTypes');
+const StyleSheet = require('react-native/Libraries/StyleSheet/StyleSheet');
+const TabBarItemIOS = require('react-native/Libraries/Components/TabBarIOS/TabBarItemIOS');
+const ViewPropTypes = require('react-native/Libraries/Components/View/ViewPropTypes');
 
-const requireNativeComponent = require('requireNativeComponent');
+const requireNativeComponent = require('react-native/Libraries/ReactNative/requireNativeComponent');
 
-import type {DangerouslyImpreciseStyleProp} from 'StyleSheet';
-import type {ViewProps} from 'ViewPropTypes';
+import type {DangerouslyImpreciseStyleProp} from 'react-native/Libraries/StyleSheet/StyleSheet';
+import type {ViewProps} from 'react-native/Libraries/Components/View/ViewPropTypes';
 
 const RCTTabBar = requireNativeComponent('RCTTabBar');
 

@@ -10,17 +10,17 @@
 
 'use strict';
 
-const Animated = require('Animated');
-const I18nManager = require('I18nManager');
-const PanResponder = require('PanResponder');
-const React = require('React');
+const Animated = require('react-native/Libraries/Animated/src/Animated');
+const I18nManager = require('react-native/Libraries/ReactNative/I18nManager');
+const PanResponder = require('react-native/Libraries/Interaction/PanResponder');
+const React = require('react-native/Libraries/react-native/React');
 const PropTypes = require('prop-types');
-const StyleSheet = require('StyleSheet');
+const StyleSheet = require('react-native/Libraries/StyleSheet/StyleSheet');
 /* $FlowFixMe(>=0.54.0 site=react_native_oss) This comment suppresses an error
  * found when Flow v0.54 was deployed. To see the error delete this comment and
  * run Flow. */
 const TimerMixin = require('react-timer-mixin');
-const View = require('View');
+const View = require('react-native/Libraries/Components/View/View');
 
 const createReactClass = require('create-react-class');
 const emptyFunction = require('fbjs/lib/emptyFunction');

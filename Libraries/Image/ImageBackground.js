@@ -9,12 +9,12 @@
  */
 'use strict';
 
-const Image = require('Image');
-const React = require('React');
-const StyleSheet = require('StyleSheet');
-const View = require('View');
+const Image = require('react-native/Libraries/Image/Image');
+const React = require('react-native/Libraries/react-native/React');
+const StyleSheet = require('react-native/Libraries/StyleSheet/StyleSheet');
+const View = require('react-native/Libraries/Components/View/View');
 
-const ensureComponentIsNative = require('ensureComponentIsNative');
+const ensureComponentIsNative = require('react-native/Libraries/Components/Touchable/ensureComponentIsNative');
 
 /**
  * Very simple drop-in replacement for <Image> which supports nesting views.

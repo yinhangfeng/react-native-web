@@ -10,7 +10,7 @@
 
 'use strict';
 
-const infoLog = require('infoLog');
+const infoLog = require('react-native/Libraries/Utilities/infoLog');
 const invariant = require('fbjs/lib/invariant');
 
 type SimpleTask = {

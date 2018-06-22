@@ -9,8 +9,8 @@
  */
 'use strict';
 
-const NativeAnimatedModule = require('NativeModules').NativeAnimatedModule;
-const NativeEventEmitter = require('NativeEventEmitter');
+const NativeAnimatedModule = require('react-native/Libraries/BatchedBridge/NativeModules').NativeAnimatedModule;
+const NativeEventEmitter = require('react-native/Libraries/EventEmitter/NativeEventEmitter');
 
 const invariant = require('fbjs/lib/invariant');
 

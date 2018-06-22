@@ -10,11 +10,11 @@
 
 'use strict';
 
-const ColorPropType = require('ColorPropType');
-const LayoutPropTypes = require('LayoutPropTypes');
+const ColorPropType = require('react-native/Libraries/StyleSheet/ColorPropType');
+const LayoutPropTypes = require('react-native/Libraries/StyleSheet/LayoutPropTypes');
 const ReactPropTypes = require('prop-types');
-const ShadowPropTypesIOS = require('ShadowPropTypesIOS');
-const TransformPropTypes = require('TransformPropTypes');
+const ShadowPropTypesIOS = require('react-native/Libraries/Components/View/ShadowPropTypesIOS');
+const TransformPropTypes = require('react-native/Libraries/StyleSheet/TransformPropTypes');
 
 /**
  * Warning: Some of these properties may not be supported in all releases.

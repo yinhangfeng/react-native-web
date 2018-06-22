@@ -14,7 +14,7 @@ var React = require('react');
 var ReactNative = require('react-native');
 var {Animated, LayoutAnimation, PanResponder, StyleSheet, View} = ReactNative;
 
-var AnExSet = require('AnExSet');
+var AnExSet = require('react-native/RNTester/js/AnimatedGratuitousApp/AnExSet');
 
 var CIRCLE_SIZE = 80;
 var CIRCLE_MARGIN = 18;

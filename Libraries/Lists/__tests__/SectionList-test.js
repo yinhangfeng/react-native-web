@@ -10,10 +10,10 @@
  */
 'use strict';
 
-const React = require('React');
+const React = require('react-native/Libraries/react-native/React');
 const ReactTestRenderer = require('react-test-renderer');
 
-const SectionList = require('SectionList');
+const SectionList = require('react-native/Libraries/Lists/SectionList');
 
 describe('SectionList', () => {
   it('renders empty list', () => {

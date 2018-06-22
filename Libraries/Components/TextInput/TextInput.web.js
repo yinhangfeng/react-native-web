@@ -11,25 +11,25 @@
  */
 'use strict';
 
-const ColorPropType = require('ColorPropType');
-// const DocumentSelectionState = require('DocumentSelectionState');
-// const EventEmitter = require('EventEmitter');
-const NativeMethodsMixin = require('NativeMethodsMixin');
-// const Platform = require('Platform');
-const React = require('React');
+const ColorPropType = require('react-native/Libraries/StyleSheet/ColorPropType');
+// const DocumentSelectionState = require('react-native/Libraries/vendor/document/selection/DocumentSelectionState');
+// const EventEmitter = require('react-native/Libraries/vendor/emitter/EventEmitter');
+const NativeMethodsMixin = require('react-native/Libraries/Renderer/shims/NativeMethodsMixin');
+// const Platform = require('react-native/Libraries/Utilities/Platform');
+const React = require('react-native/Libraries/react-native/React');
 const createReactClass = require('create-react-class');
 const PropTypes = require('prop-types');
-// const ReactNative = require('ReactNative');
-// const StyleSheet = require('StyleSheet');
-const Text = require('Text');
-const TextInputState = require('TextInputState');
+// const ReactNative = require('react-native/Libraries/Renderer/shims/ReactNative');
+// const StyleSheet = require('react-native/Libraries/StyleSheet/StyleSheet');
+const Text = require('react-native/Libraries/Text/Text');
+const TextInputState = require('react-native/Libraries/Components/TextInput/TextInputState');
 // const TimerMixin = require('react-timer-mixin');
-// const TouchableWithoutFeedback = require('TouchableWithoutFeedback');
-// const UIManager = require('UIManager');
-const ViewPropTypes = require('ViewPropTypes');
+// const TouchableWithoutFeedback = require('react-native/Libraries/Components/Touchable/TouchableWithoutFeedback');
+// const UIManager = require('react-native/Libraries/ReactNative/UIManager');
+const ViewPropTypes = require('react-native/Libraries/Components/View/ViewPropTypes');
 
-const createWebCoreElement = require('createWebCoreElement');
-const CSSClassNames = require('CSSClassNames');
+const createWebCoreElement = require('react-native/Libraries/lrnw/createWebCoreElement');
+const CSSClassNames = require('react-native/Libraries/StyleSheet/CSSClassNames');
 
 // const onlyMultiline = {
 //   onTextInput: true,

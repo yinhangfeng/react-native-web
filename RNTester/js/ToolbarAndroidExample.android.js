@@ -13,13 +13,13 @@
 var React = require('react');
 var ReactNative = require('react-native');
 
-var nativeImageSource = require('nativeImageSource');
+var nativeImageSource = require('react-native/Libraries/Image/nativeImageSource');
 var {StyleSheet, Text, View} = ReactNative;
 var RNTesterBlock = require('./RNTesterBlock');
 var RNTesterPage = require('./RNTesterPage');
 
-var Switch = require('Switch');
-var ToolbarAndroid = require('ToolbarAndroid');
+var Switch = require('react-native/Libraries/Components/Switch/Switch');
+var ToolbarAndroid = require('react-native/Libraries/Components/ToolbarAndroid/ToolbarAndroid');
 
 class ToolbarAndroidExample extends React.Component<{}, $FlowFixMeState> {
   static title = '<ToolbarAndroid>';

@@ -10,14 +10,14 @@
 
 'use strict';
 
-const React = require('React');
-const StyleSheet = require('StyleSheet');
-const Text = require('Text');
-const YellowBoxPressable = require('YellowBoxPressable');
-const YellowBoxStyle = require('YellowBoxStyle');
+const React = require('react-native/Libraries/react-native/React');
+const StyleSheet = require('react-native/Libraries/StyleSheet/StyleSheet');
+const Text = require('react-native/Libraries/Text/Text');
+const YellowBoxPressable = require('react-native/Libraries/YellowBox/UI/YellowBoxPressable');
+const YellowBoxStyle = require('react-native/Libraries/YellowBox/UI/YellowBoxStyle');
 
-import type {PressEvent} from 'CoreEventTypes';
-import type {StackFrame} from 'parseErrorStack';
+import type {PressEvent} from 'react-native/Libraries/Types/CoreEventTypes';
+import type {StackFrame} from 'react-native/Libraries/Core/Devtools/parseErrorStack';
 
 type Props = $ReadOnly<{|
   frame: StackFrame,

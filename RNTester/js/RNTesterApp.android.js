@@ -10,26 +10,26 @@
 
 'use strict';
 
-const AppRegistry = require('AppRegistry');
-const AsyncStorage = require('AsyncStorage');
-const BackHandler = require('BackHandler');
-const Dimensions = require('Dimensions');
-const DrawerLayoutAndroid = require('DrawerLayoutAndroid');
-const Linking = require('Linking');
+const AppRegistry = require('react-native/Libraries/ReactNative/AppRegistry');
+const AsyncStorage = require('react-native/Libraries/Storage/AsyncStorage');
+const BackHandler = require('react-native/Libraries/Utilities/BackHandler');
+const Dimensions = require('react-native/Libraries/Utilities/Dimensions');
+const DrawerLayoutAndroid = require('react-native/Libraries/Components/DrawerAndroid/DrawerLayoutAndroid');
+const Linking = require('react-native/Libraries/Linking/Linking');
 const React = require('react');
-const StatusBar = require('StatusBar');
-const StyleSheet = require('StyleSheet');
-const ToolbarAndroid = require('ToolbarAndroid');
+const StatusBar = require('react-native/Libraries/Components/StatusBar/StatusBar');
+const StyleSheet = require('react-native/Libraries/StyleSheet/StyleSheet');
+const ToolbarAndroid = require('react-native/Libraries/Components/ToolbarAndroid/ToolbarAndroid');
 const RNTesterActions = require('./RNTesterActions');
 const RNTesterExampleContainer = require('./RNTesterExampleContainer');
 const RNTesterExampleList = require('./RNTesterExampleList');
 const RNTesterList = require('./RNTesterList');
 const RNTesterNavigationReducer = require('./RNTesterNavigationReducer');
-const UIManager = require('UIManager');
+const UIManager = require('react-native/Libraries/ReactNative/UIManager');
 const URIActionMap = require('./URIActionMap');
-const View = require('View');
+const View = require('react-native/Libraries/Components/View/View');
 
-const nativeImageSource = require('nativeImageSource');
+const nativeImageSource = require('react-native/Libraries/Image/nativeImageSource');
 
 import type {RNTesterNavigationState} from './RNTesterNavigationReducer';
 

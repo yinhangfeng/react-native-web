@@ -9,7 +9,7 @@
  */
 'use strict';
 
-const RCTImageStoreManager = require('NativeModules').ImageStoreManager;
+const RCTImageStoreManager = require('react-native/Libraries/BatchedBridge/NativeModules').ImageStoreManager;
 
 class ImageStore {
   /**

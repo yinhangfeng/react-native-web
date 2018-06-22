@@ -9,9 +9,9 @@
  */
 'use strict';
 
-const Systrace = require('Systrace');
+const Systrace = require('react-native/Libraries/Performance/Systrace');
 
-const infoLog = require('infoLog');
+const infoLog = require('react-native/Libraries/Utilities/infoLog');
 const performanceNow =
   /* $FlowFixMe(>=0.54.0 site=react_native_oss) This comment suppresses an
    * error found when Flow v0.54 was deployed. To see the error delete this

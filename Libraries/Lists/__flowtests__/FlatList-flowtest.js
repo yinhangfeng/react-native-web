@@ -10,7 +10,7 @@
 
 'use strict';
 
-const FlatList = require('FlatList');
+const FlatList = require('react-native/Libraries/Lists/FlatList');
 const React = require('react');
 
 function renderMyListItem(info: {item: {title: string}, index: number}) {

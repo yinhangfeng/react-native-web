@@ -8,8 +8,8 @@
  * @flow
  */
 
-const ReactNative = require('ReactNative');
-const UIManager = require('UIManager');
+const ReactNative = require('react-native/Libraries/Renderer/shims/ReactNative');
+const UIManager = require('react-native/Libraries/ReactNative/UIManager');
 
 /**
  * Capture an image of the screen, window or an individual view. The image

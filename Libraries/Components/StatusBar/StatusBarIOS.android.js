@@ -10,6 +10,6 @@
 
 'use strict';
 
-const NativeEventEmitter = require('NativeEventEmitter');
+const NativeEventEmitter = require('react-native/Libraries/EventEmitter/NativeEventEmitter');
 
 module.exports = new NativeEventEmitter('StatusBarManager');

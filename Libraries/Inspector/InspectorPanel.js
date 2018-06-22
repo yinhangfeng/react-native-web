@@ -10,16 +10,16 @@
 
 'use strict';
 
-const ElementProperties = require('ElementProperties');
-const NetworkOverlay = require('NetworkOverlay');
-const PerformanceOverlay = require('PerformanceOverlay');
-const React = require('React');
+const ElementProperties = require('react-native/Libraries/Inspector/ElementProperties');
+const NetworkOverlay = require('react-native/Libraries/Inspector/NetworkOverlay');
+const PerformanceOverlay = require('react-native/Libraries/Inspector/PerformanceOverlay');
+const React = require('react-native/Libraries/react-native/React');
 const PropTypes = require('prop-types');
-const ScrollView = require('ScrollView');
-const StyleSheet = require('StyleSheet');
-const Text = require('Text');
-const TouchableHighlight = require('TouchableHighlight');
-const View = require('View');
+const ScrollView = require('react-native/Libraries/Components/ScrollView/ScrollView');
+const StyleSheet = require('react-native/Libraries/StyleSheet/StyleSheet');
+const Text = require('react-native/Libraries/Text/Text');
+const TouchableHighlight = require('react-native/Libraries/Components/Touchable/TouchableHighlight');
+const View = require('react-native/Libraries/Components/View/View');
 
 class InspectorPanel extends React.Component<$FlowFixMeProps> {
   renderWaiting() {

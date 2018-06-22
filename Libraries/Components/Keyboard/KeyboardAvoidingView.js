@@ -10,17 +10,17 @@
 
 'use strict';
 
-const Keyboard = require('Keyboard');
-const LayoutAnimation = require('LayoutAnimation');
-const Platform = require('Platform');
-const React = require('React');
-const StyleSheet = require('StyleSheet');
-const View = require('View');
+const Keyboard = require('react-native/Libraries/Components/Keyboard/Keyboard');
+const LayoutAnimation = require('react-native/Libraries/LayoutAnimation/LayoutAnimation');
+const Platform = require('react-native/Libraries/Utilities/Platform');
+const React = require('react-native/Libraries/react-native/React');
+const StyleSheet = require('react-native/Libraries/StyleSheet/StyleSheet');
+const View = require('react-native/Libraries/Components/View/View');
 
-import type EmitterSubscription from 'EmitterSubscription';
-import type {ViewStyleProp} from 'StyleSheet';
-import type {ViewProps, ViewLayout, ViewLayoutEvent} from 'ViewPropTypes';
-import type {KeyboardEvent} from 'Keyboard';
+import type EmitterSubscription from 'react-native/Libraries/vendor/emitter/EmitterSubscription';
+import type {ViewStyleProp} from 'react-native/Libraries/StyleSheet/StyleSheet';
+import type {ViewProps, ViewLayout, ViewLayoutEvent} from 'react-native/Libraries/Components/View/ViewPropTypes';
+import type {KeyboardEvent} from 'react-native/Libraries/Components/Keyboard/Keyboard';
 
 type Props = $ReadOnly<{|
   ...ViewProps,

@@ -9,8 +9,8 @@
 
 'use strict';
 
-const RCTWebSocketModule = require('NativeModules').WebSocketModule;
-const NativeEventEmitter = require('NativeEventEmitter');
+const RCTWebSocketModule = require('react-native/Libraries/BatchedBridge/NativeModules').WebSocketModule;
+const NativeEventEmitter = require('react-native/Libraries/EventEmitter/NativeEventEmitter');
 
 const base64 = require('base64-js');
 

@@ -10,13 +10,13 @@
 
 'use strict';
 
-const React = require('React');
-const Text = require('Text');
-const UTFSequence = require('UTFSequence');
+const React = require('react-native/Libraries/react-native/React');
+const Text = require('react-native/Libraries/Text/Text');
+const UTFSequence = require('react-native/Libraries/UTFSequence');
 
-const stringifySafe = require('stringifySafe');
+const stringifySafe = require('react-native/Libraries/Utilities/stringifySafe');
 
-import type {TextStyleProp} from 'StyleSheet';
+import type {TextStyleProp} from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 export type Category = string;
 export type Message = $ReadOnly<{|

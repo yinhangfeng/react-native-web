@@ -10,7 +10,7 @@
 
 'use strict';
 
-const DeviceInfo = require('NativeModules').DeviceInfo;
+const DeviceInfo = require('react-native/Libraries/BatchedBridge/NativeModules').DeviceInfo;
 
 const invariant = require('fbjs/lib/invariant');
 

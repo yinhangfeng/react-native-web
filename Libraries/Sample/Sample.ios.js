@@ -12,7 +12,7 @@
 
 'use strict';
 
-const NativeSample = require('NativeModules').Sample;
+const NativeSample = require('react-native/Libraries/BatchedBridge/NativeModules').Sample;
 
 /**
  * High-level docs for the Sample iOS API can be written here.

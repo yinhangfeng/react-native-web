@@ -9,14 +9,14 @@
  */
 'use strict';
 
-const React = require('React');
-const View = require('View');
-const VirtualizedList = require('VirtualizedList');
+const React = require('react-native/Libraries/react-native/React');
+const View = require('react-native/Libraries/Components/View/View');
+const VirtualizedList = require('react-native/Libraries/Lists/VirtualizedList');
 
 const invariant = require('fbjs/lib/invariant');
 
-import type {ViewToken} from 'ViewabilityHelper';
-import type {Props as VirtualizedListProps} from 'VirtualizedList';
+import type {ViewToken} from 'react-native/Libraries/Lists/ViewabilityHelper';
+import type {Props as VirtualizedListProps} from 'react-native/Libraries/Lists/VirtualizedList';
 
 type Item = any;
 type SectionItem = any;

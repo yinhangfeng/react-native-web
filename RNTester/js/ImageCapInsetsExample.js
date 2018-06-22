@@ -13,7 +13,7 @@
 var React = require('react');
 var ReactNative = require('react-native');
 
-var nativeImageSource = require('nativeImageSource');
+var nativeImageSource = require('react-native/Libraries/Image/nativeImageSource');
 var {Image, StyleSheet, Text, View} = ReactNative;
 
 class ImageCapInsetsExample extends React.Component<{}> {

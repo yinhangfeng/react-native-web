@@ -13,9 +13,9 @@
 
 'use strict';
 
-const React = require('React');
+const React = require('react-native/Libraries/react-native/React');
 const AppContainer = require('./AppContainer');
-const ReactNative = require('ReactNative');
+const ReactNative = require('react-native/Libraries/Renderer/shims/ReactNative');
 
 function renderApplication<Props: Object>(
   RootComponent: React.ComponentType<Props>,

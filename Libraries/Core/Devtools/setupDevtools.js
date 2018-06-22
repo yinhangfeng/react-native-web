@@ -25,13 +25,13 @@ let register = function() {
 };
 
 if (__DEV__) {
-  const AppState = require('AppState');
-  const WebSocket = require('WebSocket');
+  const AppState = require('react-native/Libraries/AppState/AppState');
+  const WebSocket = require('react-native/Libraries/WebSocket/WebSocket');
   /* $FlowFixMe(>=0.54.0 site=react_native_oss) This comment suppresses an
    * error found when Flow v0.54 was deployed. To see the error delete this
    * comment and run Flow. */
   const reactDevTools = require('react-devtools-core');
-  const getDevServer = require('getDevServer');
+  const getDevServer = require('react-native/Libraries/Core/Devtools/getDevServer');
 
   // Initialize dev tools only if the native module for WebSocket is available
   if (WebSocket.isAvailable) {
@@ -53,7 +53,7 @@ if (__DEV__) {
       // Read the optional global variable for backward compatibility.
       // It was added in https://github.com/facebook/react-native/commit/bf2b435322e89d0aeee8792b1c6e04656c2719a0.
       port: window.__REACT_DEVTOOLS_PORT__,
-      resolveRNStyle: require('flattenStyle'),
+      resolveRNStyle: require('react-native/Libraries/StyleSheet/flattenStyle'),
     });
   }
 }

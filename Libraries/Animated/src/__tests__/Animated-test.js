@@ -10,7 +10,7 @@
 
 'use strict';
 
-let Animated = require('Animated');
+let Animated = require('react-native/Libraries/Animated/src/Animated');
 describe('Animated tests', () => {
   beforeEach(() => {
     jest.resetModules();
@@ -595,8 +595,8 @@ describe('Animated tests', () => {
 
     beforeEach(() => {
       jest.mock('InteractionManager');
-      Animated = require('Animated');
-      InteractionManager = require('InteractionManager');
+      Animated = require('react-native/Libraries/Animated/src/Animated');
+      InteractionManager = require('react-native/Libraries/Interaction/InteractionManager');
     });
 
     afterEach(() => {

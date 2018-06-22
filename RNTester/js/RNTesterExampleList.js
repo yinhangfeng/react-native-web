@@ -10,20 +10,20 @@
 
 'use strict';
 
-const Platform = require('Platform');
+const Platform = require('react-native/Libraries/Utilities/Platform');
 const React = require('react');
-const SectionList = require('SectionList');
-const StyleSheet = require('StyleSheet');
-const Text = require('Text');
-const TextInput = require('TextInput');
-const TouchableHighlight = require('TouchableHighlight');
+const SectionList = require('react-native/Libraries/Lists/SectionList');
+const StyleSheet = require('react-native/Libraries/StyleSheet/StyleSheet');
+const Text = require('react-native/Libraries/Text/Text');
+const TextInput = require('react-native/Libraries/Components/TextInput/TextInput');
+const TouchableHighlight = require('react-native/Libraries/Components/Touchable/TouchableHighlight');
 const RNTesterActions = require('./RNTesterActions');
 const RNTesterStatePersister = require('./RNTesterStatePersister');
-const View = require('View');
+const View = require('react-native/Libraries/Components/View/View');
 
 import type {RNTesterExample} from './RNTesterList.ios';
 import type {PassProps} from './RNTesterStatePersister';
-import type {DangerouslyImpreciseStyleProp} from 'StyleSheet';
+import type {DangerouslyImpreciseStyleProp} from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 type Props = {
   onNavigate: Function,

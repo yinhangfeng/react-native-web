@@ -70,7 +70,6 @@ package-lock.json
 /coverage
 /third-party
 
-.vscode
 /package-lock.json
 /yarn.lock
 

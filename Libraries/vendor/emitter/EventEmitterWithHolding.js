@@ -10,9 +10,9 @@
 
 'use strict';
 
-import type EmitterSubscription from 'EmitterSubscription';
-import type EventEmitter from 'EventEmitter';
-import type EventHolder from 'EventHolder';
+import type EmitterSubscription from 'react-native/Libraries/vendor/emitter/EmitterSubscription';
+import type EventEmitter from 'react-native/Libraries/vendor/emitter/EventEmitter';
+import type EventHolder from 'react-native/Libraries/vendor/emitter/EventHolder';
 
 /**
  * @class EventEmitterWithHolding

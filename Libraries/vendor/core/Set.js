@@ -13,10 +13,10 @@
 
 'use strict';
 
-const Map = require('Map');
+const Map = require('react-native/Libraries/vendor/core/Map');
 
-const _shouldPolyfillES6Collection = require('_shouldPolyfillES6Collection');
-const toIterator = require('toIterator');
+const _shouldPolyfillES6Collection = require('react-native/Libraries/vendor/core/_shouldPolyfillES6Collection');
+const toIterator = require('react-native/Libraries/vendor/core/toIterator');
 
 module.exports = (function(global) {
   // Since our implementation is spec-compliant for the most part we can safely

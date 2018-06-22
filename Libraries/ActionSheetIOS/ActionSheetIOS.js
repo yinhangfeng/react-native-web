@@ -9,10 +9,10 @@
  */
 'use strict';
 
-const RCTActionSheetManager = require('NativeModules').ActionSheetManager;
+const RCTActionSheetManager = require('react-native/Libraries/BatchedBridge/NativeModules').ActionSheetManager;
 
 const invariant = require('fbjs/lib/invariant');
-const processColor = require('processColor');
+const processColor = require('react-native/Libraries/StyleSheet/processColor');
 
 /**
  * Display action sheets and share sheets on iOS.

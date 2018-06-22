@@ -11,7 +11,7 @@
 'use strict';
 
 describe('groupByEveryN', () => {
-  const groupByEveryN = require('groupByEveryN');
+  const groupByEveryN = require('react-native/Libraries/Utilities/groupByEveryN');
 
   it('should group by with different n', () => {
     expect(groupByEveryN([1, 2, 3, 4, 5, 6, 7, 8, 9], 1)).toEqual([

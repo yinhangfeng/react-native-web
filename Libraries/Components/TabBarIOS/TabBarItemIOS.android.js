@@ -9,9 +9,9 @@
 
 'use strict';
 
-const React = require('React');
-const View = require('View');
-const StyleSheet = require('StyleSheet');
+const React = require('react-native/Libraries/react-native/React');
+const View = require('react-native/Libraries/Components/View/View');
+const StyleSheet = require('react-native/Libraries/StyleSheet/StyleSheet');
 
 class DummyTab extends React.Component {
   render() {

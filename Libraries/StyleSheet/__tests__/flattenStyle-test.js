@@ -10,9 +10,9 @@
 
 'use strict';
 
-const StyleSheet = require('StyleSheet');
-const StyleSheetValidation = require('StyleSheetValidation');
-const flattenStyle = require('flattenStyle');
+const StyleSheet = require('react-native/Libraries/StyleSheet/StyleSheet');
+const StyleSheetValidation = require('react-native/Libraries/StyleSheet/StyleSheetValidation');
+const flattenStyle = require('react-native/Libraries/StyleSheet/flattenStyle');
 
 function getFixture() {
   StyleSheetValidation.addValidStylePropTypes({

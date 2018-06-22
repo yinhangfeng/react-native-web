@@ -10,10 +10,10 @@
 
 'use strict';
 
-const EventSubscription = require('EventSubscription');
+const EventSubscription = require('react-native/Libraries/vendor/emitter/EventSubscription');
 
-import type EventEmitter from 'EventEmitter';
-import type EventSubscriptionVendor from 'EventSubscriptionVendor';
+import type EventEmitter from 'react-native/Libraries/vendor/emitter/EventEmitter';
+import type EventSubscriptionVendor from 'react-native/Libraries/vendor/emitter/EventSubscriptionVendor';
 
 /**
  * EmitterSubscription represents a subscription with listener and context data.

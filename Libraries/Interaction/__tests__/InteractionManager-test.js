@@ -23,7 +23,7 @@ describe('InteractionManager', () => {
 
   beforeEach(() => {
     jest.resetModules();
-    InteractionManager = require('InteractionManager');
+    InteractionManager = require('react-native/Libraries/Interaction/InteractionManager');
 
     interactionStart = jest.fn();
     interactionComplete = jest.fn();
@@ -162,8 +162,8 @@ describe('promise tasks', () => {
   beforeEach(() => {
     jest.resetModules();
     jest.useFakeTimers();
-    InteractionManager = require('InteractionManager');
-    BatchedBridge = require('BatchedBridge');
+    InteractionManager = require('react-native/Libraries/Interaction/InteractionManager');
+    BatchedBridge = require('react-native/Libraries/BatchedBridge/BatchedBridge');
     sequenceId = 0;
   });
 

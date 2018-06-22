@@ -9,7 +9,7 @@
  */
 'use strict';
 
-const Platform = require('Platform');
+const Platform = require('react-native/Libraries/Utilities/Platform');
 const invariant = require('fbjs/lib/invariant');
 
 const MetroHMRClient = require('metro/src/lib/bundle-modules/HMRClient');
@@ -70,10 +70,10 @@ Error: ${e.message}`;
 
     hmrClient.on('update', () => {
       if (Platform.OS === 'ios') {
-        const RCTRedBox = require('NativeModules').RedBox;
+        const RCTRedBox = require('react-native/Libraries/BatchedBridge/NativeModules').RedBox;
         RCTRedBox && RCTRedBox.dismiss && RCTRedBox.dismiss();
       } else {
-        const RCTExceptionsManager = require('NativeModules').ExceptionsManager;
+        const RCTExceptionsManager = require('react-native/Libraries/BatchedBridge/NativeModules').ExceptionsManager;
         RCTExceptionsManager &&
           RCTExceptionsManager.dismissRedbox &&
           RCTExceptionsManager.dismissRedbox();

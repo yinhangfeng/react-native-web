@@ -9,8 +9,8 @@
  */
 'use strict';
 
-const {PlatformConstants} = require('NativeModules');
-const ReactNativeVersion = require('ReactNativeVersion');
+const {PlatformConstants} = require('react-native/Libraries/BatchedBridge/NativeModules');
+const ReactNativeVersion = require('react-native/Libraries/Core/ReactNativeVersion');
 
 /**
  * Checks that the version of this React Native JS is compatible with the native
