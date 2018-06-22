@@ -1,5 +1,4 @@
 /**
- * @providesModule RWBodyScrollHelper
  */
 
 'use strict';

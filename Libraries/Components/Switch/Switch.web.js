@@ -1,6 +1,5 @@
 /**
  * RW SYNC react-native: 0.49
- * @providesModule Switch
  */
 'use strict';
 

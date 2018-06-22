@@ -1,6 +1,3 @@
-/**
- * @providesModule ReactNative
- */
 'use strict';
 
 const ReactNativeInjection = require('./ReactNativeInjection');

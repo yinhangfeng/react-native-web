@@ -1,5 +1,4 @@
 /**
- * @providesModule processColor
  */
 'use strict';
 

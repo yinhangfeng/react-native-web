@@ -1,5 +1,4 @@
 /**
- * @providesModule flattenStyle
  */
 'use strict';
 

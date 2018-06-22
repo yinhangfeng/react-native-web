@@ -1,5 +1,4 @@
 /**
- * @providesModule RWConfig
  */
 
 'use strict';

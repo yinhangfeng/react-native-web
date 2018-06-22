@@ -1,5 +1,4 @@
 /**
- * @providesModule RWGetLayout
  */
 'use strict';
 

@@ -1,5 +1,4 @@
 /**
- * @providesModule StyleSheet
  */
 'use strict';
 

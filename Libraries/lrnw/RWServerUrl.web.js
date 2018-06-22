@@ -1,5 +1,4 @@
 /**
- * @providesModule RWServerUrl
  */
 'use strict';
 

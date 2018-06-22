@@ -1,5 +1,4 @@
 /**
- * @providesModule CSSClassNames
  */
 'use strict';
 

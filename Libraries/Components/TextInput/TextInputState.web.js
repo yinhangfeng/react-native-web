@@ -1,5 +1,4 @@
 /**
- * @providesModule TextInputState
  * @flow
  */
 'use strict';

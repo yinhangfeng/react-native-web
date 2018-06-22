@@ -1,5 +1,4 @@
 /**
- * @providesModule UIManager
  */
 
 const CSSPropertyOperations = require('../Renderer/react-dom/CSSPropertyOperations');

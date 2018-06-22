@@ -1,5 +1,4 @@
 /**
- * @providesModule processTransform
  */
 'use strict';
 
