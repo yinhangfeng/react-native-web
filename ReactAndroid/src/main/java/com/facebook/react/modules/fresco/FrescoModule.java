@@ -27,7 +27,6 @@ import com.facebook.react.modules.common.ModuleDataCleaner;
 import com.facebook.react.modules.network.CookieJarContainer;
 import com.facebook.react.modules.network.ForwardingCookieHandler;
 import com.facebook.react.modules.network.OkHttpClientProvider;
-import com.facebook.soloader.SoLoader;
 
 import okhttp3.JavaNetCookieJar;
 import okhttp3.OkHttpClient;
