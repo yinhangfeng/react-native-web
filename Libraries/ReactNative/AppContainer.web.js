@@ -15,26 +15,9 @@
 
 const React = require('react-native/Libraries/react-native/React');
 const CSSClassNames = require('react-native/Libraries/StyleSheet/CSSClassNames');
-const RWConfig = require('react-native/Libraries/lrnw/RWConfig');
-// TODO material-ui 库需要, 暂时放在这里，应该由使用者提供
-const getMuiTheme = __requireDefault(require('material-ui/src/styles/getMuiTheme'));
 const PropTypes = require('prop-types');
 
-/**
- * 对未设置bodyScrollMode 的ROOT_CONTAINER样式设为overflow: 'hidden',
- * 否则在某些浏览器中会出现body滚动
- */
 class AppContainer extends React.Component {
-  
-  static childContextTypes = {
-    muiTheme: PropTypes.object,
-  };
-
-  getChildContext() {
-    return {
-      muiTheme: getMuiTheme(),
-    };
-  }
 
   render() {
     return (

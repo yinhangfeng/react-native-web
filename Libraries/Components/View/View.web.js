@@ -24,10 +24,6 @@ const LayoutMixin = require('react-native/Libraries/lrnw/RWLayoutMixin');
 const createWebCoreElement = require('react-native/Libraries/lrnw/createWebCoreElement');
 const CSSClassNames = require('react-native/Libraries/StyleSheet/CSSClassNames');
 
-import type {ViewProps} from 'react-native/Libraries/Components/View/ViewPropTypes';
-
-export type Props = ViewProps;
-
 /**
  * The most fundamental component for building a UI, `View` is a container that supports layout with
  * [flexbox](docs/flexbox.html), [style](docs/style.html),

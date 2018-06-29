@@ -1,10 +1,8 @@
-/**
- */
 'use strict';
 
 const React = require('react');
 const ReactDOM = require('react-dom');
-const getLayout = require('RWGetLayout');
+const getLayout = require('./getLayout');
 
 function layoutHandle() {
   let layout = getLayout(ReactDOM.findDOMNode(this));

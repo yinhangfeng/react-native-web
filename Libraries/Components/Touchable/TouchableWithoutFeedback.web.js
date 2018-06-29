@@ -67,7 +67,7 @@ const TouchableWithoutFeedback = createReactClass({
     /**
     * Called as soon as the touch is released even before onPress.
     */
-     onPressOut: PropTypes.func,
+    onPressOut: PropTypes.func,
     /**
      * Invoked on mount and layout changes with
      *

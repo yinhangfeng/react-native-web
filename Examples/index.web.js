@@ -1,24 +1,16 @@
 const ReactNative = require('react-native');
-const AppRegistry = require('AppRegistry');
 
 ReactNative.disableReactWarnUnknownProperties && ReactNative.disableReactWarnUnknownProperties();
 
-require('../RNTester/js/RNTesterApp');
-AppRegistry.runApplication('RNTesterApp');
+async function aaaaa() {
+  await Promise.resolve();
+}
 
-// const NavigationExperimentalExample = require('./UIExplorer/NavigationExperimental/NavigationExperimentalExample');
-// AppRegistry.registerComponent('NavigationExperimentalExample', () => NavigationExperimentalExample);
-// AppRegistry.runApplication('NavigationExperimentalExample');
+aaaaa();
 
-// const NavigatorExample = require('./UIExplorer/Navigator/NavigatorExample');
-// AppRegistry.registerComponent('NavigatorExample', () => NavigatorExample);
-// AppRegistry.runApplication('NavigatorExample');
+// require('../RNTester/js/RNTesterApp');
+// ReactNative.AppRegistry.runApplication('RNTesterApp');
 
-// require('./HelloWorld/index');
+require('./HelloWorld/index');
 
-
-// require('./HistoryNavigator');
-
-// require('./BodyScroll');
-
-window._RWPerformance = require('RWPerformance');
+// window._RWPerformance = require('RWPerformance');

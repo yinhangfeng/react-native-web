@@ -33,12 +33,20 @@ module.exports = function(env = { production: false } /* , argv */) {
 
   // https://github.com/browserslist/browserslist
   let browsers;
-  if (isDev && process.env.LAB_NEWEST_BROWSER !== false) {
+  const LAB_BROWSERS = process.env.LAB_NEWEST_BROWSER;
+  if (LAB_BROWSERS === 'latest' || (isDev && !LAB_BROWSERS)) {
     // dev 环境只兼容新浏览器 以方便调试 增加编译速度
     browsers = ['last 3 Chrome versions'];
-  } else {
+  } if (LAB_BROWSERS === 'es6') {
     browsers = [
       'Chrome 53',
+      'Safari 10',
+    ];
+  } else if (LAB_BROWSERS) {
+    browsers = LAB_BROWSERS.split(',');
+  } else {
+    browsers = [
+      'Chrome 45',
       'Safari 8',
     ];
   }
@@ -88,7 +96,9 @@ module.exports = function(env = { production: false } /* , argv */) {
     if (less) {
       loaders.push({
         loader: 'less-loader',
-        // options: lessOptions,
+        options: {
+          javascriptEnabled: true,
+        },
       });
     }
     return loaders;
@@ -113,32 +123,9 @@ module.exports = function(env = { production: false } /* , argv */) {
   const plugins = [
     isDev && new webpack.HotModuleReplacementPlugin(),
     // https://www.npmjs.com/package/react-dev-utils
-    // TODO
     // isDev && new WatchMissingNodeModulesPlugin(projectPath('node_modules')),
     // https://github.com/jannesmeyer/system-bell-webpack-plugin
-    isDev && new SystemBellWebpackPlugin(),
-    // 用于代替 devtool 选项 进行更细粒度的控制 https://doc.webpack-china.org/plugins/source-map-dev-tool-plugin/
-    // TODO
-    // isDev && new webpack.SourceMapDevToolPlugin({
-    //   columns: false,
-    //   moduleFilenameTemplate: info => {
-    //     if (
-    //       /\/koi-pkgs\/packages/.test(
-    //         info.absoluteResourcePath,
-    //       ) ||
-    //       /packages\/koi-core/.test(info.absoluteResourcePath) ||
-    //       /webpack\/bootstrap/.test(info.absoluteResourcePath) ||
-    //       /\/node_modules\//.test(info.absoluteResourcePath)
-    //     ) {
-    //       return `internal:///${info.absoluteResourcePath}`;
-    //     }
-    //     return resolve(info.absoluteResourcePath).replace(
-    //       /\\/g,
-    //       '/',
-    //     );
-    //   },
-    // }),
-
+    // isDev && new SystemBellWebpackPlugin(),
     !isDev &&
       new CleanWebpackPlugin([outputPath], {
         root: projectRoot,
@@ -162,6 +149,7 @@ module.exports = function(env = { production: false } /* , argv */) {
     // new CaseSensitivePathsPlugin(),
     // https://doc.webpack-china.org/plugins/ignore-plugin 忽略 moment 的本地化内容
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+    // TODO
     // new CopyWebpackPlugin([
     //   {
     //     from: projectPath('public'),
@@ -171,7 +159,7 @@ module.exports = function(env = { production: false } /* , argv */) {
     // ]),
     // https://github.com/webpack-contrib/webpack-bundle-analyzer
     process.env.LAB_ANALYZE &&
-      new require('webpack-bundle-analyzer').BundleAnalyzerPlugin({
+      new (require('webpack-bundle-analyzer').BundleAnalyzerPlugin)({
         analyzerMode: 'server',
         analyzerPort: process.env.LAB_ANALYZE_PORT || 8888,
         openAnalyzer: true,
@@ -180,7 +168,7 @@ module.exports = function(env = { production: false } /* , argv */) {
 
   const config = {
     mode: isDev ? 'development' : 'production',
-    entry: projectPath('Example/index.web.js'),
+    entry: [projectPath('Libraries/lrnw/polyfills.web.js'), projectPath('Examples/index.web.js')],
     output: {
       path: outputPath,
       // Add /* filename */ comments to generated require()s in the output.
@@ -189,8 +177,8 @@ module.exports = function(env = { production: false } /* , argv */) {
       publicPath: '/',
       chunkFilename: `js/[name]${jsHash}.async.js`,
     },
-    // 'source-map'
-    devtool: isDev ? 'eval-source-map' : 'none',
+    // 'source-map' 'eval-source-map'
+    devtool: !isDev ? 'none' : (process.env.LAB_BUILD_DEV ? 'source-map' : 'source-map'),
     devServer: isDev
       ? {
           port: 9007,
@@ -215,20 +203,15 @@ module.exports = function(env = { production: false } /* , argv */) {
         // '.tsx',
       ],
       alias: {
-        'react-native': projectPath('src/components'),
+        'react-native': projectRoot,
       },
     },
     module: {
       rules: [
         {
-          exclude: [/\.html|ejs$/, /\.json$/, /\.(js|jsx|ts|tsx)$/, /\.(css|less|scss|sass)$/],
-          loader: 'file-loader',
-          options: {
-            name: 'assets/[name].[hash:8].[ext]',
-          },
-        },
-        {
           test: /\.(js|jsx)$/,
+          // 排除不需要 transform 的大库
+          exclude: /node_modules[\\\/](?:@babel|core-js|regenerator-runtime|bluebird|react|react-dom|lodash|lodash-es|@material-ui|jss)[\\\/]/,
           use: babelUse,
         },
         {
@@ -255,6 +238,13 @@ module.exports = function(env = { production: false } /* , argv */) {
             modules: true,
             less: true,
           }),
+        },
+        {
+          exclude: [/\.html|ejs$/, /\.json$/, /\.(js|jsx|ts|tsx)$/, /\.(css|less|scss|sass)$/],
+          loader: 'file-loader',
+          options: {
+            name: 'assets/[name].[hash:8].[ext]',
+          },
         },
       ],
     },

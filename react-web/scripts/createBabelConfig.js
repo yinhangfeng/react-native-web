@@ -1,7 +1,7 @@
 'use strict';
 
 /**
- * https://github.com/facebook/react-native/blob/master/babel-preset/configs/main.js
+ * https://github.com/facebook/metro/blob/master/packages/metro-react-native-babel-preset/configs/main.js
  * https://github.com/umijs/umi/blob/master/packages/babel-preset-umi/src/index.js
  * https://github.com/facebook/create-react-app/blob/next/packages/babel-preset-react-app/index.js
  * 
@@ -11,8 +11,7 @@
  * https://github.com/babel/babel/blob/master/packages/babel-preset-stage-1/package.json
  * https://github.com/babel/babel/blob/master/packages/babel-preset-stage-0/package.json
  * 
- * TODO https://github.com/jamiebuilds/babel-react-optimize
- * TODO https://github.com/facebook/react-native/blob/master/babel-preset/transforms/transform-symbol-member.js
+ * TODO react-native https://github.com/facebook/metro/blob/master/packages/metro-react-native-babel-preset/transforms/transform-symbol-member.js
  */
 module.exports = function({ isDev, targets, browsers }) {
   return {
@@ -45,18 +44,17 @@ module.exports = function({ isDev, targets, browsers }) {
 
             // 不常用或者可能会引起问题的 es6+ 特性
             'transform-typeof-symbol',
-            // react-native 包括了这个插件
-            'transform-unicode-regex',
-            // react-native 包括了这个插件
-            'transform-sticky-regex',
             'transform-object-super',
             'transform-new-target',
             'transform-modules-umd',
             'transform-modules-systemjs',
             'transform-modules-amd',
-            // react-native 包括了这个插件
-            'transform-literals',
             'transform-duplicate-keys',
+
+            // react-native 包括了下面的插件
+            'transform-unicode-regex',
+            'transform-sticky-regex',
+            'transform-literals',
           ],
         },
       ],
@@ -71,13 +69,13 @@ module.exports = function({ isDev, targets, browsers }) {
           useBuiltIns: true,
         },
       ],
-      [require('@babel/preset-flow').default],
+      require('@babel/preset-flow').default,
     ],
     plugins: [
         // Necessary to include regardless of the environment because
         // in practice some other transforms (such as object-rest-spread)
         // don't work without it: https://github.com/babel/babel/issues/7215
-        // TODO 上面的 BUG 还在?
+        // TODO 这个已经包括到 preset-env 里了 上面的 BUG 还在?
         // require('@babel/plugin-transform-destructuring').default,
         // decorators 目前必须 legacy: true 需要保证在 plugin-proposal-class-properties 前面
         // https://babeljs.io/docs/en/next/babel-plugin-proposal-decorators.html
@@ -109,14 +107,21 @@ module.exports = function({ isDev, targets, browsers }) {
           },
         ],
         // Polyfills the runtime needed for async/await and generators https://babeljs.io/docs/en/next/babel-plugin-transform-runtime.html
-        [
-          require('@babel/plugin-transform-runtime').default,
-          {
-            helpers: true,
-            polyfill: false,
-            regenerator: true,
-          },
-        ],
+        // helpers 不能为 true 因为 transform-runtime 会使用 import 引入 如果原文件不是 es module 就会导致 混用 import exports
+        // 使得 webpack 打包出错 https://github.com/webpack/webpack/issues/4039
+        // 当然如果开启 preset-env modules 就不会有问题 但这样的话 webpack tree tree shaking 就无法起作用了
+        // regenerator 开启一般不会有问题 因为使用 generator async 的文件没理由不使用 es module
+        // polyfill 通过 preset-env useBuiltIns: 'entry' 引入 所以不需要
+        // [
+        //   require('@babel/plugin-transform-runtime').default,
+        //   {
+        //     helpers: false,
+        //     polyfill: false,
+        //     regenerator: true,
+        //   },
+        // ],
+        // 代替 transform-runtime helpers 需要 lrnw/babelHelpers.js 配合
+        require('@babel/plugin-external-helpers').default,
         // Adds syntax support for import()
         require('@babel/plugin-syntax-dynamic-import').default,
 
@@ -136,7 +141,10 @@ module.exports = function({ isDev, targets, browsers }) {
         // react-native
 
         // babel-preset-stage-1
-        require('plugin-proposal-optional-chaining').default,
+        require('@babel/plugin-proposal-optional-chaining').default,
+
+        (process.env.LAB_DISABLE_DYNAMIC_IMPORT || (process.env.LAB_DISABLE_DYNAMIC_IMPORT !== false && isDev)) &&
+          require('babel-plugin-dynamic-import-node-sync').default,
       ].filter(Boolean),
     babelrc: false,
   };

@@ -107,7 +107,7 @@ exports.NativeModules = require('react-native/Libraries/BatchedBridge/NativeModu
 exports.Platform = require('react-native/Libraries/Utilities/Platform');
 exports.processColor = require('react-native/Libraries/StyleSheet/processColor');
 exports.requireNativeComponent = require('react-native/Libraries/ReactNative/requireNativeComponent');
-exports.takeSnapshot
+exports.takeSnapshot = null;
 
 // Prop Types
 exports.ColorPropType = require('react-native/Libraries/StyleSheet/ColorPropType');

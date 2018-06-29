@@ -1,5 +1,3 @@
-/**
- */
 'use strict';
 
 // get element x, y
