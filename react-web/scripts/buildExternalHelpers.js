@@ -1,3 +1,5 @@
+'use strict';
+
 const babelCore = require('@babel/core');
 const code = babelCore.buildExternalHelpers();
 

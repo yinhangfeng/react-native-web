@@ -104,5 +104,15 @@
         "1"
       ]
     },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "webpack-build-test",
+      "program": "${workspaceFolder}/react-web/scripts/build.js",
+      "cwd": "${workspaceFolder}",
+      "env": {
+        "LAB_BUILD_DEV": "true"
+      }
+    },
   ]
 }

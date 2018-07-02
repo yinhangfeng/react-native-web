@@ -23,7 +23,11 @@ import ReactNative, {
 } from 'react-native';
 
 // import TestImage from './Image';
-import img_test from './img/test.png';
+import imgTest from './img/test.png';
+import imgTest1 from './img/test1.png';
+
+console.log('imgTest', imgTest);
+console.log('imgTest1', imgTest1);
 
 //RWConfig.bodyScrollMode = true;
 

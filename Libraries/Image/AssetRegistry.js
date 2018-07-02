@@ -33,16 +33,13 @@ function getAssetByID(assetId: number): PackagerAsset {
   return assets[assetId - 1];
 }
 
-// LRNW modify TODO
-function registerImage(httpServerLocation, width, height, scales, hash, name, type) {
+// LRNW modify
+function registerImage(width, height, scales, files) {
   return assets.push({
-    l: httpServerLocation,
-    w: width,
-    h: height,
-    s: scales,
-    a: hash,
-    n: name,
-    t: type || 'png',
+    width,
+    height,
+    scales,
+    files,
   });
 }
 

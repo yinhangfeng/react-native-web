@@ -8,6 +8,7 @@ const HTMLWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 // const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const RequireImageXAssetPlugin = require('../lrnw-image-loader').RequireImageXAssetPlugin;
 const { resolve } = require('path');
 
 const createBabelConfig = require('./createBabelConfig');
@@ -25,11 +26,13 @@ const lessModuleRegex = /\.module\.less$/;
 // const sassRegex = /\.(scss|sass)$/;
 // const sassModuleRegex = /\.module\.(scss|sass)$/;
 
+const LRNW_ASSETS_PATH = 'assets';
+
 // https://webpack.js.org/configuration
 // https://github.com/umijs/umi/blob/master/packages/af-webpack/src/getConfig.js
 // https://github.com/facebook/create-react-app/blob/next/packages/react-scripts/config/webpack.config.prod.js
-module.exports = function(env = { production: false } /* , argv */) {
-  const isDev = !env.production;
+module.exports = function({ env } = { env: 'development', }) {
+  const isDev = env === 'development';
 
   // https://github.com/browserslist/browserslist
   let browsers;
@@ -121,6 +124,7 @@ module.exports = function(env = { production: false } /* , argv */) {
   ];
 
   const plugins = [
+    new RequireImageXAssetPlugin(),
     isDev && new webpack.HotModuleReplacementPlugin(),
     // https://www.npmjs.com/package/react-dev-utils
     // isDev && new WatchMissingNodeModulesPlugin(projectPath('node_modules')),
@@ -140,7 +144,7 @@ module.exports = function(env = { production: false } /* , argv */) {
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(isDev ? 'development' : 'production'),
       '__DEV__': isDev,
-      // 'process.env.HMR': process.env.HMR,
+      'LRNW_ASSETS_PATH': JSON.stringify(LRNW_ASSETS_PATH),
     }),
     new HTMLWebpackPlugin({
       template: projectPath('Examples/index.html'),
@@ -240,10 +244,10 @@ module.exports = function(env = { production: false } /* , argv */) {
           }),
         },
         {
-          exclude: [/\.html|ejs$/, /\.json$/, /\.(js|jsx|ts|tsx)$/, /\.(css|less|scss|sass)$/],
-          loader: 'file-loader',
+          test: /\.(bmp|gif|jpg|jpeg|png|webp)$/,
+          loader: require.resolve('../lrnw-image-loader'),
           options: {
-            name: 'assets/[name].[hash:8].[ext]',
+            name: `${LRNW_ASSETS_PATH}/[name].[hash:8].[ext]`,
           },
         },
       ],
