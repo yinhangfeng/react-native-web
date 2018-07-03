@@ -10,6 +10,7 @@ const {
 } = require('./constants');
 
 const LRNW_ASSETS_PATH = 'assets';
+const RESOLUTION_REGEX = /(@[^x]+x)?\.[^\.]+$/;
 
 // https://github.com/webpack-contrib/file-loader/blob/master/src/index.js
 function loader(content) {
@@ -24,7 +25,7 @@ function loader(content) {
   if (!ext) {
     throw new Error('lrnw-image-loader image must have ext!');
   }
-  const imagePathWithoutExt = this.resourcePath.slice(0, -ext.length);
+  const imagePathWithoutExt = this.resourcePath.replace(RESOLUTION_REGEX, '');
   ext = ext.slice(1);
 
   const handleOptions = {
@@ -53,8 +54,9 @@ function loader(content) {
         width,
         height,
       } = getImageSize(filePath);
-      assetData.width = width;
-      assetData.height = height;
+      // 可能有小数
+      assetData.width = width / resolution;
+      assetData.height = height / resolution;
     }
     return assetData;
   }, {
@@ -73,9 +75,8 @@ function loader(content) {
 
   // console.log('assetData', assetData);
 
-  return `
-module.exports = require('react-native/Libraries/Image/AssetRegistry').registerImage(${assetData.width}, ${assetData.height}, '${assetData.scales}', '${assetData.files}');
-`;
+  return `module.exports = require('react-native/Libraries/Image/AssetRegistry')
+  .registerImage(${assetData.width}, ${assetData.height}, ${JSON.stringify(assetData.scales)}, ${JSON.stringify(assetData.files)});`;
 }
 
 function handleResolution({

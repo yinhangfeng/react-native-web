@@ -38,13 +38,17 @@ function resolveAssetSource(source: any): ?ResolvedAssetSource {
   const {
     scales,
     files,
+    width,
+    height,
   } = asset;
   let file;
+  let scale;
   if (Array.isArray(scales)) {
     const deviceScale = PixelRatio.get();
     for (let i = 0; i < scales.length; ++i) {
       if (scales[i] >= deviceScale) {
         file = files[i];
+        scale = scales[i];
         break;
       }
     }
@@ -53,9 +57,15 @@ function resolveAssetSource(source: any): ?ResolvedAssetSource {
     }
   } else {
     file = files;
+    scale = scales;
   }
 
-  return `${RWServerUrl.SERVER_URL}${RWServerUrl.ASSETS_PATH}/${file}`;
+  return {
+    width,
+    height,
+    uri: `${RWServerUrl.SERVER_URL}${RWServerUrl.ASSETS_PATH}/${file}`,
+    scale,
+  };
 }
 
 function pickScale(scales, deviceScale) {
