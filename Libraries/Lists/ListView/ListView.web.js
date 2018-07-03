@@ -28,8 +28,6 @@ var isEmpty = require('react-native/Libraries/vendor/core/isEmpty');
 // var merge = require('react-native/Libraries/vendor/core/merge');
 const invariant = require('fbjs/lib/invariant');
 
-var RWConfig = require('react-native/Libraries/lrnw/RWConfig');
-
 var DEFAULT_PAGE_SIZE = 1;
 var DEFAULT_INITIAL_ROWS = 10;
 var DEFAULT_SCROLL_RENDER_AHEAD = 1000;

@@ -1,15 +1,11 @@
 # 修改记录
 
-## rollup
+## Libraries
+
+* flow class 成员变量定义问题 当前 babel 设置与 RN 不同 导致代码转换之后 在调用 super constructor 之后会执行 this.xxx = void 0
+  * VirtualizedList 注释掉 props: Props; 定义
+  * createAnimatedComponent AnimatedComponent 注释掉 _setComponentRef
+
+## rollup 已废弃
 rollup cli参数 配置是否使用rollup打包
 buildBundle.js saveBundle 根据是否使用rollup 选择不同的output
-
-# 版本升级
-## 0.32
-react-native 0.32.0同步完成
-react-native-web 0.0.26 => 0.0.44
-StyleSheet 相关完成
-injectResponderEventPlugin 相关完成
-
-## 0.40
-初步可运行，结构调整完成，但所有.web.js 未与对应组件同步

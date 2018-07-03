@@ -7,6 +7,7 @@
 const React = require('react');
 const StyleSheet = require('react-native/Libraries/StyleSheet/StyleSheet');
 const View = require('react-native/Libraries/Components/View/View');
+const RWPerformance = require('react-native/Libraries/lrnw/RWPerformance');
 const CircularProgress = require('@material-ui/core/CircularProgress').default;
 
 class ActivityIndicator extends React.Component {
@@ -35,7 +36,7 @@ class ActivityIndicator extends React.Component {
       progress = (
         <CircularProgress
           size={size}
-          color={color}/>
+          style={color ? { color, } : undefined}/>
       );
     } else {
       progress = (

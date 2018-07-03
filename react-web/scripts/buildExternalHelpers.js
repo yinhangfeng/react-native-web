@@ -3,7 +3,7 @@
 const babelCore = require('@babel/core');
 const code = babelCore.buildExternalHelpers();
 
-// console.log(code);
+console.log(code);
 
 const imports = [];
 const helpers = ['window.babelHelpers = {'];

@@ -1,6 +1,6 @@
 /**
  * RW SYNC react-native-web: 0.1.0
- * https://github.com/necolas/react-native-web/blob/master/src/modules/normalizeNativeEvent/index.js
+ * https://github.com/necolas/react-native-web/blob/master/packages/react-native-web/src/modules/normalizeNativeEvent/index.js
  */
 'use strict';
 

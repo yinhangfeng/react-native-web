@@ -22,8 +22,6 @@ const RNTesterList = require('./RNTesterList');
 const RNTesterNavigationReducer = require('./RNTesterNavigationReducer');
 const URIActionMap = require('./URIActionMap');
 
-const xxx = require('react-native/RNTester/js/xxx');
-
 const {
   Button,
   AppRegistry,

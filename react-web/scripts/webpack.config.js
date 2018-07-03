@@ -28,19 +28,23 @@ const lessModuleRegex = /\.module\.less$/;
 
 const LRNW_ASSETS_PATH = 'assets';
 
-// https://webpack.js.org/configuration
-// https://github.com/umijs/umi/blob/master/packages/af-webpack/src/getConfig.js
-// https://github.com/facebook/create-react-app/blob/next/packages/react-scripts/config/webpack.config.prod.js
+/**
+ * https://webpack.js.org/configuration
+ * https://github.com/umijs/umi/blob/master/packages/af-webpack/src/getConfig.js
+ * https://github.com/facebook/create-react-app/blob/next/packages/react-scripts/config/webpack.config.prod.js
+ * 
+ * TODO react-native constant Platform ...
+ */
 module.exports = function({ env } = { env: 'development', }) {
   const isDev = env === 'development';
 
   // https://github.com/browserslist/browserslist
   let browsers;
-  const LAB_BROWSERS = process.env.LAB_NEWEST_BROWSER;
+  const LAB_BROWSERS = process.env.LAB_BROWSERS;
   if (LAB_BROWSERS === 'latest' || (isDev && !LAB_BROWSERS)) {
     // dev 环境只兼容新浏览器 以方便调试 增加编译速度
     browsers = ['last 3 Chrome versions'];
-  } if (LAB_BROWSERS === 'es6') {
+  } else if (LAB_BROWSERS === 'es6') {
     browsers = [
       'Chrome 53',
       'Safari 10',
@@ -125,7 +129,8 @@ module.exports = function({ env } = { env: 'development', }) {
 
   const plugins = [
     new RequireImageXAssetPlugin(),
-    isDev && new webpack.HotModuleReplacementPlugin(),
+    // TODO
+    // isDev && new webpack.HotModuleReplacementPlugin(),
     // https://www.npmjs.com/package/react-dev-utils
     // isDev && new WatchMissingNodeModulesPlugin(projectPath('node_modules')),
     // https://github.com/jannesmeyer/system-bell-webpack-plugin
@@ -170,9 +175,18 @@ module.exports = function({ env } = { env: 'development', }) {
       }),
   ].filter(Boolean);
 
+  let minimize = !isDev;
+  if (process.env.LAB_MINIFY != null) {
+    if (process.env.LAB_MINIFY === 'false') {
+      minimize = false;
+    } else {
+      minimize = Boolean(process.env.LAB_MINIFY);
+    }
+  }
+
   const config = {
     mode: isDev ? 'development' : 'production',
-    entry: [projectPath('Libraries/lrnw/polyfills.web.js'), projectPath('Examples/index.web.js')],
+    entry: [projectPath('Libraries/lrnw/promise.js'), projectPath('Libraries/lrnw/polyfills.js'), projectPath('Examples/index.web.js')],
     output: {
       path: outputPath,
       // Add /* filename */ comments to generated require()s in the output.
@@ -182,10 +196,10 @@ module.exports = function({ env } = { env: 'development', }) {
       chunkFilename: `js/[name]${jsHash}.async.js`,
     },
     // 'source-map' 'eval-source-map'
-    devtool: !isDev ? 'none' : (process.env.LAB_BUILD_DEV ? 'source-map' : 'source-map'),
+    devtool: isDev ? 'source-map' : 'none',
     devServer: isDev
       ? {
-          port: 9007,
+          port: 9081,
           // proxy: {
           //   '/api': 'http://localhost:8000',
           // },
@@ -208,6 +222,8 @@ module.exports = function({ env } = { env: 'development', }) {
       ],
       alias: {
         'react-native': projectRoot,
+        // promise 使用 bluebird 将对core-js promise 引用(目前在 @babel/runtime/helpers 内有)指向 bluebird 可能通过 alias 无法解决 需要 https://webpack.js.org/plugins/normal-module-replacement-plugin
+        'core-js/library/fn/promise': 'bluebird/js/browser/bluebird.min',
       },
     },
     module: {
@@ -215,7 +231,7 @@ module.exports = function({ env } = { env: 'development', }) {
         {
           test: /\.(js|jsx)$/,
           // 排除不需要 transform 的大库
-          exclude: /node_modules[\\\/](?:@babel|core-js|regenerator-runtime|bluebird|react|react-dom|lodash|lodash-es|@material-ui|jss)[\\\/]/,
+          exclude: /node_modules[\\\/](@babel|core-js|regenerator-runtime|bluebird|react|react-dom|lodash|lodash-es|@material-ui|jss)[\\\/]/,
           use: babelUse,
         },
         {
@@ -266,6 +282,10 @@ module.exports = function({ env } = { env: 'development', }) {
           hints: false,
         }
       : undefined,
+    // https://webpack.js.org/configuration/optimization/
+    optimization: {
+      minimize,
+    },
   };
 
   return config;

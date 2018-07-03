@@ -29,8 +29,6 @@ import imgTest1 from './img/test1.png';
 console.log('imgTest', imgTest);
 console.log('imgTest1', imgTest1);
 
-//RWConfig.bodyScrollMode = true;
-
 let SHOW_TOUCH_EVENT = false;
 
 class Hello extends Component {

@@ -8,7 +8,13 @@ const StyleSheet = require('react-native/Libraries/StyleSheet/StyleSheet');
 const View = require('react-native/Libraries/Components/View/View');
 const MUISwitch = require('@material-ui/core/Switch').default;
 
+// TODO tintColor onTintColor
 class Switch extends React.Component {
+
+  constructor(props, context) {
+    super(props, context);
+    this._onChange = this._onChange.bind(this);
+  }
 
   static defaultProps = {
     value: false,

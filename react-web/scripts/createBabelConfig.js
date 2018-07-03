@@ -21,6 +21,9 @@ module.exports = function({ isDev, targets, browsers }) {
         // 包括的插件 https://github.com/babel/babel/blob/master/packages/babel-preset-env/data/plugins.json
         // 包括的 built-ins https://github.com/babel/babel/blob/master/packages/babel-preset-env/data/built-ins.json
         // 包括 transform-regenerator transform-async-to-generator
+        // transform-regenerator 可以转换 generators async asyncGenerators; transform-async-to-generator 可以将 async 转为 generators
+        // generator 需要 chrome50 以上 async 需要 chrome55 以上 当 chrome < 50 时同时存在 transform-async-to-generator 会优先作用(不知道是什么原因...)
+        // transform-regenerator 相当于只转换了 generators; 最好能在 同时存在时只让 transform-regenerator 起作用
         // https://babeljs.io/docs/en/next/babel-preset-env.html
         require('@babel/preset-env').default,
         {
@@ -33,6 +36,7 @@ module.exports = function({ isDev, targets, browsers }) {
           // static code analysis to determine what's required.
           // This is probably a fine default to help trim down bundles when
           // end-users inevitably import '@babel/polyfill'.
+          // 会 polyfill regenerator-runtime
           // preset-env 的 useBuiltIns 不为 false 会给内部所有插件传递 useBuiltIns true
           useBuiltIns: 'entry',
           // Do not transform modules to CJS

@@ -605,8 +605,11 @@ const ScrollView = createReactClass({
 
     // const style = flattenStyle([styles.base, props.style]);
     const style = flattenStyle(props.style) || {};
-    if (!('flex' in style)) {
-      style.flex = 1;
+    if (!('flex' in style) && !('flexGrow' in style)) {
+      style.flexGrow = 1;
+      if (!('flexShrink' in style)) {
+        style.flexShrink = 1;
+      }
     }
     if (style.flex && !style.flexBasis) {
       //对设置了flex，将flexBasis设为0 解决有些浏览器不可滚动的bug 0, 0px 与0%不同?

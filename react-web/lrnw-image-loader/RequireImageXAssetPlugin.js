@@ -8,6 +8,12 @@ const {
 
 const extensions = ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.webp'];
 
+/**
+ * 如果引用图片 xxx.png 而本地存在 xxx@2x.png xxx@3x.png
+ * 如果没有此插件则会报 xxx.png 不存在
+ * 此插件用于查找相关的图片并将 request 修改为该图片
+ * 参考 https://github.com/Beven91/image-web-loader/blob/master/src/plugin.js
+ */
 class RequireImageXAssetPlugin {
 
   apply(compiler) {
