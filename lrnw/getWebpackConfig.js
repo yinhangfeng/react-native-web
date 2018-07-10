@@ -1,32 +1,24 @@
 'use strict';
 
+const { resolve } = require('path');
 const webpack = require('webpack');
 const postcssFlexbugsFixes = require('postcss-flexbugs-fixes');
 const autoprefixer = require('autoprefixer');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 // const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-const RequireImageXAssetPlugin = require('../lrnw-image-loader').RequireImageXAssetPlugin;
-const { resolve } = require('path');
-
-const createBabelConfig = require('./createBabelConfig');
-
-const projectRoot = resolve(__dirname, '../../');
-
-function projectPath(relativePath) {
-  return resolve(projectRoot, relativePath);
-}
+const RequireImageXAssetPlugin = require('./lrnw-image-loader').RequireImageXAssetPlugin;
 
 const cssRegex = /\.css$/;
 const cssModuleRegex = /\.module\.css$/;
 const lessRegex = /\.less$/;
 const lessModuleRegex = /\.module\.less$/;
-// const sassRegex = /\.(scss|sass)$/;
-// const sassModuleRegex = /\.module\.(scss|sass)$/;
 
 const LRNW_ASSETS_PATH = 'assets';
+
+const lrnwRoot = resolve(__dirname, '..');
 
 /**
  * https://webpack.js.org/configuration
@@ -34,28 +26,31 @@ const LRNW_ASSETS_PATH = 'assets';
  * https://github.com/facebook/create-react-app/blob/next/packages/react-scripts/config/webpack.config.prod.js
  * 
  * TODO react-native constant Platform ...
+ * 
+ * process.env: {
+ *   LAB_ANALYZE,
+ *   LAB_ANALYZE_PORT,
+ *   LAB_MINIFY,
+ * }
  */
-module.exports = function({ env } = { env: 'development', }) {
+module.exports = function({
+  env,
+  projectRoot,
+  babelConfig,
+  entryPath,
+  outputPath,
+  htmlTemplatePath,
+  browsers,
+  publicPath,
+}) {
   const isDev = env === 'development';
 
-  // https://github.com/browserslist/browserslist
-  let browsers;
-  const LAB_BROWSERS = process.env.LAB_BROWSERS;
-  if (LAB_BROWSERS === 'latest' || (isDev && !LAB_BROWSERS)) {
-    // dev 环境只兼容新浏览器 以方便调试 增加编译速度
-    browsers = ['last 3 Chrome versions'];
-  } else if (LAB_BROWSERS === 'es6') {
-    browsers = [
-      'Chrome 53',
-      'Safari 10',
-    ];
-  } else if (LAB_BROWSERS) {
-    browsers = LAB_BROWSERS.split(',');
-  } else {
-    browsers = [
-      'Chrome 45',
-      'Safari 8',
-    ];
+  function projectPath(relativePath) {
+    return resolve(projectRoot, relativePath);
+  }
+
+  function lrnwPath(relativePath) {
+    return resolve(lrnwRoot, relativePath);
   }
 
   const cssOptions = {
@@ -111,8 +106,6 @@ module.exports = function({ env } = { env: 'development', }) {
     return loaders;
   }
 
-  const outputPath = projectPath('build');
-
   // js 和 css 采用不同的 hash 算法
   const jsHash = !isDev ? '.[chunkhash:8]' : '';
   const cssHash = !isDev ? '.[contenthash:8]' : '';
@@ -120,10 +113,7 @@ module.exports = function({ env } = { env: 'development', }) {
   const babelUse = [
     {
       loader: 'babel-loader',
-      options: createBabelConfig({
-        isDev,
-        browsers,
-      }),
+      options: babelConfig,
     },
   ];
 
@@ -152,20 +142,19 @@ module.exports = function({ env } = { env: 'development', }) {
       'LRNW_ASSETS_PATH': JSON.stringify(LRNW_ASSETS_PATH),
     }),
     new HTMLWebpackPlugin({
-      template: projectPath('Examples/index.html'),
+      template: htmlTemplatePath,
     }),
     // https://github.com/Urthen/case-sensitive-paths-webpack-plugin
     // new CaseSensitivePathsPlugin(),
     // https://doc.webpack-china.org/plugins/ignore-plugin 忽略 moment 的本地化内容
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
-    // TODO
-    // new CopyWebpackPlugin([
-    //   {
-    //     from: projectPath('public'),
-    //     to: outputPath,
-    //     toType: 'dir',
-    //   },
-    // ]),
+    publicPath && new CopyWebpackPlugin([
+      {
+        from: publicPath,
+        to: outputPath,
+        toType: 'dir',
+      },
+    ]),
     // https://github.com/webpack-contrib/webpack-bundle-analyzer
     process.env.LAB_ANALYZE &&
       new (require('webpack-bundle-analyzer').BundleAnalyzerPlugin)({
@@ -186,7 +175,7 @@ module.exports = function({ env } = { env: 'development', }) {
 
   const config = {
     mode: isDev ? 'development' : 'production',
-    entry: [projectPath('Libraries/lrnw/promise.js'), projectPath('Libraries/lrnw/polyfills.js'), projectPath('Examples/index.web.js')],
+    entry: [lrnwPath('Libraries/lrnw/promise.js'), lrnwPath('Libraries/lrnw/polyfills.js'), entryPath],
     output: {
       path: outputPath,
       // Add /* filename */ comments to generated require()s in the output.
@@ -200,9 +189,6 @@ module.exports = function({ env } = { env: 'development', }) {
     devServer: isDev
       ? {
           port: 9081,
-          // proxy: {
-          //   '/api': 'http://localhost:8000',
-          // },
         }
       : {},
     bail: !isDev,
@@ -221,7 +207,7 @@ module.exports = function({ env } = { env: 'development', }) {
         // '.tsx',
       ],
       alias: {
-        'react-native': projectRoot,
+        'react-native': lrnwRoot,
         // promise 使用 bluebird 将对core-js promise 引用(目前在 @babel/runtime/helpers 内有)指向 bluebird 可能通过 alias 无法解决 需要 https://webpack.js.org/plugins/normal-module-replacement-plugin
         'core-js/library/fn/promise': 'bluebird/js/browser/bluebird.min',
       },
@@ -261,7 +247,7 @@ module.exports = function({ env } = { env: 'development', }) {
         },
         {
           test: /\.(bmp|gif|jpg|jpeg|png|webp)$/,
-          loader: require.resolve('../lrnw-image-loader'),
+          loader: require.resolve('./lrnw-image-loader'),
           options: {
             name: `${LRNW_ASSETS_PATH}/[name].[hash:8].[ext]`,
           },

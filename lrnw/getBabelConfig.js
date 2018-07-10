@@ -13,7 +13,9 @@
  * 
  * TODO react-native https://github.com/facebook/metro/blob/master/packages/metro-react-native-babel-preset/transforms/transform-symbol-member.js
  */
-module.exports = function({ isDev, targets, browsers }) {
+module.exports = function({ env, targets, browsers }) {
+  const isDev = env === 'development';
+  
   return {
     presets: [
       [

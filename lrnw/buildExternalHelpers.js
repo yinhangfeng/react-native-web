@@ -1,3 +1,7 @@
+/**
+ * https://github.com/babel/babel/blob/master/packages/babel-helpers/src/helpers.js
+ */
+
 'use strict';
 
 const babelCore = require('@babel/core');

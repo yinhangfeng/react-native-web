@@ -128,17 +128,12 @@
     "test-android-instrumentation": "yarn run docker-build-android && yarn run test-android-run-instrumentation",
     "test-android-unit": "yarn run docker-build-android && yarn run test-android-run-unit",
     "test-android-e2e": "yarn run docker-build-android && yarn run test-android-run-e2e",
-    "lrnw": "webpack-dev-server --open --config react-web/scripts/webpack.config.js",
-    "bundle-web": "webpack --env.env=production --config react-web/scripts/webpack.config.js --display-optimization-bailout",
-    "bundle-web:dev": "LAB_BUILD_DEV=true webpack --config react-web/scripts/webpack.config.js",
+    "lrnw": "webpack-dev-server --open --config lrnw/webpack.config.js",
+    "lrnw1": "node lrnw/cli.js start",
+    "bundle-web": "webpack --env.env=production --config lrnw/webpack.config.js --display-optimization-bailout",
+    "bundle-web:dev": "LAB_BUILD_DEV=true webpack --config lrnw/webpack.config.js",
     "bundle-web:analyze": "LAB_ANALYZE=true npm run bundle-web",
-    "bundle-rntester": "node local-cli/cli.js bundle --platform web --dev true --entry-file Examples/index.web.js --bundle-output build/rntester/bundle.js --assets-dest build/rntester/",
-    "bundle-prod": "node local-cli/cli.js bundle --platform web --dev false --entry-file Examples/index.web.js --bundle-output build/rntester/bundle.min.js",
-    "bundle-rollup": "node local-cli/cli.js bundle --rollup --platform web --dev true --entry-file Examples/index.web.js --bundle-output build/rntester/bundle.rollup.js",
-    "bundle-rollup-prod": "node local-cli/cli.js bundle --rollup --platform web --dev false --entry-file Examples/index.web.js --bundle-output build/rntester/bundle.rollup.min.js",
-    "bundle-rollup-prod-es6": "node local-cli/cli.js bundle --rollup --platform web --dev false --babel-preset-target es6 --entry-file Examples/index.web.js --bundle-output build/rntester/bundle.rollup.es6.min.js",
-    "bundle-hello-rollup": "node local-cli/cli.js bundle --rollup --platform web --dev true --entry-file Examples/HelloWorld/index.web.js --bundle-output build/rntester/bundle.rollup.js",
-    "minify-bundle": "uglifyjs build/rntester/bundle.rollup.min.js --output build/rntester/bundle.rollup.min.min.js --compress --mangle eval"
+    "bundle-web1": "node lrnw/cli.js build"
   },
   "bin": {
     "lab-react-native-web": "local-cli/wrong-react-native.js"
@@ -148,7 +143,7 @@
   },
   "dependencies": {
     "@babel/core": "7.0.0-beta.51",
-    "@babel/plugin-external-helpers": "^7.0.0-beta.51",
+    "@babel/plugin-external-helpers": "7.0.0-beta.51",
     "@babel/plugin-proposal-class-properties": "7.0.0-beta.51",
     "@babel/plugin-proposal-decorators": "7.0.0-beta.51",
     "@babel/plugin-proposal-object-rest-spread": "7.0.0-beta.51",

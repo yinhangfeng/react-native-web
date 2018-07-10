@@ -1,5 +1,7 @@
 'use strict';
 
+require('../lrnw/lrnw.css');
+
 const ReactNativeInternal = require('react-native/Libraries/Renderer/shims/ReactNative');
 const UnimplementedView = require('react-native/Libraries/Components/UnimplementedViews/UnimplementedView');
 

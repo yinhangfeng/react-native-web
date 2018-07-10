@@ -4,16 +4,21 @@ const chalk = require('chalk');
 const webpack = require('webpack');
 const formatWebpackMessages = require('react-dev-utils/formatWebpackMessages');
 const printBuildError = require('react-dev-utils/printBuildError');
-
-const getConfig = require('./webpack.config');
+const Config = require('./Config');
+const buildWebpackConfig = require('./buildWebpackConfig');
 
 // https://github.com/facebook/create-react-app/blob/next/packages/react-scripts/scripts/build.js
-function build() {
+function build({
+  cliConfig = Config,
+} = {}) {
   console.log('Creating an optimized production build...');
-  const config = getConfig({
-    env: 'development',
+
+  const webpackConfig = buildWebpackConfig({
+    env: 'production',
+    cliConfig,
   });
-  const compiler = webpack(config);
+  const compiler = webpack(webpackConfig);
+
   return new Promise((resolve, reject) => {
     compiler.run((err, stats) => {
       if (err) {
@@ -39,34 +44,36 @@ function build() {
   });
 }
 
-build().then(
-  ({ stats, warnings }) => {
-    if (warnings.length) {
-      console.log(chalk.yellow('Compiled with warnings.\n'));
-      console.log(warnings.join('\n\n'));
-      console.log(
-        '\nSearch for the ' +
-          chalk.underline(chalk.yellow('keywords')) +
-          ' to learn more about each warning.'
-      );
-      console.log(
-        'To ignore, add ' +
-          chalk.cyan('// eslint-disable-next-line') +
-          ' to the line before.\n'
-      );
-    } else {
-      console.log(chalk.green('Compiled successfully.\n'));
+function run(options) {
+  build(options).then(
+    ({ stats, warnings }) => {
+      if (warnings.length) {
+        console.log(chalk.yellow('Compiled with warnings.\n'));
+        console.log(warnings.join('\n\n'));
+        console.log(
+          '\nSearch for the ' +
+            chalk.underline(chalk.yellow('keywords')) +
+            ' to learn more about each warning.'
+        );
+        console.log(
+          'To ignore, add ' +
+            chalk.cyan('// eslint-disable-next-line') +
+            ' to the line before.\n'
+        );
+      } else {
+        console.log(chalk.green('Compiled successfully.\n'));
+      }
+    },
+    err => {
+      console.log(chalk.red('Failed to compile.\n'));
+      printBuildError(err);
+      process.exit(1);
     }
-  },
-  err => {
-    console.log(chalk.red('Failed to compile.\n'));
-    printBuildError(err);
+  )
+  .catch(err => {
+    throw err;
     process.exit(1);
-  }
-)
-.catch(err => {
-  if (err && err.message) {
-    console.log(err.message);
-  }
-  process.exit(1);
-});
+  });
+}
+
+module.exports = run;
