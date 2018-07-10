@@ -11,7 +11,7 @@
 
 html {
   line-height: 1.15; /* 1 */
-  -ms-text-size-adjust: 100%; /* 2 */
+  /* -ms-text-size-adjust: 100%; */ /* 2 */
   -webkit-text-size-adjust: 100%; /* 2 */
 }
 
@@ -539,11 +539,8 @@ body {
 
 .lrnw-view {
   position: relative;
-  display: -webkit-box;
   display: -webkit-flex;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
   -webkit-flex-direction: column;
   flex-direction: column;
   -webkit-flex-shrink: 0;
@@ -566,21 +563,16 @@ body {
   display: inline;
 }*/
 
-/* Text numberOfLines
+/*
+Text numberOfLines
 需要再配合 -webkit-line-clamp: lines; max-height
-
-display: -webkit-box;可以 但 display: flex不可以?
-...*/
+*/
 .lrnw-text-nol {
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-box-orient: vertical;
 }
-
-/*.lrnw-image {
-  width: 100%;
-}*/
 
 .lrnw-image-container {
   background-color: transparent;
@@ -609,7 +601,7 @@ display: -webkit-box;可以 但 display: flex不可以?
 
 .lrnw-scroll-view {
   overflow-y: auto;
-  display: block; /* TODO */
+  display: block; /* ScrollView 不需要 flex */
   -webkit-overflow-scrolling: touch;
 
   /*
@@ -622,7 +614,6 @@ display: -webkit-box;可以 但 display: flex不可以?
   */
   -webkit-transform: translateZ(0);
   -moz-transform: translateZ(0);
-  -ms-transform: translateZ(0);
   -o-transform: translateZ(0);
   transform: translateZ(0);
 }
@@ -643,7 +634,6 @@ display: -webkit-box;可以 但 display: flex不可以?
 
 .lrnw-scroll-view-content-h {
   display: inline-flex;
-  -webkit-box-orient: horizontal;
   -webkit-flex-direction: row;
   flex-direction: row;
 }
