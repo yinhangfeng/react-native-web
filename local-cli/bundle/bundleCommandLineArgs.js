@@ -88,11 +88,6 @@ module.exports = [
     default: false,
   },
   {
-    // LAB modify TODO
-    command: '--extra-build-options [string]',
-    description: 'extraBuildOptions',
-  },
-  {
     command: '--read-global-cache',
     description:
       'Try to fetch transformed JS code from the global cache, if configured.',
