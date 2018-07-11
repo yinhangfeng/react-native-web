@@ -7,7 +7,10 @@ const printBuildError = require('react-dev-utils/printBuildError');
 const Config = require('./Config');
 const buildWebpackConfig = require('./buildWebpackConfig');
 
-// https://github.com/facebook/create-react-app/blob/next/packages/react-scripts/scripts/build.js
+/**
+ * 参考 https://github.com/facebook/create-react-app/blob/next/packages/react-scripts/scripts/build.js
+ * 可以考虑使用 webpack-cli/bin/cli.js 像 statWebpackDevServer.js 一样处理
+ */
 function build({
   cliConfig = Config,
 } = {}) {

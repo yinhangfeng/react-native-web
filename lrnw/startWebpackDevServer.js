@@ -1,6 +1,7 @@
 /**
  * https://github.com/webpack/webpack-dev-server/blob/v3.1.4/bin/webpack-dev-server.js
  * 去除了 yargs argv 解析 改为直接由外部传入
+ * 去除了 wpOpt 的解析创建 直接由外部提供
  */
 'use strict';
 
@@ -39,13 +40,13 @@ const DEFAULT_PORT = 8080;
 
 function processOptions(webpackOptions, argv) {
   // process Promise
-  if (typeof webpackOptions.then === 'function') {
-    webpackOptions.then(processOptions).catch((err) => {
-      console.error(err.stack || err);
-      process.exit(); // eslint-disable-line
-    });
-    return;
-  }
+  // if (typeof webpackOptions.then === 'function') {
+  //   webpackOptions.then(processOptions).catch((err) => {
+  //     console.error(err.stack || err);
+  //     process.exit(); // eslint-disable-line
+  //   });
+  //   return;
+  // }
 
   const firstWpOpt = Array.isArray(webpackOptions) ? webpackOptions[0] : webpackOptions;
 
