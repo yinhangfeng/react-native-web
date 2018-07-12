@@ -11,8 +11,9 @@ function getProjectRoot() {
   if (!projectRoot) {
     if (__dirname.match(/node_modules[/\\]lab-react-native-web[/\\]lrnw$/)) {
       projectRoot = path.resolve(__dirname, '../../..');
+    } else {
+      projectRoot = path.resolve(__dirname, '..');
     }
-    projectRoot = path.resolve(__dirname, '..');
   }
   return projectRoot;
 }
