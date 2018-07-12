@@ -8,3 +8,7 @@ require('./babelHelpers');
 
 // fetch() polyfill for making API calls.
 require('whatwg-fetch');
+
+window.__requireDefault = function (obj) {
+  return obj && obj.__esModule ? obj.default : obj;
+};
