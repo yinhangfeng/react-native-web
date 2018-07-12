@@ -118,7 +118,9 @@ module.exports = function({
   ];
 
   const plugins = [
-    new RequireImageXAssetPlugin(),
+    new RequireImageXAssetPlugin({
+      projectRoot,
+    }),
     // TODO
     // isDev && new webpack.HotModuleReplacementPlugin(),
     // https://www.npmjs.com/package/react-dev-utils
