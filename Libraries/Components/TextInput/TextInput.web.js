@@ -575,7 +575,6 @@ const TextInput = createReactClass({
 
     if (multiline) {
       otherProps.rows = numberOfLines;
-      console.log('xxxxx otherProps', otherProps);
       return createWebCoreElement('textarea', otherProps);
     } else {
       otherProps.type = type;
