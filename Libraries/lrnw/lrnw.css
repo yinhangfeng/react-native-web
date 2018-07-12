@@ -571,6 +571,7 @@ Text numberOfLines
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
+  /* autoprefixer: ignore next */
   -webkit-box-orient: vertical;
 }
 
