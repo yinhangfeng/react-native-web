@@ -22,7 +22,7 @@ const lrnwRoot = resolve(__dirname, '..');
 
 /**
  * https://webpack.js.org/configuration
- * https://github.com/umijs/umi/blob/master/packages/af-webpack/src/getConfig.js
+ * https://github.com/umijs/umi/blob/master/packages/af-webpack/src/getConfig/index.js
  * https://github.com/facebook/create-react-app/blob/next/packages/react-scripts/config/webpack.config.prod.js
  * 
  * TODO react-native constant Platform ...
@@ -250,6 +250,13 @@ module.exports = function({
         {
           test: /\.(bmp|gif|jpg|jpeg|png|webp)$/,
           loader: require.resolve('./lrnw-image-loader'),
+          options: {
+            name: `${LRNW_ASSETS_PATH}/[name].[hash:8].[ext]`,
+          },
+        },
+        {
+          exclude: [/\.html|ejs$/, /\.json$/, /\.(js|jsx|ts|tsx|mjs)$/, /\.(css|less|scss|sass)$/, /\.(bmp|gif|jpg|jpeg|png|webp)$/],
+          loader: 'file-loader',
           options: {
             name: `${LRNW_ASSETS_PATH}/[name].[hash:8].[ext]`,
           },
