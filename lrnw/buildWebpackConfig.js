@@ -33,7 +33,10 @@ module.exports = function buildWebpackConfig({
     outputPath: resolve(projectRoot, 'build/outputs/web'),
     htmlTemplatePath: resolve(projectRoot, 'web/index.html'),
     browsers,
-    ...(cliConfig.getWebpackConfigOptions && cliConfig.getWebpackConfigOptions()),
+    ...(cliConfig.getWebpackConfigOptions && cliConfig.getWebpackConfigOptions({
+      env,
+      projectRoot,
+    })),
   };
 
   if (cliConfig.processWebpackConfigOptions) {
