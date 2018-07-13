@@ -88,33 +88,6 @@ module.exports = [
     default: false,
   },
   {
-    // RW modify
-    command: '--css-dest [string]',
-    description: 'Directory name where to store lrnw css',
-  },
-  {
-    // LAB modify
-    command: '--rollup [boolean]',
-    description: 'use rollup bundle',
-    default: false,
-  },
-  {
-    // LAB modify
-    command: '--rollup-minify-engine [string]',
-    description: 'uglify-js or closure',
-    default: 'uglify',
-  },
-  {
-    // LAB modify
-    command: '--babel-preset-target [string]',
-    description: '输出目标的兼容性,目前只支持es6',
-  },
-  {
-    // LAB modify TODO
-    command: '--extra-build-options [string]',
-    description: 'extraBuildOptions',
-  },
-  {
     command: '--read-global-cache',
     description:
       'Try to fetch transformed JS code from the global cache, if configured.',
