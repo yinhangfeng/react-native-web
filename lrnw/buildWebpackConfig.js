@@ -15,14 +15,14 @@ module.exports = function buildWebpackConfig({
   const projectRoot = cliConfig.getProjectRoot();
   const browsers = getBrowsers(env);
 
-  const getBabelConfigOptions = {
+  const babelConfigOptions = {
     env,
     browsers,
   };
 
-  let babelConfig = getBabelConfig(getBabelConfigOptions);
-  if (cliConfig.getBabelConfig) {
-    babelConfig = cliConfig.processBabelConfig(babelConfig, getBabelConfigOptions);
+  let babelConfig = getBabelConfig(babelConfigOptions);
+  if (cliConfig.processBabelConfig) {
+    babelConfig = cliConfig.processBabelConfig(babelConfig, babelConfigOptions);
   }
 
   let webpackConfigOptions = {
@@ -33,6 +33,7 @@ module.exports = function buildWebpackConfig({
     outputPath: resolve(projectRoot, 'build/outputs/web'),
     htmlTemplatePath: resolve(projectRoot, 'web/index.html'),
     browsers,
+    ...(cliConfig.getWebpackConfigOptions && cliConfig.getWebpackConfigOptions()),
   };
 
   if (cliConfig.processWebpackConfigOptions) {
