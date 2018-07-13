@@ -122,9 +122,6 @@
     "bundle-web:analyze": "LAB_ANALYZE=true npm run bundle-web",
     "bundle-web1": "node lrnw/cli.js build"
   },
-  "bin": {
-    "lab-react-native-web": "local-cli/wrong-react-native.js"
-  },
   "peerDependencies": {
     "react": "16.4.1",
     "react-dom": "16.4.1"
