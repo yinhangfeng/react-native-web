@@ -149,8 +149,10 @@ module.exports = function({ env, targets, browsers }) {
         // babel-preset-stage-1
         require('@babel/plugin-proposal-optional-chaining').default,
 
-        (process.env.LAB_DISABLE_DYNAMIC_IMPORT || (process.env.LAB_DISABLE_DYNAMIC_IMPORT !== false && isDev)) &&
+        (process.env.LAB_DISABLE_DYNAMIC_IMPORT == null ? process.env.LAB_DISABLE_DYNAMIC_IMPORT === 'true' : isDev) &&
           require('babel-plugin-dynamic-import-node-sync').default,
+
+        // !isDev && require('metro/src/JSTransformer/worker/inline-plugin.js'),
       ].filter(Boolean),
     babelrc: false,
   };
