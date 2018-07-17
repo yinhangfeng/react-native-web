@@ -118,7 +118,7 @@ class Button extends React.Component<{
         accessibilityComponentType="button"
         accessibilityLabel={accessibilityLabel}
         accessibilityTraits={accessibilityTraits}
-        testID={testID}
+        // testID={testID}
         disabled={disabled}
         onPress={onPress}>
         <View style={buttonStyles}>

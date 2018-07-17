@@ -1,8 +1,14 @@
-// 通过 buildExternalHelpers.js 生成修改
-// 通过引用 @babel/runtime 而不是直接将 babelHelpers 放在这里可以与第三方库公用 @babel/runtime 代码
-// 参考 rn polyfills/babelHelpers 注释掉了一些 需要时再加上去
-// NOTE: @babel/runtime/helpers 内部某些模块引用了 @babel/runtime/core-js/promise
-// 所以在 webpack 配置中将 core-js promise 指向了 bluebird
+/**
+ * 通过 buildExternalHelpers.js 生成修改
+ * 通过引用 @babel/runtime 而不是直接将 babelHelpers 放在这里可以与第三方库公用 @babel/runtime 代码
+ * 完整 helpers 参考 https://github.com/babel/babel/blob/master/packages/babel-helpers/src/helpers.js
+ * 目前与 Jul 7, 2018 c0c13ae30fc1209c543ac9a34ace2cad8035ec27 同步 可通过 History 查看是否增加了新的 helpers
+ * 
+ * 参考 rn polyfills/babelHelpers 注释掉了一些 需要时再加上去
+ * NOTE: @babel/runtime/helpers 内部某些模块引用了 @babel/runtime/core-js/promise
+ * 所以在 webpack 配置中将 core-js promise 指向了 bluebird
+ */
+
 
 'use strict';
 
@@ -34,6 +40,8 @@ window.babelHelpers = {
   interopRequireWildcard: require('@babel/runtime/helpers/interopRequireWildcard'),
   // newArrowCheck: require('@babel/runtime/helpers/newArrowCheck'),
   // objectDestructuringEmpty: require('@babel/runtime/helpers/objectDestructuringEmpty'),
+  // TODO beta.54 新增
+  objectWithoutPropertiesLoose: require('@babel/runtime/helpers/objectWithoutPropertiesLoose'),
   objectWithoutProperties: require('@babel/runtime/helpers/objectWithoutProperties'),
   assertThisInitialized: require('@babel/runtime/helpers/assertThisInitialized'),
   possibleConstructorReturn: require('@babel/runtime/helpers/possibleConstructorReturn'),

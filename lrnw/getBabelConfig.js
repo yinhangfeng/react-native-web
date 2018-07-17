@@ -152,7 +152,14 @@ module.exports = function({ env, targets, browsers }) {
         (process.env.LAB_DISABLE_DYNAMIC_IMPORT == null ? process.env.LAB_DISABLE_DYNAMIC_IMPORT === 'true' : isDev) &&
           require('babel-plugin-dynamic-import-node-sync').default,
 
-        // !isDev && require('metro/src/JSTransformer/worker/inline-plugin.js'),
+        !isDev && [
+          require('metro/src/JSTransformer/worker/inline-plugin.js'),
+          {
+            dev: isDev,
+            isWrapped: false,
+            platform: 'web',
+          },
+        ],
       ].filter(Boolean),
     babelrc: false,
   };
