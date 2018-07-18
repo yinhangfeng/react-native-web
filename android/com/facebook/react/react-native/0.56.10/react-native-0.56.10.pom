@@ -4,14 +4,14 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.facebook.react</groupId>
   <artifactId>react-native</artifactId>
-  <version>0.50.14</version>
+  <version>0.56.10</version>
   <packaging>aar</packaging>
   <name>ReactNative</name>
   <description>A framework for building native apps with React</description>
   <url>https://github.com/facebook/react-native</url>
   <licenses>
     <license>
-      <name>BSD License</name>
+      <name>MIT License</name>
       <url>https://github.com/facebook/react-native/blob/master/LICENSE</url>
       <distribution>repo</distribution>
     </license>
@@ -37,7 +37,7 @@
     <dependency>
       <groupId>com.android.support</groupId>
       <artifactId>appcompat-v7</artifactId>
-      <version>25.3.1</version>
+      <version>26.1.0</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
@@ -49,19 +49,19 @@
     <dependency>
       <groupId>com.facebook.fresco</groupId>
       <artifactId>fresco</artifactId>
-      <version>1.5.0</version>
+      <version>1.9.0</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>com.facebook.fresco</groupId>
       <artifactId>imagepipeline-okhttp3</artifactId>
-      <version>1.5.0</version>
+      <version>1.9.0</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>com.facebook.soloader</groupId>
       <artifactId>soloader</artifactId>
-      <version>0.2.0</version>
+      <version>0.4.1</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
@@ -73,19 +73,19 @@
     <dependency>
       <groupId>com.squareup.okhttp3</groupId>
       <artifactId>okhttp</artifactId>
-      <version>3.9.0</version>
+      <version>3.10.0</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>com.squareup.okhttp3</groupId>
       <artifactId>okhttp-urlconnection</artifactId>
-      <version>3.9.0</version>
+      <version>3.10.0</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>com.squareup.okio</groupId>
       <artifactId>okio</artifactId>
-      <version>1.13.0</version>
+      <version>1.14.0</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
