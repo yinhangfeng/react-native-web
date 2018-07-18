@@ -22,7 +22,7 @@ module.exports = function buildWebpackConfig({
 
   let babelConfig = getBabelConfig(babelConfigOptions);
   if (cliConfig.processBabelConfig) {
-    babelConfig = cliConfig.processBabelConfig(babelConfig, babelConfigOptions);
+    babelConfig = cliConfig.processBabelConfig(babelConfig, babelConfigOptions) || babelConfig;
   }
 
   let webpackConfigOptions = {
@@ -40,13 +40,13 @@ module.exports = function buildWebpackConfig({
   };
 
   if (cliConfig.processWebpackConfigOptions) {
-    webpackConfigOptions = cliConfig.processWebpackConfigOptions(webpackConfigOptions);
+    webpackConfigOptions = cliConfig.processWebpackConfigOptions(webpackConfigOptions) || webpackConfigOptions;
   }
 
   let config = getWebpackConfig(webpackConfigOptions);
 
   if (cliConfig.processWebpackConfig) {
-    config = cliConfig.processWebpackConfig(config, webpackConfigOptions);
+    config = cliConfig.processWebpackConfig(config, webpackConfigOptions) || config;
   }
 
   return config;
