@@ -184,7 +184,7 @@ module.exports = function({
       pathinfo: isDev,
       filename: `js/[name]${jsHash}.js`,
       publicPath: '/',
-      chunkFilename: `js/[name]${jsHash}.async.js`,
+      chunkFilename: `js/[name].async${jsHash}.js`,
     },
     // 'source-map' 'eval-source-map'
     devtool: isDev ? 'source-map' : 'none',
