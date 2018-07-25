@@ -26,8 +26,6 @@ git merge origin/lab-master 实现与lab-master 同步
 * react-native link 支持配置android moduleName 代替默认的 'app' local-cli/core/config/android/index.js
 * 修改 local-cli/link/android/patches/makeSettingsPatch.js 应用0.40 的方式
 * 修改 local-cli/link/android/patches/makeImportPatch.js
-* bundleCommandLineArgs.js 增加 --extra-build-options 参数
-* rn-cli.config.js 增加 plugins 支持
 * local-cli/util/Config.js findOptional 只查找项目根目录(与yarn本地git安装 npm5 本地安装兼容)
 ### other
 * .gitignore 未忽略android maven目录，使得npm可直接依赖该git分支，在发布前运行./gradlew installArchives

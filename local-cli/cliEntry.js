@@ -134,6 +134,14 @@ const addCommand = (command: CommandT, cfg: RNConfig) => {
 };
 
 function run() {
+  // LAB modify 支持通过环境变量传递 extraNodeModules
+  if (process.env.LAB_EXTRA_NODE_MODULES) {
+    config.extraNodeModules = {
+      ...config.extraNodeModules,
+      ...JSON.parse(process.env.LAB_EXTRA_NODE_MODULES),
+    };
+  }
+
   const setupEnvScript = /^win/.test(process.platform)
     ? 'setup_env.bat'
     : 'setup_env.sh';
