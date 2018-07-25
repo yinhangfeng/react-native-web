@@ -212,7 +212,7 @@
     "xcode": "^0.9.1",
     "xmldoc": "^0.4.0",
     "yargs": "^9.0.0",
-    "metro": "^0.38.3"
+    "metro": "~0.42.2"
   },
   "devDependencies": {
     "async": "^2.4.0",
