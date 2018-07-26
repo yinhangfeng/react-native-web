@@ -41,7 +41,7 @@ module.exports = function({
   outputPath,
   htmlTemplatePath,
   browsers,
-  publicPath,
+  copyPublicPath,
 }) {
   const isDev = env === 'development';
 
@@ -150,9 +150,9 @@ module.exports = function({
     // new CaseSensitivePathsPlugin(),
     // https://doc.webpack-china.org/plugins/ignore-plugin 忽略 moment 的本地化内容
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
-    publicPath && new CopyWebpackPlugin([
+    copyPublicPath && new CopyWebpackPlugin([
       {
-        from: publicPath,
+        from: copyPublicPath,
         to: outputPath,
         toType: 'dir',
       },
