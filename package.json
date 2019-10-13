@@ -208,7 +208,7 @@
     "webpack-cli": "^3.0.8",
     "webpack-dev-server": "^3.1.4",
     "whatwg-fetch": "^2.0.4",
-    "ws": "^1.1.0",
+    "ws": "^7.1.2",
     "xcode": "^0.9.1",
     "xmldoc": "^0.4.0",
     "yargs": "^9.0.0",
