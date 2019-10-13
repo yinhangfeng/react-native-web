@@ -1,3 +1,10 @@
+# react-native-web
+
+* 基于 react-native 0.56 扩展 同时支持 web android ios
+* 最大限度复用 react-native 代码，可直接 merge react-native 新功能
+* web 基于 webpack 打包
+* 从底层兼容 react-native touch 事件 Libraries/Renderer/shims/injectResponderEventPlugin.web.js
+
 # [React Native](https://facebook.github.io/react-native/) &middot;  [![Circle CI Status](https://circleci.com/gh/facebook/react-native.svg?style=shield)](https://circleci.com/gh/facebook/react-native) [![npm version](https://badge.fury.io/js/react-native.svg)](https://badge.fury.io/js/react-native) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md#pull-requests)
 
 Learn once, write anywhere: Build mobile apps with React.
