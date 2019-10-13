@@ -30,7 +30,7 @@ export type ConfigT = MetroConfigT;
 function getProjectPath() {
   // RW modify 工程名改变需要的相应改变
   // if (__dirname.match(/node_modules[\/\\]react-native[\/\\]local-cli[\/\\]util$/)) {
-  if (__dirname.match(/node_modules[\/\\]lab-react-native-web[\/\\]local-cli[\/\\]util$/)) {
+  if (__dirname.match(/node_modules[\/\\]react-native-web[\/\\]local-cli[\/\\]util$/)) {
     // Packager is running from node_modules.
     // This is the default case for all projects created using 'react-native init'.
     return path.resolve(__dirname, '../../../..');

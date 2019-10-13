@@ -1,3 +1,3 @@
-const test = require('lab-react-native-web/Examples/HelloWorld/deptest/test');
+const test = require('react-native-web/Examples/HelloWorld/deptest/test');
 
 console.log('index');
