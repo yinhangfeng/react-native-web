@@ -236,6 +236,6 @@
     "react-test-renderer": "16.4.1",
     "shelljs": "^0.7.8",
     "sinon": "^2.2.0",
-    "webpack-bundle-analyzer": "^2.13.1"
+    "webpack-bundle-analyzer": "^3.5.2"
   }
 }
